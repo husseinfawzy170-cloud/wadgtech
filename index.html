@@ -1308,7 +1308,7 @@
         <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
       </span>
       <span class="text-sm">🌸</span>
-      <span class="tracking-wide">اسألي خبيرة البشرة</span>
+      <span id="ai-chat-btn-label" class="tracking-wide" data-i18n="chat_btn_text">اسألي خبيرة البشرة</span>
     </button>
   </div>
 
@@ -1324,12 +1324,12 @@
         </div>
         <div>
           <div class="flex items-center gap-1.5">
-            <h3 class="text-xs sm:text-sm font-extrabold text-white">د. شروق | خبيرة WADG</h3>
-            <span id="ai-chat-engine-badge" class="text-[9px] px-1.5 py-0.5 rounded-full bg-white/20 text-lime-100 font-bold">استشارة فورية 🌿</span>
+            <h3 id="ai-chat-header-title" class="text-xs sm:text-sm font-extrabold text-white" data-i18n="chat_header_title">د. شروق | خبيرة WADG</h3>
+            <span id="ai-chat-engine-badge" class="text-[9px] px-1.5 py-0.5 rounded-full bg-white/20 text-lime-100 font-bold" data-i18n="chat_badge">استشارة فورية 🌿</span>
           </div>
           <p class="text-[10.5px] text-lime-100 flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-lime-300 inline-block"></span>
-            استشارة فورية وروتين علاجي مخصص
+            <span id="ai-chat-header-subtitle" data-i18n="chat_header_subtitle">استشارة فورية وروتين علاجي مخصص</span>
           </p>
         </div>
       </div>
@@ -1453,10 +1453,16 @@
         <div id="admin-tab-prices" class="admin-tab-content space-y-4">
           <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-gray-100">
             <span class="text-xs font-bold text-gray-700">المنتجات المعروضة بالموقع (<span id="admin-product-count">0</span>):</span>
-            <button id="admin-save-all-prices-btn" type="button" class="px-4 py-2 rounded-xl bg-[#5A8D00] hover:bg-[#477000] text-white text-xs font-bold transition-colors inline-flex items-center gap-1.5 shadow-sm">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              حفظ جميع التغييرات
-            </button>
+            <div class="flex items-center gap-2">
+              <button id="admin-save-all-prices-btn" type="button" class="px-3.5 py-2 rounded-xl bg-[#5A8D00] hover:bg-[#477000] text-white text-xs font-bold transition-colors inline-flex items-center gap-1.5 shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                حفظ التغييرات
+              </button>
+              <button id="admin-sync-github-tab1-btn" type="button" class="px-3.5 py-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold transition-all shadow-md inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                ☁️ نشر وتحديث على GitHub الآن
+              </button>
+            </div>
           </div>
           <div id="admin-products-list" class="space-y-3">
             <!-- Dynamic product edit rows -->
@@ -1877,6 +1883,34 @@
             <div id="admin-gemini-status" class="text-[11px] font-bold text-purple-700 hidden"></div>
           </div>
 
+
+          <!-- GitHub Cloud Auto-Sync Feature -->
+          <div class="bg-gradient-to-br from-purple-50 via-indigo-50 to-purple-100 p-5 rounded-2xl border border-purple-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+            <div class="space-y-3 flex-1">
+              <div>
+                <h4 class="text-sm font-extrabold text-purple-950 flex items-center gap-2">
+                  <span>☁️</span> النشر والمزامنة الفورية مع GitHub لجميع الزوار
+                </h4>
+                <p class="text-xs text-purple-800 mt-1 max-w-lg leading-relaxed">
+                  تقوم هذه الميزة بنشر جميع تعديلاتك (الأسعار، صور المنتجات، الإعدادات) تلقائياً ومباشرة إلى مستودع GitHub السحابي، لتقوم خوادم GitHub بتحديث الموقع أونلاين لجميع الزوار في جميع أنحاء العالم فوراً خلال 30 ثانية دون الحاجة لأي برامج!
+                </p>
+              </div>
+              <div class="bg-white/80 p-3 rounded-xl border border-purple-200 space-y-1.5 max-w-md">
+                <label class="block text-[11px] font-bold text-purple-900">رمز GitHub Personal Access Token الخاص بك:</label>
+                <div class="flex items-center gap-2">
+                  <input id="admin-github-token-input" type="password" dir="ltr" placeholder="ghp_... أو gho_..." class="flex-1 px-3 py-1.5 text-xs rounded-lg border border-purple-200 bg-white focus:outline-none focus:border-purple-600 font-mono text-[12px]" />
+                  <button type="button" id="admin-save-github-token-btn" class="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold rounded-lg transition-colors shrink-0 shadow-sm">
+                    حفظ الرمز
+                  </button>
+                </div>
+                <p class="text-[10px] text-purple-600">يُحفظ الرمز بأمان وسرية على جهازك فقط لاستخدامه في تحديث المتجر مباشرة.</p>
+              </div>
+            </div>
+            <button id="admin-sync-github-tab3-btn" type="button" class="shrink-0 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-extrabold transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>🚀 نشر التحديثات إلى GitHub الآن</span>
+            </button>
+          </div>
 
           <!-- Export HTML Feature -->
           <div class="bg-gradient-to-br from-[#F1F6E6] to-[#E5ECD6] p-5 rounded-2xl border border-[#D2E2B3] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -2419,7 +2453,15 @@
         nav_contact: 'تواصل معنا',
         contact_badge: 'قنوات التواصل الرسمية',
         contact_title: 'تواصل معنا وتابع أحدث العروض',
-        contact_subtitle: 'يسعدنا تواصلكم ومتابعتكم لصفحاتنا الرسمية لمعرفة نصائح العناية بالبشرة، تفاصيل روتين WADG TECH، وأقوى العروض الحصرية.',
+                contact_subtitle: 'يسعدنا تواصلكم ومتابعتكم لصفحاتنا الرسمية لمعرفة نصائح العناية بالبشرة، تفاصيل روتين WADG TECH، وأقوى العروض الحصرية.',
+        chat_btn_text: 'اسألي خبيرة البشرة',
+        chat_header_title: 'د. شروق | خبيرة WADG',
+        chat_header_subtitle: 'استشارة فورية وروتين علاجي مخصص',
+        chat_badge: 'استشارة فورية 🌿',
+        chat_placeholder: 'اكتبي سؤالك عن بشرتك أو منتجاتنا...',
+        chat_typing: 'الخبيرة تكتب',
+        chat_new_consult: 'بدء استشارة جديدة',
+        chat_close: 'إغلاق',
         cart_btn: 'السلة',
         hero_badge: 'تقنية الليبوسوم والببتيد • مسجل بهيئة الدواء المصرية',
         hero_title_1: 'إشراقة البشرة ومقاومة',
@@ -2564,7 +2606,15 @@
         nav_contact: 'Contact Us',
         contact_badge: 'Official Channels',
         contact_title: 'Connect With Us & Follow Latest Offers',
-        contact_subtitle: 'We are delighted to connect and follow our official channels for skincare tips, WADG TECH routine guides, and exclusive offers.',
+                contact_subtitle: 'We are delighted to connect and follow our official channels for skincare tips, WADG TECH routine guides, and exclusive offers.',
+        chat_btn_text: 'Ask Skincare Expert',
+        chat_header_title: 'Dr. Shorouk | WADG Expert',
+        chat_header_subtitle: 'Instant Consultation & Custom Regimen',
+        chat_badge: 'Instant Advisor 🌿',
+        chat_placeholder: 'Ask about your skin or our products...',
+        chat_typing: 'Dr. Shorouk is typing',
+        chat_new_consult: 'New consultation',
+        chat_close: 'Close',
         cart_btn: 'Bag',
         hero_badge: 'Liposomal & Peptide Tech • EDA Registered',
         hero_title_1: 'Anti-Aging &',
@@ -3000,6 +3050,10 @@
 
       // Dynamic Banner & Video Switching based on Language
       updateBannersForLanguage(lang);
+
+      if (typeof window.updateChatLanguage === 'function') {
+        window.updateChatLanguage(lang);
+      }
 
       renderProducts();
       renderRoutine();
@@ -4818,7 +4872,8 @@
         }
       });
       saveProductsToStorage();
-      showToast('تم حفظ جميع تعديلات الأسعار والمنتجات بنجاح! 🚀');
+      showToast('✅ تم حفظ التعديلات محلياً! جاري المزامنة مع GitHub لتحديث الموقع لجميع الزوار...', 4000);
+      syncToGitHub(true);
     });
 
     // Delete Product Event
@@ -5131,6 +5186,127 @@
     });
 
     // EXPORT STANDALONE UPDATED HTML FILE — يحفظ الفيديوهات مباشرة داخل الـ HTML
+    
+    // ══════════════════════════════════════════════════════════════
+    // 🚀 GitHub Cloud Auto-Sync Engine (نشر التحديثات التلقائي لجيت هب)
+    // ══════════════════════════════════════════════════════════════
+    async function syncToGitHub(silent = false) {
+      let token = localStorage.getItem('wadg_github_token');
+      const tokenInputEl = document.getElementById('admin-github-token-input');
+      if (!token && tokenInputEl && tokenInputEl.value.trim()) {
+        token = tokenInputEl.value.trim();
+        localStorage.setItem('wadg_github_token', token);
+      }
+      if (!token) {
+        const entered = prompt('لإتمام النشر السحابي، يرجى إدخال رمز GitHub Token لحسابك (سيتم حفظه على جهازك بأمان):');
+        if (entered && entered.trim()) {
+          token = entered.trim();
+          localStorage.setItem('wadg_github_token', token);
+          if (tokenInputEl) tokenInputEl.value = token;
+        } else {
+          showToast('⚠️ تم إلغاء النشر لعدم توفر رمز GitHub Token.', 4000);
+          return false;
+        }
+      }
+      const repoOwner = 'husseinfawzy170-cloud';
+      const repoName = 'wadgtech';
+      const branch = 'main';
+
+      if (!token) {
+        alert('يرجى توفر رمز الاتصال بـ GitHub.');
+        return false;
+      }
+
+      showToast('⏳ جاري تجميع التعديلات ونشرها سحابياً على GitHub...', 8000);
+
+      try {
+        // Build clean HTML string with updated products
+        let fullHtml = document.documentElement.outerHTML;
+        fullHtml = '<!DOCTYPE html>\n' + fullHtml;
+
+        // Hide admin modals and chat window
+        fullHtml = fullHtml.replace(/id="admin-modal" class="fixed inset-0 z-\[99999\] flex/g, 'id="admin-modal" class="fixed inset-0 z-[99999] hidden');
+        fullHtml = fullHtml.replace(/id="admin-auth-modal" class="fixed inset-0 z-\[99999\] flex/g, 'id="admin-auth-modal" class="fixed inset-0 z-[99999] hidden');
+        fullHtml = fullHtml.replace(/id="ai-chat-window" class="([^"]*)\bflex\b([^"]*)"/g, (m, p1, p2) => `id="ai-chat-window" class="${(p1 + ' ' + p2).replace(/\bflex\b/g, '').trim()} hidden"`);
+        fullHtml = fullHtml.replace(/id="ai-chat-launcher" class="([^"]*)\bhidden\b([^"]*)"/g, (m, p1, p2) => `id="ai-chat-launcher" class="${(p1 + ' ' + p2).replace(/\bhidden\b/g, '').trim()}"`);
+
+        // Update DEFAULT_PRODUCTS in the HTML
+        const prodRegex = /const DEFAULT_PRODUCTS = \[([\s\S]*?)\];/;
+        const newProdJson = 'const DEFAULT_PRODUCTS = ' + JSON.stringify(PRODUCTS, null, 2) + ';';
+        if (prodRegex.test(fullHtml)) {
+          fullHtml = fullHtml.replace(prodRegex, newProdJson);
+        }
+
+        // Convert UTF-8 to Base64 safely
+        function toB64(str) {
+          const bytes = new TextEncoder().encode(str);
+          let bin = '';
+          const len = bytes.byteLength;
+          for (let i = 0; i < len; i += 8192) {
+            bin += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + 8192, len)));
+          }
+          return btoa(bin);
+        }
+
+        const b64Content = toB64(fullHtml);
+
+        // Helper to push a file to GitHub
+        async function pushFile(filename) {
+          const getUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filename}?ref=${branch}&_t=${Date.now()}`;
+          const getRes = await fetch(getUrl, {
+            headers: {
+              'Authorization': `token ${token}`,
+              'Accept': 'application/vnd.github+json'
+            }
+          });
+          if (!getRes.ok) {
+            throw new Error(`تعذر قراءة ${filename} من GitHub: ${getRes.status}`);
+          }
+          const fileData = await getRes.json();
+          const sha = fileData.sha;
+
+          const putUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filename}`;
+          const putRes = await fetch(putUrl, {
+            method: 'PUT',
+            headers: {
+              'Authorization': `token ${token}`,
+              'Accept': 'application/vnd.github+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              message: `Update ${filename} via Admin Panel [Live Sync]`,
+              content: b64Content,
+              sha: sha,
+              branch: branch
+            })
+          });
+          if (!putRes.ok) {
+            const errData = await putRes.json().catch(() => ({}));
+            throw new Error(`تعذر حفظ ${filename}: ${errData.message || putRes.status}`);
+          }
+          return true;
+        }
+
+        await pushFile('index.html');
+        try {
+          await pushFile('wadg_tech_anti_aging_skin_luminosity_range.html');
+        } catch(e) {
+          console.warn('Optional secondary file sync notice:', e);
+        }
+
+        showToast('✅ تم نشر وتحديث الموقع بنجاح على GitHub! ستظهر التعديلات لجميع الزوار تلقائياً خلال 30 ثانية 🚀', 7000);
+        return true;
+      } catch (err) {
+        console.error('GitHub Sync Error:', err);
+        showToast(`❌ فشل النشر على GitHub: ${err.message}`, 6000);
+        return false;
+      }
+    }
+
+    // Bind sync buttons
+    document.getElementById('admin-sync-github-tab1-btn')?.addEventListener('click', () => syncToGitHub());
+    document.getElementById('admin-sync-github-tab3-btn')?.addEventListener('click', () => syncToGitHub());
+
     document.getElementById('admin-export-html-btn')?.addEventListener('click', async () => {
       showToast('⏳ جاري تجميع كل البيانات وحفظ الفيديوهات...');
       await new Promise(r => setTimeout(r, 300));
@@ -5344,13 +5520,13 @@
       let chatHistory = [];
       let isGenerating = false;
 
-                  window.wadgAdvisorAddToCart = function(id) {
+      window.wadgAdvisorAddToCart = function(id) {
         if (id === 'all') {
           const coreProducts = PRODUCTS.filter(p => !p.id.includes('bundle') && p.category !== 'bundle');
           coreProducts.forEach(p => { cart[p.id] = (cart[p.id] || 0) + 1; });
           renderCart();
           document.getElementById('cart-drawer')?.classList.remove('hidden');
-          showToast('تمت إضافة المجموعة الكاملة (4 منتجات) للسلة 🛍️');
+          showToast(lang === 'en' ? 'Complete 4-piece collection added to cart 🛍️' : 'تمت إضافة المجموعة الكاملة (4 منتجات) للسلة 🛍️');
         } else {
           addToCart(id, 1);
           document.getElementById('cart-drawer')?.classList.remove('hidden');
@@ -5359,15 +5535,19 @@
 
       function formatBotMessage(raw) {
         let formatted = raw;
-
-        // Clean out any [PRODUCT:...] tags completely - chat is pure advice & info
         formatted = formatted.replace(/\[PRODUCT:[a-zA-Z0-9_]+\]/g, '');
 
+        const isEn = (typeof lang !== 'undefined' && lang === 'en');
         const waNumber = (typeof getCleanWhatsAppNumber === 'function' ? getCleanWhatsAppNumber() : '201030853611');
+        const waText = isEn 
+          ? encodeURIComponent('Hello Dr. Shorouk, I would like a personalized skincare consultation regarding WADG TECH products.')
+          : encodeURIComponent('مرحباً د. شروق، أود استشارة طبية متخصصة حول منتجات WADG TECH للعناية بالبشرة');
+        const waLabel = isEn ? '💬 Direct WhatsApp Consultation' : '💬 تواصل مباشر عبر واتساب';
+
         formatted = formatted.replace(/\[WHATSAPP_LINK\]/g, `
           <div class="mt-2.5">
-            <a href="https://wa.me/${waNumber}?text=${encodeURIComponent('مرحباً د. شروق، أود استشارة طبية متخصصة حول منتجات WADG TECH للعناية بالبشرة')}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-sm transition-transform active:scale-95">
-              <span>💬 تواصل مباشر عبر واتساب</span>
+            <a href="https://wa.me/${waNumber}?text=${waText}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] shadow-sm transition-transform active:scale-95">
+              <span>${waLabel}</span>
             </a>
           </div>
         `);
@@ -5379,6 +5559,7 @@
 
         return formatted;
       }
+
       function scrollToBottom() {
         if (messagesEl) {
           messagesEl.scrollTop = messagesEl.scrollHeight;
@@ -5416,6 +5597,9 @@
       let typingEl = null;
       function showTyping() {
         if (typingEl) return;
+        const isEn = (typeof lang !== 'undefined' && lang === 'en');
+        const typingText = isEn ? 'Dr. Shorouk is typing' : 'الخبيرة تكتب';
+
         typingEl = document.createElement('div');
         typingEl.className = 'flex justify-start animate-fade-in';
         typingEl.innerHTML = `
@@ -5424,7 +5608,7 @@
               👩‍⚕️
             </div>
             <div class="ai-bot-bubble rounded-2xl rounded-tl-xs px-3.5 py-2.5 bg-white border border-gray-100 text-gray-500 shadow-sm flex items-center gap-1.5 text-[11px]">
-              <span>الخبيرة تكتب</span>
+              <span>${typingText}</span>
               <span class="inline-flex gap-1">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#5A8D00] animate-bounce"></span>
                 <span class="w-1.5 h-1.5 rounded-full bg-[#5A8D00] animate-bounce" style="animation-delay: 0.2s"></span>
@@ -5447,7 +5631,10 @@
       function renderWelcome() {
         messagesEl.innerHTML = '';
         chatHistory = [];
-        const welcome = `أهلاً بكِ في **WADG TECH**! 🌸 أنا د. شروق، مستشارتكِ الذكية للعناية بالبشرة والروتين العلاجي.\n\nيسعدني جداً مساعدتكِ في اختيار المنتج الأنسب لبشرتكِ وتصميم روتين عناية متكامل، أو الإجابة على أي استفسار طبي عن تركيبتنا المتطورة بالكبسولات الليبوزومية (**Liposomal Hyaluronic Acid & Vitamin C**).\n\nكيف يمكنني مساعدتكِ اليوم؟ ✨`;
+        const isEn = (typeof lang !== 'undefined' && lang === 'en');
+        const welcome = isEn 
+          ? `Welcome to **WADG TECH**! 🌸 I am Dr. Shorouk, your dedicated skincare and clinical routine advisor.\n\nI am delighted to assist you in selecting the ideal products for your skin, designing a customized daily regimen, or answering any medical questions about our advanced nano-liposomal formulation (**Liposomal Hyaluronic Acid & Vitamin C**).\n\nHow may I help you today? ✨`
+          : `أهلاً بكِ في **WADG TECH**! 🌸 أنا د. شروق، مستشارتكِ الذكية للعناية بالبشرة والروتين العلاجي.\n\nيسعدني جداً مساعدتكِ في اختيار المنتج الأنسب لبشرتكِ وتصميم روتين عناية متكامل، أو الإجابة على أي استفسار طبي عن تركيبتنا المتطورة بالكبسولات الليبوزومية (**Liposomal Hyaluronic Acid & Vitamin C**).\n\nكيف يمكنني مساعدتكِ اليوم؟ ✨`;
         appendMessage('model', welcome);
       }
 
@@ -5476,6 +5663,39 @@
       openBtn.addEventListener('click', () => toggleChat(true));
       closeBtn.addEventListener('click', () => toggleChat(false));
       resetBtn.addEventListener('click', () => renderWelcome());
+
+      // ── Quick Chips Multilingual Configuration ──
+      const CHIPS_CONFIG = {
+        ar: [
+          { id: 'night', label: '🌙 كريم الليل', question: 'كلميني بالتفصيل عن كريم الليل وفوائده وطريقة استخدامه وسعره' },
+          { id: 'wrinkles', label: '🌸 نضارة وتجاعيد', question: 'ما هو أفضل منتج لعلاج التجاعيد واستعادة نضارة البشرة؟' },
+          { id: 'day', label: '☀️ حماية نهارية SPF 50', question: 'ما مميزات كريم النهار SPF 50+ وكيف يحمي البشرة؟' },
+          { id: 'eye', label: '👁️ هالات وانتفاخ العين', question: 'أعاني من الهالات السوداء والانتفاخ حول العين، ما المنتج المناسب؟' },
+          { id: 'routine', label: '🧴 روتين الاستخدام', question: 'كيف أرتب روتين العناية بمنتجات WADG صباحاً ومساءً؟' },
+          { id: 'bundles', label: '🛍️ باقات التوفير', question: 'ما هي باقات التوفير المتوفرة وأسعارها؟' }
+        ],
+        en: [
+          { id: 'night', label: '🌙 Night Cream', question: 'Tell me in detail about the Night Cream, its medical benefits, routine, and price' },
+          { id: 'wrinkles', label: '🌸 Radiance & Wrinkles', question: 'What is the best product for anti-aging, firming, and skin radiance?' },
+          { id: 'day', label: '☀️ Day Defense SPF 50', question: 'What are the benefits of the Day Cream SPF 50+ and how does it protect the skin?' },
+          { id: 'eye', label: '👁️ Eye Dark Circles', question: 'How does the Eye Treatment Cream reduce dark circles and morning puffiness?' },
+          { id: 'routine', label: '🧴 Daily Routine', question: 'What is the recommended AM and PM routine using the complete range?' },
+          { id: 'bundles', label: '🛍️ Value Bundles', question: 'What are the available value bundles, discounts, and prices?' }
+        ]
+      };
+
+      function renderQuickChips(curLang) {
+        if (!chipsEl) return;
+        const list = CHIPS_CONFIG[curLang] || CHIPS_CONFIG.ar;
+        chipsEl.innerHTML = list.map(c => `
+          <button type="button" class="ai-chip-btn whitespace-nowrap px-3 py-1.5 rounded-full text-[11px] font-bold bg-lime-50 hover:bg-lime-100 text-[#3A5C00] border border-lime-200 transition-colors shrink-0" data-chip="${c.id}" data-question="${c.question}">
+            ${c.label}
+          </button>
+        `).join('');
+      }
+
+      // Initial chips render
+      renderQuickChips(typeof lang !== 'undefined' ? lang : 'ar');
 
       // Enable smooth mouse drag scrolling for quick chips
       (function enableDragScroll(container) {
@@ -5529,13 +5749,8 @@
       chipsEl.addEventListener('click', (e) => {
         const btn = e.target.closest('.ai-chip-btn');
         if (!btn || isGenerating) return;
-        const chip = btn.dataset.chip;
-        if (chip === 'نضارة وتجاعيد') handleUserMessage('ما هو أفضل منتج لعلاج التجاعيد واستعادة نضارة البشرة؟');
-        else if (chip === 'كريم الليل') handleUserMessage('كلميني بالتفصيل عن كريم الليل وفوائده وطريقة استخدامه وسعره');
-        else if (chip === 'هالات وانتفاخ العين') handleUserMessage('أعاني من الهالات السوداء والانتفاخ حول العين، ما المنتج المناسب؟');
-        else if (chip === 'حماية نهارية SPF 50') handleUserMessage('ما مميزات كريم النهار SPF 50+ وكيف يحمي البشرة؟');
-        else if (chip === 'روتين الصباح والمساء') handleUserMessage('كيف أرتب روتين العناية بمنتجات WADG صباحاً ومساءً؟');
-        else if (chip === 'باقات التوفير') handleUserMessage('ما هي باقات التوفير المتوفرة وأسعارها؟');
+        const q = btn.dataset.question;
+        if (q) handleUserMessage(q);
       });
 
       formEl.addEventListener('submit', (e) => {
@@ -5546,8 +5761,7 @@
         handleUserMessage(text);
       });
 
-            // ── Dynamic Live Products & Prices Resolver ──
-      // This ensures whenever prices are modified in the admin panel or site, the chatbot always quotes the 100% exact live prices!
+      // ── Dynamic Live Products & Prices Resolver ──
       function getLiveProductInfo() {
         const pList = (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS) && PRODUCTS.length > 0)
           ? PRODUCTS
@@ -5589,33 +5803,90 @@
       function getSmartLocalResponse(text) {
         const q = text.toLowerCase();
         const info = getLiveProductInfo();
+        const isEn = (typeof lang !== 'undefined' && lang === 'en') || /^[a-zA-Z0-9\s.,?!'"\-]+$/.test(text.trim());
 
-        // 1. Dedicated Night Cream Check (اتكلم عن كريم الليل فقط وبكل فوائده وسعره المحدث)
+        // ══════════════════════════════════════════════════════════
+        // ENGLISH CLINICAL ADVISOR ENGINE
+        // ══════════════════════════════════════════════════════════
+        if (isEn) {
+          // 1. Night Cream (English)
+          if (/night|overnight|sleep/.test(q) && !/routine|bundle|offer/.test(q)) {
+            return `Welcome! 🌙 Here are the clinical details for our **Skin Repair & Luminosity Night Cream** (${info.nightVol} - ${info.nightPrice} EGP):\n\n✨ **Key Clinical & Cosmetic Benefits:**\n- **Deep Cellular Repair & Boost:** Enhances the efficacy of our Facial Serum by 50% overnight with bio-active liposomes and stabilized Vitamin C.\n- **Overnight Rejuvenation:** Pores are most receptive during sleep; it rebuilds the skin moisture barrier and restores daytime elasticity loss.\n- **Anti-Aging & Firming:** Visibly firms contours and softens expression lines for radiant, supple skin every morning.\n- **Fast Visible Results:** Tangible improvements in skin softness and tone emerge within 8 to 15 days.\n\n🧴 **How to Apply:**\n- Apply each evening as the concluding step in your PM routine after cleansing, serum, and eye treatment.\n- Smooth over face and neck in gentle upward circular motions until fully absorbed.\n\n💡 **Skin Type Compatibility:**\nCompletely non-comedogenic and ideal for all skin types (oily, dry, combination, sensitive) with a rich, featherlight texture that leaves no greasy residue.\n\n✨ **Order directly from our website now for (${info.nightPrice} EGP) and wake up to glowing, renewed skin! 🛍️**`;
+          }
+
+          // 2. Routine (English)
+          if (/routine|steps|order|how to use|apply|am|pm|regimen/.test(q)) {
+            return `Our complete **WADG TECH** skincare routine is clinically formulated with nano-liposome technology for synergistic maximum efficacy:\n\n☀️ **Morning Routine (UV Defense & Radiance):**\n- Cleanse your face with a gentle cleanser.\n- Apply 3-4 drops of **Facial Serum** (${info.serumPrice} EGP) with gentle patting for instant firmness and luminosity.\n- Dot a small amount of **Eye Treatment Gel Cream** (${info.eyePrice} EGP) around the orbital bone to soothe morning puffiness.\n- Finish with **Day Cream SPF 50+** (${info.dayPrice} EGP) for broad-spectrum UV protection and all-day hydration.\n\n🌙 **Evening Routine (Cellular Renewal & Repair):**\n- Cleanse face thoroughly from daily pollutants and makeup.\n- Apply **Facial Serum** to deeply nourish skin layers.\n- Tap **Eye Treatment Gel Cream** to target dark circles and expression lines overnight.\n- Seal with **Night Cream** (${info.nightPrice} EGP) to repair the moisture barrier and boost serum efficacy by 50%.\n\n✨ **Order the Complete Range (4 products for ${info.completePrice} EGP) directly from our website now! 🛍️**`;
+          }
+
+          // 3. Bundles (English)
+          if (/bundle|bundles|offer|offers|discount|sale|price|prices|cost|how much/.test(q)) {
+            return `Welcome! 🌸 We offer specialized value bundles featuring our most popular products with exclusive discounts:\n\n1️⃣ **Day Cream + Night Cream Duo (${info.bundleDNPrice} EGP):**\n24-hour round-the-clock defense and deep overnight repair.\n\n2️⃣ **Facial Serum + Eye Gel Duo (${info.bundleSEPrice} EGP):**\nThe ultimate anti-aging and radiance duo; smooths fine lines and relieves dark circles.\n\n3️⃣ **Complete Collection (All 4 Products for ${info.completePrice} EGP):**\nThe full clinical daily regimen: Serum + Day SPF 50+ + Night Cream + Eye Treatment.\n\n✨ **Order your preferred bundle directly from our website now with fast doorstep delivery! 🛍️**`;
+          }
+
+          // 4. Eye Care (English)
+          if (/eye|eyes|dark circle|circles|puffiness|bags|crow/.test(q)) {
+            return `Welcome! 👁️ The delicate skin around the eyes requires specialized clinical care. Our targeted solution is the **Eye Treatment Gel Cream** (${info.eyeVol} - ${info.eyePrice} EGP):\n\n✨ **Key Clinical Benefits:**\n- Progressively reduces dark circles and pigmentation under the eyes.\n- Provides instant relief for morning puffiness and eye bags with caffeine and lactoferrin.\n- Smooths expression lines and crow's feet within 5 to 15 days.\n- Cooling, lightweight gel formula that absorbs instantly without tackiness.\n\n💡 **How to Apply:** Dot around the orbital bone and gently tap morning and night.\n\n✨ **Order it directly from our website now for (${info.eyePrice} EGP) for refreshed, luminous eyes! 🛍️**`;
+          }
+
+          // 5. Serum / Wrinkles / Radiance (English)
+          if (/serum|wrinkle|wrinkles|aging|radiance|glow|brighten|hyaluronic|vitamin c|firming|fine line/.test(q)) {
+            return `Welcome! 🌸 For wrinkles, fine lines, and restoring vibrant skin luminosity, our star treatment is the **Anti-Aging & Skin Luminosity Facial Serum** (${info.serumVol} - ${info.serumPrice} EGP):\n\n✨ **Key Benefits:**\n- Powered by advanced nano-liposomal **Hyaluronic Acid & stabilized Vitamin C**.\n- Multi-depth hydration that visibly tightens pores and refines fine lines in 15–28 days.\n- Gives a natural radiant glow that lasts all day without oiliness.\n- Silky, rapid-absorbing texture, ideal as a base before makeup or daily moisturizer.\n\n💡 **Expert Tip:** Pairing the Serum with our Night Cream enhances its efficacy by 50% while you sleep.\n\n✨ **Order it directly from our website now for (${info.serumPrice} EGP) for visibly firmer, glowing skin! 🛍️**`;
+          }
+
+          // 6. Day Cream / Sun Defense (English)
+          if (/day|sun|spf|sunblock|uv|protection|defense/.test(q)) {
+            return `Welcome! ☀️ For comprehensive daytime protection against photo-aging and premature wrinkles, we recommend the **Day Cream with Sun Protection SPF 50+** (${info.dayVol} - ${info.dayPrice} EGP):\n\n✨ **Key Benefits:**\n- Broad-spectrum UVA/UVB protection with SPF 50+ rating.\n- Lightweight, non-greasy texture that leaves zero white cast.\n- Infused with antioxidant peptides to shield skin against environmental pollutants.\n- Safe for daily application and suitable as an ultra-smooth makeup primer.\n\n✨ **Order it directly from our website now for (${info.dayPrice} EGP) for ultimate daily defense! 🛍️**`;
+          }
+
+          // 7. Skin Types (English)
+          if (/oily|dry|sensitive|combination|acne|pore|skin type/.test(q)) {
+            return `Great question! 🌸 All **WADG TECH** formulations are clinically developed to be **completely safe and effective for all skin types** (oily, dry, combination, and sensitive).\n\n💡 **The Scientific Advantage:**\nOur products utilize **nano-liposome technology**, ensuring:\n- Ultra-lightweight and rapid absorption without greasy buildup.\n- Non-comedogenic formulations that will never clog pores or trigger breakouts.\n- Free from harsh alcohol and irritants, gentle on sensitive skin.\n\n✨ **Order your tailored routine directly from our website with total confidence! 🛍️**`;
+          }
+
+          // 8. Shipping & Payment (English)
+          if (/shipping|delivery|payment|pay|cod|cash|vodafone|instapay/.test(q)) {
+            return `Ordering from WADG TECH is fast, secure, and hassle-free: 🚚\n\n💵 **Available Payment Methods:**\n1. **Cash on Delivery (COD):** Pay directly to the courier upon receiving and inspecting your package.\n2. **Vodafone Cash or InstaPay:** Seamless instant transfer with direct customer confirmation.\n\n📦 **Shipping & Delivery:**\n- Fast delivery to all governorates across Egypt within 2 to 4 business days in luxury, protective packaging.\n\n✨ **Order directly from our website now and enjoy swift doorstep delivery! 🛍️**`;
+          }
+
+          // 9. Greetings (English)
+          if (/hi|hello|hey|good morning|good evening|welcome/.test(q)) {
+            return `Welcome to **WADG TECH**! 🌸 I am Dr. Shorouk, your skincare advisor. Tell me about your current skin concerns or goals (radiance, fine lines, dark circles, sun protection), and I will gladly recommend the ideal clinical regimen for you! ✨`;
+          }
+
+          // 10. Fallback (English)
+          return `Welcome! 🌸 As your WADG TECH skincare advisor, I am delighted to assist you with personalized medical advice for your skin. Tell me what specific concern you would like to address (wrinkles, eye puffiness, routine guide, or daily sun defense), and I will explain the most effective regimen!\n\n✨ **You can order any of our products directly from our website now! 🛍️**\n\nFor extra specialized clinical advice, reach out directly to our dermatology team on WhatsApp:\n[WHATSAPP_LINK]`;
+        }
+
+        // ══════════════════════════════════════════════════════════
+        // ARABIC CLINICAL ADVISOR ENGINE
+        // ══════════════════════════════════════════════════════════
+        // 1. Dedicated Night Cream Check
         if (/كريم ليل|كريم الليل|ليلي|الليل/.test(q) && !/روتين|باقة|باقات|عرض|عروض/.test(q)) {
           return `أهلاً بكِ يا فندم! 🌙 إليكِ كل التفاصيل والمعلومات الطبية عن **كريم الليل لإصلاح البشرة والإشراقة** (${info.nightVol} - ${info.nightPrice} ج.م):\n\n✨ **الفوائد الطبية والتجميلية الأساسية:**\n- **ترميم عميق ومضاعفة النتيجة:** يضاعف فعالية سيروم الوجه بنسبة 50% أثناء النوم بفضل تركيبته الغنية بالليبوزوم وفيتامين C المركز.\n- **تجديد الخلايا أثناء النوم:** في فترة الليل تكون مسام البشرة أكثر استعداداً لامتصاص المغذيات، فيعمل على ترميم حاجز البشرة وتعويض الترطيب والمرونة المفقودة طوال اليوم.\n- **محاربة علامات التقدم بالسن:** يشد ملامح الوجه ويملأ الخطوط الدقيقة لتحصلي على بشرة مرتاحة، مشدودة، وممتلئة كل صباح.\n- **نتائج سريعة:** تبدأ النتائج الملموسة في مرونة البشرة ونعومتها في الظهور خلال 8 إلى 15 يوماً فقط.\n\n🧴 **طريقة الاستخدام الصحيحة:**\n- يُستخدم مساءً يومياً كخطوة أخيرة في الروتين الليلي بعد غسل الوجه ووضع السيروم وجل العين.\n- وزعي كمية مناسبة على الوجه والرقبة بحركات دائرية ناعمة من أسفل لأعلى حتى تمتصه البشرة تماماً.\n\n💡 **لمن يناسب؟**\nمناسب وآمن تماماً لجميع أنواع البشرة (الدهنية، الجافة، والمختلطة) لأن ملمسه غني لكنه غير دهني وسريع الامتصاص ولا يسد المسام نهائياً.\n\n✨ **اطلبيه من الموقع الآن بسعر (${info.nightPrice} ج.م) واستيقظي كل يوم ببشرة نضرة ومشرقة! 🛍️**`;
         }
 
-        // 2. Routine (الروتين المتكامل بأسعار حية)
+        // 2. Routine
         if (/روتين|طريقة الاستخدام|استخدمهم ازاي|ترتيب|خطوات|استعمال|استخدم/.test(q)) {
           return `روتين العناية المتكامل من **WADG TECH** مصمم ليعطيكِ أفضل نتيجة طبية متناغمة بتقنية النانو ليبوزوم:\n\n☀️ **روتين الصباح (الحماية والإشراقة):**\n- اغسلي وجهكِ بغسول لطيف مناسب.\n- وزعي 3-4 قطرات من **سيروم الوجه** (${info.serumPrice} ج.م) بحركات تربيت ناعمة لشد البشرة وإعطائها نضارة فورية.\n- ضعي كمية صغيرة من **جل كريم العين** (${info.eyePrice} ج.م) حول عظمة محيط العين لتقليل الانتفاخات الصباحية.\n- اختمي بـ **كريم النهار SPF 50+** (${info.dayPrice} ج.م) لحماية كاملة وترطيب خفيف طوال اليوم ومقاومة أشعة الشمس.\n\n🌙 **روتين المساء (الترميم والتجديد):**\n- نظفي البشرة جيداً من الشوائب والمكياج.\n- ضعي **سيروم الوجه** لتغذية وتجديد الخلايا بعمق أثناء الاسترخاء.\n- طبقي **جل كريم العين** لعلاج الهالات والخطوط الدقيقة طوال الليل.\n- ضعي **كريم الليل** (${info.nightPrice} ج.م) المركز لترميم حاجز البشرة ومضاعفة مفعول السيروم بنسبة 50%.\n\n✨ **اطلبيهم من الموقع الآن (المجموعة الكاملة 4 منتجات بسعر ${info.completePrice} ج.م) وابدئي روتينكِ العلاجي فوراً! 🛍️**`;
         }
 
-        // 3. Bundles & Offers (الباقات بالأسعار الحية المحدثة)
+        // 3. Bundles & Offers
         if (/عرض|عروض|باقة|باقات|خصم|تخفيض|المجموعة الكاملة|كام سعر|اسعار|أسعار/.test(q)) {
           return `أهلاً بكِ يا فندم! 🌸 نوفر لكِ باقات توفير مميزة تجمع بين منتجاتنا الأكثر طلباً بخصومات رائعة وأسعار محدثة:\n\n1️⃣ **باقة كريم النهار + كريم الليل (${info.bundleDNPrice} ج.م):**\nعناية وحماية 24 ساعة؛ حماية نهارية SPF 50+ مع ترميم ليلي مركز وتجديد خلايا البشرة.\n\n2️⃣ **باقة سيروم الوجه + جل العيون (${info.bundleSEPrice} ج.م):**\nثنائي النضارة والشباب الفائق؛ مكافحة الخطوط والتجاعيد مع علاج الهالات وانتفاخ العين.\n\n3️⃣ **المجموعة الكاملة (4 منتجات بـ ${info.completePrice} ج.م):**\nروتين طبي متكامل وشامل يشمل السيروم + كريم النهار + كريم الليل + جل العيون.\n\n✨ **اطلبي باقتكِ المفضلة من الموقع الآن واستمتعي بالتوصيل السريع لباب منزلكِ! 🛍️**`;
         }
 
-        // 4. Eyes (جل كريم العيون بالسعر الحي)
+        // 4. Eyes
         if (/هالات|عين|عيون|انتفاخ|سواد تحت|محيط العين|ارهاق|خطوط العين/.test(q)) {
           return `أهلاً بكِ عزيزتي! 👁️ منطقة محيط العين رقيقة وحساسة جداً وتحتاج عناية طبية مركزة. المنتج المثالي لدينا هو **كريم جل لعلاج المنطقة حول العين** (${info.eyeVol} - ${info.eyePrice} ج.م):\n\n✨ **أهم فوائده الطبية:**\n- تقليل الهالات السوداء وتفتيح التصبغات تحت العين تدريجياً.\n- تخفيف فوري للانتفاخات والجيوب المجهدة بفضل الكافيين واللاكتوفيرين.\n- ملء وتنعيم الخطوط التعبيرية حول العين في غضون 5–15 يوماً.\n- تركيبة جل خفيفة وباردة وسريعة الامتصاص دون أي ملمس لزج أو تحسس.\n\n💡 **طريقة الاستخدام:** ضعي نقاطاً صغيرة على عظمة محيط العين ووزعيها بطبطبة خفيفة صباحاً ومساءً.\n\n✨ **اطلبيه من الموقع الآن بسعر (${info.eyePrice} ج.م) لنظرة شابة ومشرقة خالية من الهالات والإرهاق! 🛍️**`;
         }
 
-        // 5. Wrinkles & Glow (السيروم بالسعر الحي)
+        // 5. Wrinkles & Glow
         if (/تجاعيد|شيخوخة|خطوط|نضارة|تفتيح|بهتان|سيروم|فيتامين|باهت|شد/.test(q)) {
           return `أهلاً بكِ يا جميلة! 🌸 لعلاج التجاعيد، الخطوط الدقيقة، واستعادة النضارة والإشراقة، المعالج الأساسي لدينا هو **سيروم الوجه المضاد للشيخوخة والإشراقة** (${info.serumVol} - ${info.serumPrice} ج.م):\n\n✨ **أهم فوائده ومميزاته:**\n- مدعم بتقنية الكبسولات الليبوزومية المتطورة الغنية بـ **حمض الهيالورونيك وفيتامين C**.\n- ترطيب عميق يصل لأدق طبقات البشرة ويشد المسام والخطوط خلال 15–28 يوماً.\n- يمنح بشرتكِ إشراقة وتفتيحاً طبيعياً يدوم طوال اليوم دون أي لمعان دهني.\n- ملمس حريري سريع الامتصاص ومثالي كقاعدة قبل المكياج أو كريم النهار.\n\n💡 **نصيحة الخبيرة:** استخدام كريم الليل مع السيروم يضاعف فعاليته بنسبة 50% ويجدد خلايا الوجه أثناء النوم.\n\n✨ **اطلبيه من الموقع الآن بسعر (${info.serumPrice} ج.م) وتمتعي بنضارة وشباب ملحوظين! 🛍️**`;
         }
 
-        // 6. Sun & Day (كريم النهار بالسعر الحي)
+        // 6. Sun & Day
         if (/شمس|واقي|صن بلوك|spf|كريم نهار|حماية نهارية|تصبغ|حرارة/.test(q)) {
           return `أهلاً بكِ يا فندم! ☀️ لحماية بشرتكِ نهاراً والوقاية من التصبغات والتجاعيد المبكرة، نوصي بـ **كريم النهار للحماية من الشمس SPF 50+** (${info.dayVol} - ${info.dayPrice} ج.م):\n\n✨ **مميزاته الفائقة:**\n- حماية متطورة واسعة المدى SPF 50+ ضد أشعة الشمس فوق البنفسجية UVA و UVB.\n- ملمس جاف ومخملي (Dry Touch) بدون أي طبقة بيضاء أو لمعان زيتي.\n- مقاوم للماء والتعرق ويصلح للاستخدام اليومي وقبل المكياج.\n- غني بمضادات الأكسدة التي تحمي البشرة من التلوث البيئي وتعزز فعالية السيروم.\n\n💡 **طريقة الاستخدام:** يوضع على الوجه والرقبة قبل الخروج للشمس بـ 15 دقيقة.\n\n✨ **اطلبيه من الموقع الآن بسعر (${info.dayPrice} ج.م) لحماية نهارية فائقة وترطيب متوازن! 🛍️**`;
         }
@@ -5639,19 +5910,73 @@
         return `أهلاً بكِ يا فندم! 🌸 يسعدني جداً تقديم كافة المعلومات والنصائح الطبية لبشرتكِ. قولي لي المشكلة المحددة التي تبحثين عن حل لها (مثل التجاعيد، الهالات السوداء، الحماية من الشمس، أو روتين يومي)، وسأشرح لكِ أفضل روتين علاجي وفوائده!\n\n✨ **ويمكنكِ طلب أي منتج من منتجاتنا مباشرة من الموقع الآن! 🛍️**\n\nوإذا رغبتِ في استفسار طبي تخصصي إضافي، يسعدنا تواصلكِ مع طبيبة الجلدية عبر واتساب:\n[WHATSAPP_LINK]`;
       }
 
-      // ── Gemini Communication Engine ──
+      // ── Multilingual Dynamic Updater Exposed Globally ──
+      window.updateChatLanguage = function(newLang) {
+        const isEn = (newLang === 'en');
+
+        // Update launcher button
+        const btnLabel = document.getElementById('ai-chat-btn-label');
+        if (btnLabel) btnLabel.textContent = isEn ? 'Ask Skincare Expert' : 'اسألي خبيرة البشرة';
+
+        // Update header texts
+        const headerTitle = document.getElementById('ai-chat-header-title');
+        if (headerTitle) headerTitle.textContent = isEn ? 'Dr. Shorouk | WADG Expert' : 'د. شروق | خبيرة WADG';
+
+        const headerSub = document.getElementById('ai-chat-header-subtitle');
+        if (headerSub) headerSub.textContent = isEn ? 'Instant Consultation & Custom Regimen' : 'استشارة فورية وروتين علاجي مخصص';
+
+        const badge = document.getElementById('ai-chat-engine-badge');
+        if (badge) badge.textContent = isEn ? 'Instant Advisor 🌿' : 'استشارة فورية 🌿';
+
+        // Update input placeholder
+        if (inputEl) {
+          inputEl.placeholder = isEn ? 'Ask about your skin or our products...' : 'اكتبي سؤالك عن بشرتك أو منتجاتنا...';
+        }
+
+        // Re-render chips
+        renderQuickChips(newLang);
+
+        // If conversation is fresh (only welcome message or empty), re-render welcome in new language
+        if (chatHistory.length <= 1) {
+          renderWelcome();
+        }
+      };
+
+      // ── Handle User Message & Gemini API ──
       async function handleUserMessage(userText) {
-        appendMessage('user', userText);
+        if (isGenerating) return;
         isGenerating = true;
+
+        appendMessage('user', userText);
         showTyping();
 
-        const apiKey = localStorage.getItem('wadg_gemini_api_key') || '';
+        const liveInfo = getLiveProductInfo();
+        const isEn = (typeof lang !== 'undefined' && lang === 'en') || /^[a-zA-Z0-9\s.,?!'"\-]+$/.test(userText.trim());
+
+        const apiKey = localStorage.getItem('wadg_gemini_api_key');
         let botResponse = '';
 
-        if (apiKey) {
+        if (apiKey && apiKey.trim().length > 15) {
           try {
-            const liveInfo = getLiveProductInfo();
-            const sysPrompt = `أنتِ "د. شروق"، خبيرة استشارات العناية بالبشرة والروتين العلاجي لدى البراند المصري الفاخر WADG TECH (ودق تك).
+            const sysPrompt = isEn ? `You are "Dr. Shorouk", the senior skincare and clinical routine specialist for the luxury brand WADG TECH.
+You are warm, elegant, empathetic, and clinically knowledgeable. Address the client with warmth and professionalism.
+Your mission:
+1. Provide expert skincare advice, product routines, and clinical ingredient benefits for WADG TECH products at these exact live prices:
+- Anti-Aging & Skin Luminosity Facial Serum (${liveInfo.serumVol} - ${liveInfo.serumPrice} EGP)
+- Daily Defense Day Cream SPF 50+ (${liveInfo.dayVol} - ${liveInfo.dayPrice} EGP)
+- Skin Repair Night Cream (${liveInfo.nightVol} - ${liveInfo.nightPrice} EGP)
+- Eye Treatment Gel Cream (${liveInfo.eyeVol} - ${liveInfo.eyePrice} EGP)
+- Day & Night Defense Duo (${liveInfo.bundleDNPrice} EGP)
+- Radiance & Eye Smoothing Duo (${liveInfo.bundleSEPrice} EGP)
+- Complete 4-Piece Clinical Routine (${liveInfo.completePrice} EGP)
+
+CRITICAL RULES:
+- Focus strictly on informative advice, cosmetic benefits, active ingredients, and application routines. Do not output HTML tags or product cards.
+- At the end of every reply, warmly invite the client to order directly from the website now!
+- Keep replies concise, luxurious, and easy to read.
+- Highlight that all products are suitable for all skin types powered by advanced nano-liposome technology (non-comedogenic, non-greasy).
+- Payment methods: Cash on Delivery (COD), Vodafone Cash, InstaPay with fast doorstep delivery across Egypt.`
+            : `أنتِ "د. شروق"، خبيرة استشارات العناية بالبشرة والروتين العلاجي لدى البراند المصري الفاخر WADG TECH (ودق تك).
 تتميزين باللطف الفائق، الرقي، الدفء، والخبرة الطبية التجميلية العالية. تخاطبين العميلة بكلمات لطيفة وراقية مثل (عزيزتي، يا جميلة، فندم، نورتينا).
 مهمتك:
 1. تقديم الاستشارات الطبية والنصائح وشرح فوائد وطريقة استخدام منتجات WADG TECH بالأسعار الحية التالية:
@@ -5693,111 +6018,97 @@
             });
             clearTimeout(timeoutId);
 
-            // Self-healing retry if Google API suggests a specific newer model
             if (!res.ok) {
               const errData = await res.json().catch(() => ({}));
               const errMsg = errData?.error?.message || '';
-              const matches = errMsg.match(/models\/(gemini-[\w\.\-]+)/gi);
-              if (matches && matches.length > 0) {
-                const suggested = matches[matches.length - 1].replace('models/', '');
-                if (suggested !== currentModel) {
-                  currentModel = suggested;
-                  localStorage.setItem('wadg_gemini_model', currentModel);
-                  const retryCtrl = new AbortController();
-                  const retryTimeout = setTimeout(() => retryCtrl.abort(), 8000);
-                  res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    signal: retryCtrl.signal,
-                    body: JSON.stringify({
-                      contents: chatHistory,
-                      systemInstruction: {
-                        parts: [{ text: sysPrompt }]
-                      },
-                      generationConfig: {
-                        temperature: 0.6,
-                        maxOutputTokens: 600
-                      }
-                    })
-                  });
-                  clearTimeout(retryTimeout);
-                }
+              const match = errMsg.match(/models\/(gemini-[a-zA-Z0-9.-]+)/);
+              if (match && match[1] && match[1] !== currentModel) {
+                currentModel = match[1];
+                localStorage.setItem('wadg_gemini_model', currentModel);
+                const retryCtrl = new AbortController();
+                const retryTimeout = setTimeout(() => retryCtrl.abort(), 8000);
+                res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${apiKey}`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  signal: retryCtrl.signal,
+                  body: JSON.stringify({
+                    contents: chatHistory,
+                    systemInstruction: {
+                      parts: [{ text: sysPrompt }]
+                    },
+                    generationConfig: {
+                      temperature: 0.6,
+                      maxOutputTokens: 600
+                    }
+                  })
+                });
+                clearTimeout(retryTimeout);
               }
             }
 
             if (res.ok) {
               const data = await res.json();
               botResponse = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-            } else {
-              console.warn('Gemini API returned status:', res.status, 'Falling back to local smart engine.');
             }
           } catch (err) {
-            console.warn('Gemini API request error:', err, 'Falling back to local smart engine.');
+            console.warn('Gemini online API notice, utilizing instant clinical engine:', err);
           }
         }
 
+        // Fast fallback to instant clinical response
         if (!botResponse) {
-          await new Promise(r => setTimeout(r, 350));
+          await new Promise(r => setTimeout(r, 400));
           botResponse = getSmartLocalResponse(userText);
         }
 
-        chatHistory.push({ role: 'model', parts: [{ text: botResponse }] });
         hideTyping();
+        chatHistory.push({ role: 'model', parts: [{ text: botResponse }] });
         appendMessage('model', botResponse);
         isGenerating = false;
       }
 
-      // Admin Gemini Settings Handlers
+      // Gemini Settings in Admin Panel
+      const saveGeminiBtn = document.getElementById('admin-save-gemini-btn');
+      const testGeminiBtn = document.getElementById('admin-test-gemini-btn');
       const geminiInput = document.getElementById('admin-gemini-key-input');
-      const geminiSaveBtn = document.getElementById('admin-save-gemini-btn');
-      const geminiTestBtn = document.getElementById('admin-test-gemini-btn');
       const geminiStatus = document.getElementById('admin-gemini-status');
 
       if (geminiInput) {
-        const savedKey = localStorage.getItem('wadg_gemini_api_key') || '';
-        geminiInput.value = savedKey;
+        const savedKey = localStorage.getItem('wadg_gemini_api_key');
+        if (savedKey) geminiInput.value = savedKey;
+      }
 
-        geminiSaveBtn?.addEventListener('click', () => {
+      if (saveGeminiBtn && geminiInput) {
+        saveGeminiBtn.addEventListener('click', () => {
           const val = geminiInput.value.trim();
           if (val) {
             localStorage.setItem('wadg_gemini_api_key', val);
-            localStorage.removeItem('wadg_gemini_model');
-            if (badgeEl) badgeEl.textContent = 'Google Gemini ✨';
-            if (geminiStatus) {
-              geminiStatus.className = 'text-[11px] font-bold text-emerald-700 block';
-              geminiStatus.textContent = '✅ تم حفظ مفتاح Google Gemini بنجاح! يعمل الشات الآن بالذكاء الاصطناعي.';
-            }
-            showToast('تم حفظ مفتاح الذكاء الاصطناعي بنجاح ✅');
+            showToast('✅ تم حفظ مفتاح Google Gemini بنجاح!');
           } else {
             localStorage.removeItem('wadg_gemini_api_key');
-            localStorage.removeItem('wadg_gemini_model');
-            if (badgeEl) badgeEl.textContent = 'ذكاء اصطناعي 🌿';
-            if (geminiStatus) {
-              geminiStatus.className = 'text-[11px] font-bold text-blue-700 block';
-              geminiStatus.textContent = 'ℹ️ يعمل الشات الآن بالنظام الخبير المدمج المجاني 100%.';
-            }
-            showToast('تم تفعيل النظام الخبير المدمج المجاني.');
+            showToast('تمت إزالة المفتاح (الشات سيعمل بالنظام المدمج المجاني 100%).');
           }
         });
+      }
 
-        geminiTestBtn?.addEventListener('click', async () => {
+      if (testGeminiBtn && geminiInput) {
+        testGeminiBtn.addEventListener('click', async () => {
           const val = geminiInput.value.trim();
           if (!val) {
-            alert('الرجاء إدخال مفتاح Gemini أولاً لتجربته.');
+            alert('يرجى لصق مفتاح API أولاً لتجربة الاتصال.');
             return;
           }
           if (geminiStatus) {
-            geminiStatus.className = 'text-[11px] font-bold text-purple-700 block';
-            geminiStatus.textContent = '⏳ جاري اختبار الاتصال بخوادم Google Gemini (نموذج gemini-3.8-flash)...';
+            geminiStatus.classList.remove('hidden');
+            geminiStatus.className = 'text-[11px] font-bold text-purple-700 animate-pulse';
+            geminiStatus.textContent = '⏳ جاري فحص الاتصال بخوادم Google Gemini...';
           }
 
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 20000);
+          const timeoutId = setTimeout(() => controller.abort(), 12000);
+          let currentModel = 'gemini-3.8-flash';
 
           try {
-            const tStart = Date.now();
-            let currentModel = 'gemini-3.8-flash';
-
             let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${val}`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -5809,58 +6120,46 @@
             });
             clearTimeout(timeoutId);
 
-            // Self-healing auto-retry if Google suggests a specific model in error
             if (!res.ok) {
               const errData = await res.json().catch(() => ({}));
               const errMsg = errData?.error?.message || '';
-              const matches = errMsg.match(/models\/(gemini-[\w\.\-]+)/gi);
-              if (matches && matches.length > 0) {
-                const suggested = matches[matches.length - 1].replace('models/', '');
-                if (suggested !== currentModel) {
-                  currentModel = suggested;
-                  const retryCtrl = new AbortController();
-                  const retryTimeout = setTimeout(() => retryCtrl.abort(), 20000);
-                  res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${val}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    signal: retryCtrl.signal,
-                    body: JSON.stringify({
-                      contents: [{ role: 'user', parts: [{ text: 'مرحبا' }] }],
-                      generationConfig: { maxOutputTokens: 20 }
-                    })
-                  });
-                  clearTimeout(retryTimeout);
-                }
+              const match = errMsg.match(/models\/(gemini-[a-zA-Z0-9.-]+)/);
+              if (match && match[1]) {
+                currentModel = match[1];
+                localStorage.setItem('wadg_gemini_model', currentModel);
+                const retryCtrl = new AbortController();
+                const retryTimeout = setTimeout(() => retryCtrl.abort(), 12000);
+                res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${val}`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  signal: retryCtrl.signal,
+                  body: JSON.stringify({
+                    contents: [{ role: 'user', parts: [{ text: 'مرحبا' }] }],
+                    generationConfig: { maxOutputTokens: 20 }
+                  })
+                });
+                clearTimeout(retryTimeout);
               }
             }
 
-            const dur = Date.now() - tStart;
             if (res.ok) {
-              localStorage.setItem('wadg_gemini_model', currentModel);
-              if (geminiStatus) {
-                geminiStatus.className = 'text-[11px] font-bold text-emerald-700 block';
-                geminiStatus.textContent = `✅ تم الاتصال بنجاح فائق! (النموذج المعتمد: ${currentModel}) - زمن الاستجابة: ${dur}ms.`;
-              }
+              geminiStatus.className = 'text-[11px] font-bold text-emerald-600';
+              geminiStatus.textContent = `✅ تم الاتصال بنجاح بخوادم Google Gemini (${currentModel})! الشات جاهز للعمل بأحدث ذكاء اصطناعي.`;
             } else {
               const errData = await res.json().catch(() => ({}));
-              if (geminiStatus) {
-                geminiStatus.className = 'text-[11px] font-bold text-red-600 block';
-                geminiStatus.textContent = `❌ فشل الاتصال (${res.status}): ${errData?.error?.message || 'تأكد من صحة المفتاح'}.`;
-              }
+              geminiStatus.className = 'text-[11px] font-bold text-rose-600';
+              geminiStatus.textContent = `❌ فشل الاتصال (${res.status}): ${errData?.error?.message || 'تأكد من صحة المفتاح'}`;
             }
           } catch (e) {
             clearTimeout(timeoutId);
-            if (geminiStatus) {
-              geminiStatus.className = 'text-[11px] font-bold text-red-600 block';
-              geminiStatus.textContent = e.name === 'AbortError'
-                ? '⚠️ استغرق الاتصال أكثر من 20 ثانية (بسبب بطء أو حجب مؤقت من مزود الإنترنت لخدمات Google API). الشات المدمج المباشر يعمل تلقائياً وبسرعة فائقة بدلاً منه! 🌸'
-                : `❌ خطأ في الاتصال: ${e.message}`;
-            }
+            geminiStatus.className = 'text-[11px] font-bold text-amber-600';
+            geminiStatus.textContent = e.name === 'AbortError'
+              ? '⚠️ استغرق الاتصال وقتاً أطول من المتوقع. الشات المدمج يعمل بدلاً منه فوراً وبسرعة فائقة!'
+              : `❌ خطأ في الاتصال: ${e.message}`;
           }
         });
       }
-
-        })();
+    })();
 
     // Check URL params for admin auto-open (e.g. ?admin=1 or #admin)
     if (window.location.search.includes('admin=1') || window.location.hash === '#admin') {
