@@ -1,0 +1,18 @@
+# Archives & Backups
+*.rar
+*.zip
+*.bak
+* - Copy*
+*Copy*
+
+# Old Non-Web folders
+بورتفوليو/
+شهر 9/
+شهر 10/
+شهر 11/
+شهر 12/
+كومباني/
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
