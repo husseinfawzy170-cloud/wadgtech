@@ -5689,19 +5689,19 @@
       // ── Quick Chips Multilingual Configuration ──
       const CHIPS_CONFIG = {
         ar: [
-          { id: 'night', label: '🌙 كريم الليل', question: 'كلميني بالتفصيل عن كريم الليل وفوائده وطريقة استخدامه وسعره' },
-          { id: 'wrinkles', label: '🌸 نضارة وتجاعيد', question: 'ما هو أفضل منتج لعلاج التجاعيد واستعادة نضارة البشرة؟' },
-          { id: 'day', label: '☀️ حماية نهارية SPF 50', question: 'ما مميزات كريم النهار SPF 50+ وكيف يحمي البشرة؟' },
-          { id: 'eye', label: '👁️ هالات وانتفاخ العين', question: 'أعاني من الهالات السوداء والانتفاخ حول العين، ما المنتج المناسب؟' },
+          { id: 'night', label: '🌙 كريم الليل', question: 'كلميني بالتفصيل عن كريم الليل وفوائده وسعره' },
+          { id: 'day', label: '☀️ حماية نهارية SPF 50', question: 'ما مميزات كريم النهار SPF 50+ وكيف يحمي البشرة وسعره؟' },
+          { id: 'eye', label: '👁️ هالات وانتفاخ العين', question: 'أعاني من الهالات السوداء والانتفاخ حول العين، ما المنتج المناسب وسعره؟' },
+          { id: 'wrinkles', label: '🌸 نضارة وتجاعيد', question: 'ما هو أفضل منتج لعلاج التجاعيد واستعادة نضارة البشرة وسعره؟' },
           { id: 'routine', label: '🧴 روتين الاستخدام', question: 'كيف أرتب روتين العناية بمنتجات WADG صباحاً ومساءً؟' },
-          { id: 'bundles', label: '🛍️ باقات التوفير', question: 'ما هي باقات التوفير المتوفرة وأسعارها؟' }
+          { id: 'bundles', label: '🛍️ باقات التوفير', question: 'ما هي باقات التوفير المتوفرة وخصوماتها وأسعارها؟' }
         ],
         en: [
-          { id: 'night', label: '🌙 Night Cream', question: 'Tell me in detail about the Night Cream, its medical benefits, routine, and price' },
-          { id: 'wrinkles', label: '🌸 Radiance & Wrinkles', question: 'What is the best product for anti-aging, firming, and skin radiance?' },
-          { id: 'day', label: '☀️ Day Defense SPF 50', question: 'What are the benefits of the Day Cream SPF 50+ and how does it protect the skin?' },
-          { id: 'eye', label: '👁️ Eye Dark Circles', question: 'How does the Eye Treatment Cream reduce dark circles and morning puffiness?' },
-          { id: 'routine', label: '🧴 Daily Routine', question: 'What is the recommended AM and PM routine using the complete range?' },
+          { id: 'night', label: '🌙 Night Cream', question: 'Tell me in detail about the Skin Repair Night Cream, its medical benefits, and price' },
+          { id: 'day', label: '☀️ Day Defense SPF 50', question: 'What are the benefits of the Day Cream SPF 50+, how does it protect the skin, and price?' },
+          { id: 'eye', label: '👁️ Eye Dark Circles', question: 'How does the Eye Treatment Cream reduce dark circles and morning puffiness, and price?' },
+          { id: 'wrinkles', label: '🌸 Radiance & Wrinkles', question: 'What is the best product for anti-aging, firming, and skin radiance, and price?' },
+          { id: 'routine', label: '🧴 Daily Routine', question: 'What is the recommended AM and PM skincare routine using the complete collection?' },
           { id: 'bundles', label: '🛍️ Value Bundles', question: 'What are the available value bundles, discounts, and prices?' }
         ]
       };
@@ -5831,52 +5831,62 @@
         // ENGLISH CLINICAL ADVISOR ENGINE
         // ══════════════════════════════════════════════════════════
         if (isEn) {
-          // 1. Night Cream (English)
-          if (/night|overnight|sleep/.test(q) && !/routine|bundle|offer/.test(q)) {
-            return `Welcome! 🌙 Here are the clinical details for our **Skin Repair & Luminosity Night Cream** (${info.nightVol} - ${info.nightPrice} EGP):\n\n✨ **Key Clinical & Cosmetic Benefits:**\n- **Deep Cellular Repair & Boost:** Enhances the efficacy of our Facial Serum by 50% overnight with bio-active liposomes and stabilized Vitamin C.\n- **Overnight Rejuvenation:** Pores are most receptive during sleep; it rebuilds the skin moisture barrier and restores daytime elasticity loss.\n- **Anti-Aging & Firming:** Visibly firms contours and softens expression lines for radiant, supple skin every morning.\n- **Fast Visible Results:** Tangible improvements in skin softness and tone emerge within 8 to 15 days.\n\n🧴 **How to Apply:**\n- Apply each evening as the concluding step in your PM routine after cleansing, serum, and eye treatment.\n- Smooth over face and neck in gentle upward circular motions until fully absorbed.\n\n💡 **Skin Type Compatibility:**\nCompletely non-comedogenic and ideal for all skin types (oily, dry, combination, sensitive) with a rich, featherlight texture that leaves no greasy residue.\n\n✨ **Order directly from our website now for (${info.nightPrice} EGP) and wake up to glowing, renewed skin! 🛍️**`;
-          }
-
-          // 2. Routine (English)
-          if (/routine|steps|order|how to use|apply|am|pm|regimen/.test(q)) {
+          // 1. Explicit Full Routine / Regimen (Only when specifically asked for the complete routine)
+          if (/\b(full routine|daily routine|skincare routine|complete routine|am and pm|am & pm|morning and night|morning and evening|order of application|order of use)\b/i.test(q) && !/\b(night cream|day cream|eye cream|facial serum|eye treatment)\b/i.test(q)) {
             return `Our complete **WADG TECH** skincare routine is clinically formulated with nano-liposome technology for synergistic maximum efficacy:\n\n☀️ **Morning Routine (UV Defense & Radiance):**\n- Cleanse your face with a gentle cleanser.\n- Apply 3-4 drops of **Facial Serum** (${info.serumPrice} EGP) with gentle patting for instant firmness and luminosity.\n- Dot a small amount of **Eye Treatment Gel Cream** (${info.eyePrice} EGP) around the orbital bone to soothe morning puffiness.\n- Finish with **Day Cream SPF 50+** (${info.dayPrice} EGP) for broad-spectrum UV protection and all-day hydration.\n\n🌙 **Evening Routine (Cellular Renewal & Repair):**\n- Cleanse face thoroughly from daily pollutants and makeup.\n- Apply **Facial Serum** to deeply nourish skin layers.\n- Tap **Eye Treatment Gel Cream** to target dark circles and expression lines overnight.\n- Seal with **Night Cream** (${info.nightPrice} EGP) to repair the moisture barrier and boost serum efficacy by 50%.\n\n✨ **Order the Complete Range (4 products for ${info.completePrice} EGP) directly from our website now! 🛍️**`;
           }
 
-          // 3. Bundles (English)
-          if (/bundle|bundles|offer|offers|discount|sale|price|prices|cost|how much/.test(q)) {
+          // 2. Explicit Bundles & Value Offers
+          if (/\b(bundle|bundles|duo|package|pack|special offer|offers|discount|sale|value bundle|value bundles)\b/i.test(q) && !/\b(night cream|day cream|eye cream|facial serum)\b/i.test(q)) {
             return `Welcome! 🌸 We offer specialized value bundles featuring our most popular products with exclusive discounts:\n\n1️⃣ **Day Cream + Night Cream Duo (${info.bundleDNPrice} EGP):**\n24-hour round-the-clock defense and deep overnight repair.\n\n2️⃣ **Facial Serum + Eye Gel Duo (${info.bundleSEPrice} EGP):**\nThe ultimate anti-aging and radiance duo; smooths fine lines and relieves dark circles.\n\n3️⃣ **Complete Collection (All 4 Products for ${info.completePrice} EGP):**\nThe full clinical daily regimen: Serum + Day SPF 50+ + Night Cream + Eye Treatment.\n\n✨ **Order your preferred bundle directly from our website now with fast doorstep delivery! 🛍️**`;
           }
 
-          // 4. Eye Care (English)
-          if (/eye|eyes|dark circle|circles|puffiness|bags|crow/.test(q)) {
+          // 3. Night Cream (Dedicated Clinical Advice)
+          if (/\b(night cream|night-cream|overnight cream)\b/i.test(q) || (/\b(night|overnight|sleep)\b/i.test(q) && !/\b(routine|daily|am and pm|morning and night)\b/i.test(q))) {
+            return `Welcome! 🌙 Here are the clinical details for our **Skin Repair & Luminosity Night Cream** (${info.nightVol} - ${info.nightPrice} EGP):\n\n✨ **Key Clinical & Cosmetic Benefits:**\n- **Deep Cellular Repair & Boost:** Enhances the efficacy of our Facial Serum by 50% overnight with bio-active liposomes and stabilized Vitamin C.\n- **Overnight Rejuvenation:** Pores are most receptive during sleep; it rebuilds the skin moisture barrier and restores daytime elasticity loss.\n- **Anti-Aging & Firming:** Visibly firms contours and softens expression lines for radiant, supple skin every morning.\n- **Fast Visible Results:** Tangible improvements in skin softness and tone emerge within 8 to 15 days.\n\n🧴 **How to Apply:**\n- Apply each evening as the concluding step in your PM routine after cleansing, serum, and eye treatment.\n- Smooth over face and neck in gentle upward circular motions until fully absorbed.\n\n💡 **Skin Type Compatibility:**\nCompletely non-comedogenic and ideal for all skin types (oily, dry, combination, sensitive) with a rich, featherlight texture that leaves no greasy residue.\n\n✨ **Order directly from our website now for (${info.nightPrice} EGP) and wake up to glowing, renewed skin! 🛍️**`;
+          }
+
+          // 4. Day Cream & Sun Protection SPF 50+
+          if (/\b(day cream|day-cream|spf 50|spf50|sun protection|sunblock|uv protection)\b/i.test(q) || (/\b(day|spf|sun)\b/i.test(q) && !/\b(routine|daily|am and pm|morning and night)\b/i.test(q))) {
+            return `Welcome! ☀️ For comprehensive daytime protection against photo-aging and premature wrinkles, we recommend the **Day Cream with Sun Protection SPF 50+** (${info.dayVol} - ${info.dayPrice} EGP):\n\n✨ **Key Benefits:**\n- Broad-spectrum UVA/UVB protection with SPF 50+ rating.\n- Lightweight, non-greasy texture that leaves zero white cast.\n- Infused with antioxidant peptides to shield skin against environmental pollutants.\n- Safe for daily application and suitable as an ultra-smooth makeup primer.\n\n💡 **How to Apply:** Apply to face and neck 15 minutes before sun exposure.\n\n✨ **Order it directly from our website now for (${info.dayPrice} EGP) for ultimate daily defense! 🛍️**`;
+          }
+
+          // 5. Eye Care & Eye Treatment Gel Cream
+          if (/\b(eye|eyes|dark circle|dark circles|circles|puffiness|eye bags|bags|orbital|crow's feet|crow feet)\b/i.test(q)) {
             return `Welcome! 👁️ The delicate skin around the eyes requires specialized clinical care. Our targeted solution is the **Eye Treatment Gel Cream** (${info.eyeVol} - ${info.eyePrice} EGP):\n\n✨ **Key Clinical Benefits:**\n- Progressively reduces dark circles and pigmentation under the eyes.\n- Provides instant relief for morning puffiness and eye bags with caffeine and lactoferrin.\n- Smooths expression lines and crow's feet within 5 to 15 days.\n- Cooling, lightweight gel formula that absorbs instantly without tackiness.\n\n💡 **How to Apply:** Dot around the orbital bone and gently tap morning and night.\n\n✨ **Order it directly from our website now for (${info.eyePrice} EGP) for refreshed, luminous eyes! 🛍️**`;
           }
 
-          // 5. Serum / Wrinkles / Radiance (English)
-          if (/serum|wrinkle|wrinkles|aging|radiance|glow|brighten|hyaluronic|vitamin c|firming|fine line/.test(q)) {
+          // 6. Facial Serum / Wrinkles / Radiance / Anti-Aging
+          if (/\b(serum|wrinkle|wrinkles|aging|anti-aging|radiance|glow|brighten|brightening|firming|fine line|fine lines|hyaluronic|vitamin c)\b/i.test(q)) {
             return `Welcome! 🌸 For wrinkles, fine lines, and restoring vibrant skin luminosity, our star treatment is the **Anti-Aging & Skin Luminosity Facial Serum** (${info.serumVol} - ${info.serumPrice} EGP):\n\n✨ **Key Benefits:**\n- Powered by advanced nano-liposomal **Hyaluronic Acid & stabilized Vitamin C**.\n- Multi-depth hydration that visibly tightens pores and refines fine lines in 15–28 days.\n- Gives a natural radiant glow that lasts all day without oiliness.\n- Silky, rapid-absorbing texture, ideal as a base before makeup or daily moisturizer.\n\n💡 **Expert Tip:** Pairing the Serum with our Night Cream enhances its efficacy by 50% while you sleep.\n\n✨ **Order it directly from our website now for (${info.serumPrice} EGP) for visibly firmer, glowing skin! 🛍️**`;
           }
 
-          // 6. Day Cream / Sun Defense (English)
-          if (/day|sun|spf|sunblock|uv|protection|defense/.test(q)) {
-            return `Welcome! ☀️ For comprehensive daytime protection against photo-aging and premature wrinkles, we recommend the **Day Cream with Sun Protection SPF 50+** (${info.dayVol} - ${info.dayPrice} EGP):\n\n✨ **Key Benefits:**\n- Broad-spectrum UVA/UVB protection with SPF 50+ rating.\n- Lightweight, non-greasy texture that leaves zero white cast.\n- Infused with antioxidant peptides to shield skin against environmental pollutants.\n- Safe for daily application and suitable as an ultra-smooth makeup primer.\n\n✨ **Order it directly from our website now for (${info.dayPrice} EGP) for ultimate daily defense! 🛍️**`;
+          // 7. General Routine & Regimen (Secondary fallback)
+          if (/\b(routine|regimen|steps|step-by-step|am and pm|am & pm|morning and night|how to use|order of use)\b/i.test(q)) {
+            return `Our complete **WADG TECH** skincare routine is clinically formulated with nano-liposome technology for synergistic maximum efficacy:\n\n☀️ **Morning Routine (UV Defense & Radiance):**\n- Cleanse your face with a gentle cleanser.\n- Apply 3-4 drops of **Facial Serum** (${info.serumPrice} EGP) with gentle patting for instant firmness and luminosity.\n- Dot a small amount of **Eye Treatment Gel Cream** (${info.eyePrice} EGP) around the orbital bone to soothe morning puffiness.\n- Finish with **Day Cream SPF 50+** (${info.dayPrice} EGP) for broad-spectrum UV protection and all-day hydration.\n\n🌙 **Evening Routine (Cellular Renewal & Repair):**\n- Cleanse face thoroughly from daily pollutants and makeup.\n- Apply **Facial Serum** to deeply nourish skin layers.\n- Tap **Eye Treatment Gel Cream** to target dark circles and expression lines overnight.\n- Seal with **Night Cream** (${info.nightPrice} EGP) to repair the moisture barrier and boost serum efficacy by 50%.\n\n✨ **Order the Complete Range (4 products for ${info.completePrice} EGP) directly from our website now! 🛍️**`;
           }
 
-          // 7. Skin Types (English)
-          if (/oily|dry|sensitive|combination|acne|pore|skin type/.test(q)) {
+          // 8. General Bundles (Secondary fallback)
+          if (/\b(bundle|bundles|offer|offers|discount|sale|price|prices|cost|how much)\b/i.test(q)) {
+            return `Welcome! 🌸 We offer specialized value bundles featuring our most popular products with exclusive discounts:\n\n1️⃣ **Day Cream + Night Cream Duo (${info.bundleDNPrice} EGP):**\n24-hour round-the-clock defense and deep overnight repair.\n\n2️⃣ **Facial Serum + Eye Gel Duo (${info.bundleSEPrice} EGP):**\nThe ultimate anti-aging and radiance duo; smooths fine lines and relieves dark circles.\n\n3️⃣ **Complete Collection (All 4 Products for ${info.completePrice} EGP):**\nThe full clinical daily regimen: Serum + Day SPF 50+ + Night Cream + Eye Treatment.\n\n✨ **Order your preferred bundle directly from our website now with fast doorstep delivery! 🛍️**`;
+          }
+
+          // 9. Skin Types
+          if (/\b(oily|dry|sensitive|combination|acne|pore|pores|skin type)\b/i.test(q)) {
             return `Great question! 🌸 All **WADG TECH** formulations are clinically developed to be **completely safe and effective for all skin types** (oily, dry, combination, and sensitive).\n\n💡 **The Scientific Advantage:**\nOur products utilize **nano-liposome technology**, ensuring:\n- Ultra-lightweight and rapid absorption without greasy buildup.\n- Non-comedogenic formulations that will never clog pores or trigger breakouts.\n- Free from harsh alcohol and irritants, gentle on sensitive skin.\n\n✨ **Order your tailored routine directly from our website with total confidence! 🛍️**`;
           }
 
-          // 8. Shipping & Payment (English)
-          if (/shipping|delivery|payment|pay|cod|cash|vodafone|instapay/.test(q)) {
+          // 10. Shipping & Payment
+          if (/\b(shipping|delivery|payment|pay|cod|cash|vodafone|instapay)\b/i.test(q)) {
             return `Ordering from WADG TECH is fast, secure, and hassle-free: 🚚\n\n💵 **Available Payment Methods:**\n1. **Cash on Delivery (COD):** Pay directly to the courier upon receiving and inspecting your package.\n2. **Vodafone Cash or InstaPay:** Seamless instant transfer with direct customer confirmation.\n\n📦 **Shipping & Delivery:**\n- Fast delivery to all governorates across Egypt within 2 to 4 business days in luxury, protective packaging.\n\n✨ **Order directly from our website now and enjoy swift doorstep delivery! 🛍️**`;
           }
 
-          // 9. Greetings (English)
-          if (/hi|hello|hey|good morning|good evening|welcome/.test(q)) {
+          // 11. Greetings
+          if (/\b(hi|hello|hey|good morning|good evening|welcome)\b/i.test(q)) {
             return `Welcome to **WADG TECH**! 🌸 I am Dr. Shorouk, your skincare advisor. Tell me about your current skin concerns or goals (radiance, fine lines, dark circles, sun protection), and I will gladly recommend the ideal clinical regimen for you! ✨`;
           }
 
-          // 10. Fallback (English)
+          // 12. Fallback
           return `Welcome! 🌸 As your WADG TECH skincare advisor, I am delighted to assist you with personalized medical advice for your skin. Tell me what specific concern you would like to address (wrinkles, eye puffiness, routine guide, or daily sun defense), and I will explain the most effective regimen!\n\n✨ **You can order any of our products directly from our website now! 🛍️**\n\nFor extra specialized clinical advice, reach out directly to our dermatology team on WhatsApp:\n[WHATSAPP_LINK]`;
         }
 
