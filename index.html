@@ -652,7 +652,7 @@
       100% { transform: rotate(-10deg) scale(1.05); }
     }
 
-        /* ── Top News Ticker Marquee (Moving Right) ── */
+        /* ── Top News Ticker Marquee (Universal Seamless Infinite Flow) ── */
     @keyframes marquee-scroll-right {
       0% {
         transform: translate3d(-50%, 0, 0);
@@ -677,6 +677,7 @@
       user-select: none;
       -webkit-user-select: none;
       z-index: 30;
+      direction: ltr !important; /* Critical: locks LTR coordinate physics in all languages so it never gaps in RTL */
     }
     @media (min-width: 640px) {
       .top-news-ticker-wrapper {
@@ -687,7 +688,7 @@
       display: inline-flex;
       width: max-content;
       will-change: transform;
-      animation: marquee-scroll-right 32s linear infinite;
+      animation: marquee-scroll-right 34s linear infinite;
     }
     .top-news-ticker-wrapper:hover .top-news-ticker-track,
     .top-news-ticker-wrapper:active .top-news-ticker-track {
@@ -703,10 +704,13 @@
     }
     @media (min-width: 640px) {
       .top-news-ticker-group {
-        gap: 2.5rem;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+        gap: 2.25rem;
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
       }
+    }
+    html[dir="rtl"] .top-news-ticker-group {
+      direction: rtl; /* Proper Arabic typography reading direction per item */
     }
 
     /* Festive Header Garland Accent */
@@ -719,10 +723,10 @@
 </head>
 <body class="antialiased selection:bg-[#E9F2D4] selection:text-[#3A5C00] overflow-x-hidden w-full max-w-full">
 
-    <!-- Top Announcement Bar (News Ticker Marquee) -->
-  <div class="top-news-ticker-wrapper select-none" aria-label="شريط الأخبار والإعلانات">
+      <!-- Top Announcement Bar (News Ticker Marquee - Never Stops & Never Gaps) -->
+  <div class="top-news-ticker-wrapper select-none" dir="ltr" aria-label="شريط الأخبار والإعلانات">
     <div class="top-news-ticker-track">
-      <!-- Ticker Group A -->
+      <!-- Group 1 -->
       <div class="top-news-ticker-group">
         <span class="inline-flex items-center gap-1.5 font-medium">
           <span class="w-1.5 h-1.5 rounded-full bg-[#5A8D00] animate-pulse shrink-0"></span>
@@ -746,7 +750,55 @@
         </span>
         <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
       </div>
-      <!-- Ticker Group B (Seamless Duplicate) -->
+      <!-- Group 2 -->
+      <div class="top-news-ticker-group">
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#5A8D00] animate-pulse shrink-0"></span>
+          <span data-i18n="top_bar_1">تقنية الليبوسوم والببتيد المتطورة</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_2">مدرج بهيئة الدواء المصرية (EDA)</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_3">تركيبة خفيفة وسريعة الامتصاص تناسب جميع أنواع البشرة</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_4">شحن وتوصيل فوري لجميع محافظات مصر 🚚</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_5">خصم خاص 20% على باقة العناية المتكاملة 🛍️</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+      </div>
+      <!-- Group 3 -->
+      <div class="top-news-ticker-group" aria-hidden="true">
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span class="w-1.5 h-1.5 rounded-full bg-[#5A8D00] animate-pulse shrink-0"></span>
+          <span data-i18n="top_bar_1">تقنية الليبوسوم والببتيد المتطورة</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_2">مدرج بهيئة الدواء المصرية (EDA)</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_3">تركيبة خفيفة وسريعة الامتصاص تناسب جميع أنواع البشرة</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_4">شحن وتوصيل فوري لجميع محافظات مصر 🚚</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span data-i18n="top_bar_5">خصم خاص 20% على باقة العناية المتكاملة 🛍️</span>
+        </span>
+        <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+      </div>
+      <!-- Group 4 -->
       <div class="top-news-ticker-group" aria-hidden="true">
         <span class="inline-flex items-center gap-1.5 font-medium">
           <span class="w-1.5 h-1.5 rounded-full bg-[#5A8D00] animate-pulse shrink-0"></span>
