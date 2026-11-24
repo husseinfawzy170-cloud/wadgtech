@@ -48,6 +48,109 @@
     .studio-pedestal {
       background: radial-gradient(circle at 50% 45%, #FFFFFF 0%, #ECEEF1 75%, #E5E7EB 100%);
     }
+
+    /* ========================================================
+       PATTERN 2: DRAMATIC SIDE-GLIDE FLY-IN (PRODUCTS & CONTACT)
+       ======================================================== */
+    .product-card {
+      position: relative;
+    }
+
+    .product-card-reveal,
+    .contact-card-reveal {
+      opacity: 0;
+      filter: blur(8px);
+      pointer-events: none;
+      will-change: transform, opacity, filter;
+    }
+
+    /* Start side (Right in RTL, Left in LTR) - Dramatic side fly-in */
+    html[dir="rtl"] .product-card-reveal.reveal-from-start,
+    html[dir="rtl"] .contact-card-reveal.reveal-from-start {
+      transform: translate3d(180px, 0, 0);
+    }
+    html[dir="ltr"] .product-card-reveal.reveal-from-start,
+    html[dir="ltr"] .contact-card-reveal.reveal-from-start {
+      transform: translate3d(-180px, 0, 0);
+    }
+
+    /* Center column: smooth vertical floating entrance from below */
+    .product-card-reveal.reveal-from-center,
+    .contact-card-reveal.reveal-from-center {
+      transform: translate3d(0, 140px, 0);
+    }
+
+    /* End side (Left in RTL, Right in LTR) - Dramatic side fly-in */
+    html[dir="rtl"] .product-card-reveal.reveal-from-end,
+    html[dir="rtl"] .contact-card-reveal.reveal-from-end {
+      transform: translate3d(-180px, 0, 0);
+    }
+    html[dir="ltr"] .product-card-reveal.reveal-from-end,
+    html[dir="ltr"] .contact-card-reveal.reveal-from-end {
+      transform: translate3d(180px, 0, 0);
+    }
+
+    /* Consultation Banner entrance */
+    .consultation-banner-reveal {
+      opacity: 0;
+      transform: translate3d(0, 80px, 0);
+      filter: blur(8px);
+      will-change: transform, opacity, filter;
+    }
+
+    /* Mobile screens: punchy diagonal glide from the sides! */
+    @media (max-width: 640px) {
+      html[dir="rtl"] .product-card-reveal.reveal-from-start,
+      html[dir="rtl"] .contact-card-reveal.reveal-from-start {
+        transform: translate3d(90px, 35px, 0);
+      }
+      html[dir="ltr"] .product-card-reveal.reveal-from-start,
+      html[dir="ltr"] .contact-card-reveal.reveal-from-start {
+        transform: translate3d(-90px, 35px, 0);
+      }
+
+      .product-card-reveal.reveal-from-center,
+      .contact-card-reveal.reveal-from-center {
+        transform: translate3d(0, 80px, 0);
+      }
+
+      html[dir="rtl"] .product-card-reveal.reveal-from-end,
+      html[dir="rtl"] .contact-card-reveal.reveal-from-end {
+        transform: translate3d(-90px, 35px, 0);
+      }
+      html[dir="ltr"] .product-card-reveal.reveal-from-end,
+      html[dir="ltr"] .contact-card-reveal.reveal-from-end {
+        transform: translate3d(90px, 35px, 0);
+      }
+    }
+
+    /* When animated in: high-end luxury glide to position */
+    .product-card-reveal.animate-in,
+    .contact-card-reveal.animate-in,
+    .consultation-banner-reveal.animate-in {
+      opacity: 1 !important;
+      filter: blur(0px) !important;
+      transform: translate3d(0, 0, 0) scale(1) !important;
+      pointer-events: auto !important;
+      transition: 
+        opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+        transform 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    }
+
+    /* High-end luxury card hover */
+    @media (hover: hover) and (pointer: fine) {
+      .product-card-reveal.animate-in:hover,
+      .contact-card-reveal.animate-in:hover {
+        transform: translate3d(0, -7px, 0) scale(1.01) !important;
+        box-shadow: 0 22px 42px -12px rgba(17, 24, 39, 0.14), 0 0 0 1.5px rgba(90, 141, 0, 0.22) !important;
+        transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1) !important;
+      }
+      .product-card-reveal.animate-in:hover .product-img {
+        transform: scale(1.06) translateY(-2px);
+      }
+    }
     .product-card {
       transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -1127,7 +1230,7 @@
   </section>
 
   <!-- Products Section -->
-  <section id="products" class="pt-8 sm:pt-14 pb-14 sm:pb-20">
+  <section id="products" class="pt-8 sm:pt-14 pb-14 sm:pb-20 overflow-x-clip">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Promo Banner: Youthful Radiance & Vitality (فوق منتجات ويدج - يدعم صورة أو فيديو) -->
       <div class="mb-10 sm:mb-14">
@@ -1144,7 +1247,13 @@
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
         <div>
           <span class="text-xs font-bold uppercase tracking-widest text-[#5A8D00]" data-i18n="prod_eyebrow">مجموعة العناية بالبشرة</span>
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1" data-i18n="prod_title">منتجات WADG TECH</h2>
+          <div class="flex flex-wrap items-center gap-3 mt-1">
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900" data-i18n="prod_title">منتجات WADG TECH</h2>
+            <button type="button" onclick="replayProductsReveal()" title="إعادة تشغيل حركة النمط 2" class="px-3 py-1.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
+              <span>🔄</span>
+              <span data-i18n="replay_animation">النمط 2 (تشغيل الحركة)</span>
+            </button>
+          </div>
         </div>
 
         <!-- Category Filters -->
@@ -1333,7 +1442,7 @@
   </section>
 
     <!-- Contact & Social Media Section (تواصل معنا وروابط السوشيال ميديا الرسمية) -->
-  <section id="contact" class="py-14 sm:py-20 bg-gradient-to-b from-white via-gray-50 to-[#EAECEF] border-t border-gray-200">
+  <section id="contact" class="py-14 sm:py-20 bg-gradient-to-b from-white via-gray-50 to-[#EAECEF] border-t border-gray-200 overflow-x-clip">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="text-center max-w-2xl mx-auto mb-12">
@@ -1347,13 +1456,19 @@
         <p class="text-sm sm:text-base text-gray-600 mt-2 leading-relaxed" data-i18n="contact_subtitle">
           يسعدنا تواصلكم ومتابعتكم لصفحاتنا الرسمية لمعرفة نصائح العناية بالبشرة، تفاصيل روتين WADG TECH، وأقوى العروض الحصرية.
         </p>
+        <div class="mt-4">
+          <button type="button" onclick="replayContactReveal()" title="إعادة تشغيل حركة السوشيال ميديا" class="px-3.5 py-1.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold transition-all shadow-sm inline-flex items-center gap-1.5 cursor-pointer">
+            <span>🔄</span>
+            <span data-i18n="replay_contact">النمط 2 (تشغيل حركة التواصل)</span>
+          </button>
+        </div>
       </div>
 
       <!-- Social Media Cards Grid -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10">
+      <div id="contact-cards-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-10 overflow-hidden py-1">
         
         <!-- Facebook Card -->
-        <a href="https://www.facebook.com/wadg.personalcare" target="_blank" rel="noopener noreferrer" class="group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-[#1877F2] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+        <a href="https://www.facebook.com/wadg.personalcare" target="_blank" rel="noopener noreferrer" class="contact-card-reveal reveal-from-start group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-[#1877F2] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
           <div>
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-2xl bg-[#1877F2]/10 text-[#1877F2] flex items-center justify-center transition-transform group-hover:scale-110">
@@ -1374,7 +1489,7 @@
         </a>
 
         <!-- Instagram Card -->
-        <a href="https://www.instagram.com/wadgtech?utm_source=ig_web_button_share_sheet&evlk=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-[#E4405F] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+        <a href="https://www.instagram.com/wadgtech?utm_source=ig_web_button_share_sheet&evlk=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" class="contact-card-reveal reveal-from-center group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-[#E4405F] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
           <div>
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#833AB4]/10 via-[#FD1D1D]/10 to-[#FCAF45]/10 text-[#E4405F] flex items-center justify-center transition-transform group-hover:scale-110">
@@ -1395,7 +1510,7 @@
         </a>
 
         <!-- TikTok Card -->
-        <a href="https://www.tiktok.com/@wadg.tech?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" class="group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-black shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+        <a href="https://www.tiktok.com/@wadg.tech?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" class="contact-card-reveal reveal-from-center group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-black shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
           <div>
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-2xl bg-black/10 text-gray-900 flex items-center justify-center transition-transform group-hover:scale-110">
@@ -1416,7 +1531,7 @@
         </a>
 
         <!-- WhatsApp Card -->
-        <a id="contact-whatsapp-card-link" href="https://wa.me/201030853611?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%85%D9%86%D8%AA%D8%AC%D8%A7%D8%AA%20WADG%20TECH" target="_blank" rel="noopener noreferrer" class="group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-[#25D366] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
+        <a id="contact-whatsapp-card-link" href="https://wa.me/201030853611?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D9%88%D8%AF%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D9%86%20%D9%85%D9%86%D8%AA%D8%AC%D8%A7%D8%AA%20WADG%20TECH" target="_blank" rel="noopener noreferrer" class="contact-card-reveal reveal-from-end group bg-white rounded-3xl p-6 border border-gray-200/90 hover:border-[#25D366] shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between hover:-translate-y-1">
           <div>
             <div class="flex items-center justify-between mb-4">
               <div class="w-12 h-12 rounded-2xl bg-[#25D366]/10 text-[#25D366] flex items-center justify-center transition-transform group-hover:scale-110">
@@ -1439,7 +1554,7 @@
       </div>
 
       <!-- Quick Contact / Consultation Banner -->
-      <div class="bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/90 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
+      <div id="contact-consult-banner" class="consultation-banner-reveal bg-white rounded-3xl p-6 sm:p-8 border border-gray-200/90 shadow-sm flex flex-col md:flex-row items-center justify-between gap-6">
         <div class="flex items-center gap-4">
           <div class="w-12 h-12 rounded-2xl bg-[#5A8D00]/10 text-[#5A8D00] flex items-center justify-center shrink-0">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
@@ -2925,7 +3040,9 @@
         nav_contact: 'تواصل معنا',
         contact_badge: 'قنوات التواصل الرسمية',
         contact_title: 'تواصل معنا وتابع أحدث العروض',
-                contact_subtitle: 'يسعدنا تواصلكم ومتابعتكم لصفحاتنا الرسمية لمعرفة نصائح العناية بالبشرة، تفاصيل روتين WADG TECH، وأقوى العروض الحصرية.',
+        contact_subtitle: 'يسعدنا تواصلكم ومتابعتكم لصفحاتنا الرسمية لمعرفة نصائح العناية بالبشرة، تفاصيل روتين WADG TECH، وأقوى العروض الحصرية.',
+        replay_animation: 'النمط 2 (تشغيل الحركة)',
+        replay_contact: 'النمط 2 (تشغيل حركة التواصل)',
         chat_btn_text: 'اسألي خبيرة البشرة',
         chat_header_title: 'د. شروق | خبيرة WADG',
         chat_header_subtitle: 'استشارة فورية وروتين علاجي مخصص',
@@ -3080,7 +3197,9 @@
         nav_contact: 'Contact Us',
         contact_badge: 'Official Channels',
         contact_title: 'Connect With Us & Follow Latest Offers',
-                contact_subtitle: 'We are delighted to connect and follow our official channels for skincare tips, WADG TECH routine guides, and exclusive offers.',
+        contact_subtitle: 'We are delighted to connect and follow our official channels for skincare tips, WADG TECH routine guides, and exclusive offers.',
+        replay_animation: 'Style 2 (Replay Animation)',
+        replay_contact: 'Style 2 (Replay Motion)',
         chat_btn_text: 'Ask Skincare Expert',
         chat_header_title: 'Dr. Shorouk | WADG Expert',
         chat_header_subtitle: 'Instant Consultation & Custom Regimen',
@@ -3244,8 +3363,10 @@
     function renderProducts() {
       const grid = document.getElementById('products-grid');
       const filtered = activeFilter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.category === activeFilter);
-      grid.innerHTML = filtered.map(p => `
-        <article class="product-card bg-white rounded-3xl border border-gray-200/90 overflow-hidden flex flex-col shadow-sm">
+      grid.innerHTML = filtered.map((p, idx) => {
+        const revealDir = (idx % 3 === 0) ? 'reveal-from-start' : (idx % 3 === 1) ? 'reveal-from-center' : 'reveal-from-end';
+        return `
+        <article class="product-card product-card-reveal ${revealDir} bg-white rounded-3xl border border-gray-200/90 overflow-hidden flex flex-col shadow-sm" data-card-idx="${idx}">
           <div class="relative studio-pedestal p-6 flex items-center justify-center h-64 overflow-hidden border-b border-gray-100">
             <img src="${p.img}" alt="${p.name[lang]}" class="product-img h-48 w-auto object-contain max-w-full" />
             <span class="product-volume-badge absolute top-3 start-3 px-2.5 py-1 rounded-full bg-white/95 border border-gray-200 text-[11px] font-bold text-gray-700 shadow-sm">
@@ -3277,7 +3398,171 @@
             </div>
           </div>
         </article>
-      `).join('');
+      `;
+      }).join('');
+
+      if (typeof observeOrAnimateProducts === 'function') {
+        observeOrAnimateProducts();
+      }
+    }
+
+    let productsObserver = null;
+    let productsStaggerTimers = [];
+
+    function replayProductsReveal() {
+      const cards = document.querySelectorAll('#products-grid .product-card-reveal');
+      if (!cards || !cards.length) return;
+
+      productsStaggerTimers.forEach(t => clearTimeout(t));
+      productsStaggerTimers = [];
+
+      cards.forEach(c => {
+        c.classList.remove('animate-in');
+        c.style.transition = 'none';
+      });
+
+      void document.body.offsetHeight;
+
+      cards.forEach((c, idx) => {
+        const col = idx % 3;
+        const delay = 40 + (col * 160);
+        const tId = setTimeout(() => {
+          c.style.transition = '';
+          c.classList.add('animate-in');
+        }, delay);
+        productsStaggerTimers.push(tId);
+      });
+    }
+    window.replayProductsReveal = replayProductsReveal;
+
+    function observeOrAnimateProducts() {
+      const grid = document.getElementById('products-grid');
+      const cards = document.querySelectorAll('#products-grid .product-card-reveal');
+      if (!grid || !cards.length) return;
+
+      if (!('IntersectionObserver' in window)) {
+        cards.forEach(c => c.classList.add('animate-in'));
+        return;
+      }
+
+      const rect = grid.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < vh - 40 && rect.bottom > 80) {
+        setTimeout(replayProductsReveal, 200);
+      } else {
+        cards.forEach(c => c.classList.remove('animate-in'));
+      }
+
+      if (productsObserver) productsObserver.disconnect();
+
+      productsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            replayProductsReveal();
+          } else if (entry.boundingClientRect.top > vh * 0.95 || entry.boundingClientRect.bottom < -80) {
+            productsStaggerTimers.forEach(t => clearTimeout(t));
+            productsStaggerTimers = [];
+            cards.forEach(c => {
+              c.classList.remove('animate-in');
+              c.style.transition = 'none';
+            });
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      productsObserver.observe(grid);
+    }
+
+    let contactObserver = null;
+    let contactStaggerTimers = [];
+
+    function replayContactReveal() {
+      const cards = document.querySelectorAll('#contact-cards-grid .contact-card-reveal');
+      const banner = document.getElementById('contact-consult-banner');
+      if (!cards || !cards.length) return;
+
+      contactStaggerTimers.forEach(t => clearTimeout(t));
+      contactStaggerTimers = [];
+
+      cards.forEach(c => {
+        c.classList.remove('animate-in');
+        c.style.transition = 'none';
+      });
+      if (banner) {
+        banner.classList.remove('animate-in');
+        banner.style.transition = 'none';
+      }
+
+      void document.body.offsetHeight;
+
+      cards.forEach((c, idx) => {
+        const delay = 40 + (idx * 140);
+        const tId = setTimeout(() => {
+          c.style.transition = '';
+          c.classList.add('animate-in');
+        }, delay);
+        contactStaggerTimers.push(tId);
+      });
+
+      if (banner) {
+        const tId = setTimeout(() => {
+          banner.style.transition = '';
+          banner.classList.add('animate-in');
+        }, 40 + (cards.length * 140));
+        contactStaggerTimers.push(tId);
+      }
+    }
+    window.replayContactReveal = replayContactReveal;
+
+    function initContactSectionReveal() {
+      const contactSection = document.getElementById('contact');
+      const cards = document.querySelectorAll('#contact-cards-grid .contact-card-reveal');
+      const banner = document.getElementById('contact-consult-banner');
+      if (!contactSection || !cards.length) return;
+
+      if (!('IntersectionObserver' in window)) {
+        cards.forEach(c => c.classList.add('animate-in'));
+        if (banner) banner.classList.add('animate-in');
+        return;
+      }
+
+      const rect = contactSection.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      if (rect.top < vh - 40 && rect.bottom > 80) {
+        setTimeout(replayContactReveal, 200);
+      } else {
+        cards.forEach(c => c.classList.remove('animate-in'));
+        if (banner) banner.classList.remove('animate-in');
+      }
+
+      if (contactObserver) contactObserver.disconnect();
+
+      contactObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            replayContactReveal();
+          } else if (entry.boundingClientRect.top > vh * 0.95 || entry.boundingClientRect.bottom < -80) {
+            contactStaggerTimers.forEach(t => clearTimeout(t));
+            contactStaggerTimers = [];
+            cards.forEach(c => {
+              c.classList.remove('animate-in');
+              c.style.transition = 'none';
+            });
+            if (banner) {
+              banner.classList.remove('animate-in');
+              banner.style.transition = 'none';
+            }
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      contactObserver.observe(contactSection);
     }
 
     function renderRoutine() {
@@ -4284,6 +4569,7 @@
     initTheme();
     applyLanguage();
     loadCustomMedia();
+    initContactSectionReveal();
   
     // ==========================================
     // DISCREET ADMIN BACKDOOR ACCESS
