@@ -2683,8 +2683,11 @@
                 </div>
                 <div class="flex items-center gap-2">
                   <input id="admin-github-token-input" type="password" dir="ltr" placeholder="ghp_... أو gho_..." class="flex-1 px-3 py-1.5 text-xs rounded-lg border border-purple-200 bg-white focus:outline-none focus:border-purple-600 font-mono text-[12px]" />
-                  <button type="button" id="admin-save-github-token-btn" class="px-3.5 py-1.5 bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold rounded-lg transition-colors shrink-0 shadow-sm">
+                  <button type="button" id="admin-save-github-token-btn" class="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold rounded-lg transition-colors shrink-0 shadow-sm">
                     حفظ الرمز
+                  </button>
+                  <button type="button" id="admin-test-github-token-btn" class="px-2.5 py-1.5 bg-purple-100 hover:bg-purple-200 text-purple-900 border border-purple-300 text-xs font-bold rounded-lg transition-colors shrink-0 shadow-sm">
+                    🔍 اختبار
                   </button>
                 </div>
                 <div class="pt-1">
@@ -6187,18 +6190,34 @@
 
     // EXPORT STANDALONE UPDATED HTML FILE — يحفظ الفيديوهات مباشرة داخل الـ HTML
     
+    function formatGitHubError(status, message) {
+      if (status === 401 || (message && message.toLowerCase().includes('bad credentials'))) {
+        return 'رمز GitHub Token غير صحيح أو منتهي الصلاحية. تأكد من نسخ الرمز بالكامل (الذي يبدأ بـ ghp_ أو github_pat_) وليس كلمة سر الحساب.';
+      }
+      if (status === 404 || (message && message.toLowerCase().includes('not found'))) {
+        return 'المستودع غير متاح أو الرمز ينقصه صلاحية (repo). تأكد من تفعيل صلاحية (repo) عند توليد الرمز.';
+      }
+      if (status === 403 || (message && message.toLowerCase().includes('resource not accessible'))) {
+        return 'الرمز لا يملك صلاحيات الكتابة والتعديل. يرجى تفعيل صلاحية (repo) أو (Contents: Read and write).';
+      }
+      if (status === 409) {
+        return 'حدث تعارض مؤقت في النسخة الحالية على السيرفر. يرجى إعادة المحاولة الآن.';
+      }
+      return message || `كود الخطأ: ${status}`;
+    }
+
     // ══════════════════════════════════════════════════════════════
     // 🚀 GitHub Cloud Auto-Sync Engine (نشر التحديثات التلقائي لجيت هب)
     // ══════════════════════════════════════════════════════════════
     async function syncToGitHub(silent = false) {
-      let token = localStorage.getItem('wadg_github_token');
+      let token = (localStorage.getItem('wadg_github_token') || '').trim();
       const tokenInputEl = document.getElementById('admin-github-token-input');
       if (!token && tokenInputEl && tokenInputEl.value.trim()) {
         token = tokenInputEl.value.trim();
         localStorage.setItem('wadg_github_token', token);
       }
       if (!token) {
-        const entered = prompt('لإتمام النشر السحابي، يرجى إدخال رمز GitHub Token لحسابك (سيتم حفظه على جهازك بأمان):');
+        const entered = prompt('لإتمام النشر السحابي، يرجى إدخال رمز GitHub Token لحسابك (يبدأ بـ ghp_ أو github_pat_):');
         if (entered && entered.trim()) {
           token = entered.trim();
           localStorage.setItem('wadg_github_token', token);
@@ -6208,6 +6227,7 @@
           return false;
         }
       }
+      token = token.replace(/[\r\n\t ]+/g, '');
       const repoOwner = 'husseinfawzy170-cloud';
       const repoName = 'wadgtech';
       const branch = 'main';
@@ -6255,18 +6275,20 @@
         }
 
         const b64Content = toB64(fullHtml);
+        const authHeader = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
 
         // Helper to push a file to GitHub
         async function pushFile(filename) {
           const getUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${filename}?ref=${branch}&_t=${Date.now()}`;
           const getRes = await fetch(getUrl, {
             headers: {
-              'Authorization': `token ${token}`,
+              'Authorization': authHeader,
               'Accept': 'application/vnd.github+json'
             }
           });
           if (!getRes.ok) {
-            throw new Error(`تعذر قراءة ${filename} من GitHub: ${getRes.status}`);
+            const errGet = await getRes.json().catch(() => ({}));
+            throw new Error(`تعذر قراءة ${filename}: ${formatGitHubError(getRes.status, errGet.message)}`);
           }
           const fileData = await getRes.json();
           const sha = fileData.sha;
@@ -6275,7 +6297,7 @@
           const putRes = await fetch(putUrl, {
             method: 'PUT',
             headers: {
-              'Authorization': `token ${token}`,
+              'Authorization': authHeader,
               'Accept': 'application/vnd.github+json',
               'Content-Type': 'application/json'
             },
@@ -6288,7 +6310,7 @@
           });
           if (!putRes.ok) {
             const errData = await putRes.json().catch(() => ({}));
-            throw new Error(`تعذر حفظ ${filename}: ${errData.message || putRes.status}`);
+            throw new Error(`تعذر حفظ ${filename}: ${formatGitHubError(putRes.status, errData.message)}`);
           }
           return true;
         }
@@ -6304,7 +6326,7 @@
         return true;
       } catch (err) {
         console.error('GitHub Sync Error:', err);
-        showToast(`❌ فشل النشر على GitHub: ${err.message}`, 6000);
+        showToast(`❌ فشل النشر على GitHub: ${err.message}`, 8000);
         return false;
       }
     }
@@ -6315,7 +6337,7 @@
 
     // Bind GitHub Token Save button
     document.getElementById('admin-save-github-token-btn')?.addEventListener('click', () => {
-      const val = document.getElementById('admin-github-token-input')?.value.trim();
+      const val = (document.getElementById('admin-github-token-input')?.value || '').trim().replace(/[\r\n\t ]+/g, '');
       if (!val) {
         showToast('⚠️ يرجى إدخال رمز GitHub Token أولاً');
         return;
@@ -6326,7 +6348,47 @@
         ghStatus.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300';
         ghStatus.textContent = 'مربوط ومحفوظ ✅';
       }
-      showToast('✅ تم حفظ رمز GitHub Token بنجاح! يمكنك الآن النشر السحابي لجميع الزوار');
+      showToast('✅ تم حفظ رمز GitHub Token بنجاح! اضغط على زر (🔍 اختبار) للتأكد من الصلاحيات');
+    });
+
+    // Bind GitHub Token Test button
+    document.getElementById('admin-test-github-token-btn')?.addEventListener('click', async () => {
+      const inputVal = document.getElementById('admin-github-token-input')?.value || '';
+      const rawToken = (inputVal.trim() || localStorage.getItem('wadg_github_token') || '').trim().replace(/[\r\n\t ]+/g, '');
+      if (!rawToken) {
+        showToast('⚠️ يرجى إدخال رمز GitHub Token أولاً لتجريبه');
+        return;
+      }
+      showToast('⏳ جاري اختبار الاتصال مع GitHub والتحقق من الصلاحيات...');
+      try {
+        const authHeader = rawToken.startsWith('Bearer ') ? rawToken : `Bearer ${rawToken}`;
+        const res = await fetch('https://api.github.com/repos/husseinfawzy170-cloud/wadgtech', {
+          headers: {
+            'Authorization': authHeader,
+            'Accept': 'application/vnd.github+json'
+          }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const canPush = data.permissions ? data.permissions.push : true;
+          if (canPush) {
+            showToast('✅ الرمز متصل بنجاح 100% ولديه كامل صلاحيات النشر والتحديث! 🚀', 6000);
+            const ghStatus = document.getElementById('admin-github-token-status');
+            if (ghStatus) {
+              ghStatus.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300';
+              ghStatus.textContent = 'جاهز ومتصل بنجاح ✅';
+            }
+          } else {
+            showToast('⚠️ الرمز متصل لكنه للقراءة فقط وينقصه صلاحية (repo) للكتابة والنشر.', 7000);
+          }
+        } else {
+          const err = await res.json().catch(() => ({}));
+          const reason = formatGitHubError(res.status, err.message);
+          showToast(`❌ اختبار الرمز: ${reason}`, 8000);
+        }
+      } catch (e) {
+        showToast(`❌ تعذر الاتصال بـ GitHub: ${e.message}`, 6000);
+      }
     });
 
     // Bind Direct Seasonal Theme Publish buttons
