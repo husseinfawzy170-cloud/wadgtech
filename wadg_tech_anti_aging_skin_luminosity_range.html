@@ -751,6 +751,90 @@
       100% { transform: rotate(-10deg) scale(1.05); }
     }
 
+    /* ── Eid al-Fitr Festive Theme Styles (وضع عيد الفطر المبارك) ── */
+    @keyframes eidNeonPulse {
+      0%, 100% {
+        color: #ffffff;
+        text-shadow: 
+          0 0 4px #ffffff,
+          0 0 10px #fef08a,
+          0 0 20px #fbbf24,
+          0 0 35px #f59e0b,
+          0 0 55px #10b981,
+          0 0 75px #059669;
+        filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.75));
+      }
+      50% {
+        color: #fffdf5;
+        text-shadow: 
+          0 0 6px #ffffff,
+          0 0 14px #fde047,
+          0 0 28px #f59e0b,
+          0 0 48px #d97706,
+          0 0 70px #34d399,
+          0 0 95px #10b981;
+        filter: drop-shadow(0 0 18px rgba(16, 185, 129, 0.85));
+      }
+    }
+    .eid-neon-text {
+      animation: eidNeonPulse 2.4s ease-in-out infinite alternate;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes eidBorderPulse {
+      0%, 100% {
+        border-color: rgba(245, 158, 11, 0.45);
+        box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.25), inset 0 0 15px rgba(251, 191, 36, 0.15);
+      }
+      50% {
+        border-color: rgba(16, 185, 129, 0.7);
+        box-shadow: 0 6px 25px -2px rgba(245, 158, 11, 0.35), inset 0 0 25px rgba(16, 185, 129, 0.25);
+      }
+    }
+    .eid-neon-banner {
+      animation: eidBorderPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes crescent-float {
+      0% { transform: translateY(0) rotate(-2deg); }
+      100% { transform: translateY(-6px) rotate(2deg); }
+    }
+    .animate-crescent-float {
+      animation: crescent-float 3.5s ease-in-out infinite alternate;
+      transform-origin: center center;
+    }
+
+    @keyframes lantern-swing {
+      0% { transform: rotate(-5deg); }
+      100% { transform: rotate(5deg); }
+    }
+    .animate-lantern-swing {
+      animation: lantern-swing 2.8s ease-in-out infinite alternate;
+      transform-origin: top center;
+    }
+
+    /* Golden Crescent on Brand Logo in Eid Mode */
+    .eid-active .brand-logo-container {
+      position: relative;
+    }
+    .eid-active .brand-logo-container::before {
+      content: '🌙';
+      position: absolute;
+      top: -12px;
+      left: -8px;
+      font-size: 20px;
+      z-index: 30;
+      filter: drop-shadow(0 2px 6px rgba(245, 158, 11, 0.6));
+      transform: rotate(-10deg);
+      pointer-events: none;
+      animation: crescent-float 2.8s ease-in-out infinite alternate;
+    }
+    html[dir="rtl"] .eid-active .brand-logo-container::before {
+      left: auto;
+      right: -8px;
+      transform: rotate(10deg);
+    }
+
         /* ── Top News Ticker Marquee (Universal Seamless Infinite Flow) ── */
     @keyframes marquee-scroll-right {
       0% {
@@ -920,6 +1004,32 @@
           <span data-i18n="top_bar_5">خصم خاص 20% على باقة العناية المتكاملة 🛍️</span>
         </span>
         <span class="text-[#5A8D00] opacity-80 text-xs shrink-0">✦</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eid al-Fitr Glowing Neon Announcement Banner -->
+  <div id="eid-neon-banner" class="eid-neon-banner relative z-30 hidden overflow-hidden bg-gradient-to-r from-[#032e22] via-[#0b4d37] to-[#042f23] border-y border-amber-400/50 py-2.5 px-3 sm:px-6 transition-all duration-300">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 text-center sm:text-start">
+      <div class="flex items-center gap-2.5 sm:gap-3.5 mx-auto sm:mx-0 flex-wrap justify-center">
+        <span class="text-xl sm:text-2xl animate-crescent-float select-none">🌙</span>
+        <div>
+          <div class="flex items-center gap-2 justify-center sm:justify-start">
+            <span class="eid-neon-text text-base sm:text-lg font-black tracking-wide" data-i18n="eid_neon_title">عيد فطر مبارك</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-400/20 text-amber-300 border border-amber-400/40 select-none">WADG TECH ✨</span>
+          </div>
+          <p class="text-[11px] sm:text-xs text-emerald-100/90 font-medium mt-0.5" data-i18n="eid_neon_subtitle">
+            تقبل الله منا ومنكم صالح الأعمال • كل عام وأنتم بخير من أسرة WADG TECH 🌙✨
+          </p>
+        </div>
+      </div>
+      <div class="hidden sm:flex items-center gap-2 shrink-0">
+        <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950/60 text-amber-300 border border-amber-400/30 font-semibold select-none">
+          Alt + V
+        </span>
+        <button id="eid-banner-close-btn" type="button" aria-label="إغلاق الشريط" class="p-1 rounded-full text-emerald-300 hover:text-white hover:bg-emerald-800/60 transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
       </div>
     </div>
   </div>
@@ -1819,6 +1929,74 @@
     </div>
   </div>
 
+  <!-- Eid al-Fitr Mode Golden Stars & Crescent Sparkles Canvas -->
+  <canvas id="eid-sparkles-canvas" class="fixed inset-0 pointer-events-none z-[45] hidden" style="width: 100vw; height: 100vh;"></canvas>
+
+  <!-- Animated Interactive Eid al-Fitr Crescent & Lantern Widget -->
+  <div id="eid-crescent-widget" class="fixed bottom-4 end-4 sm:bottom-6 sm:end-6 z-40 hidden flex-col items-center select-none cursor-pointer group transition-transform duration-300 hover:scale-105 print:hidden" aria-label="أجواء عيد الفطر المبارك" title="🌙 عيد فطر مبارك من WADG TECH!">
+    
+    <!-- Top Action Bar (Close Button) -->
+    <div class="flex items-center gap-2 mb-1 opacity-90 group-hover:opacity-100 transition-opacity">
+      <button id="eid-widget-hide-btn" type="button" title="إخفاء الهلال" class="p-1 rounded-full bg-white/90 hover:bg-white text-gray-500 hover:text-gray-800 shadow-md text-xs border border-amber-200 transition-all hover:scale-110 active:scale-95">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Festive Tooltip Greeting Bubble -->
+    <div id="eid-widget-tooltip" class="absolute -top-10 end-0 bg-gradient-to-r from-[#032e22] to-[#064e3b] text-amber-200 border border-amber-400/50 text-[11px] font-bold px-3 py-1.5 rounded-2xl shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex items-center gap-1.5 backdrop-blur-sm">
+      <span class="text-sm">✨</span>
+      <span id="eid-widget-tooltip-text" data-i18n="eid_crescent_greeting">🌙 عيد فطر مبارك وسعيد من WADG TECH! ✨</span>
+    </div>
+
+    <!-- Elegant SVG Glowing Crescent Moon with Hanging Lantern -->
+    <div class="relative w-28 h-32 sm:w-36 sm:h-40 flex items-center justify-center filter drop-shadow-[0_8px_20px_rgba(245,158,11,0.4)] animate-crescent-float">
+      <svg class="w-full h-full" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="eidGoldGrad" x1="20" y1="20" x2="140" y2="160" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fffbeb"/>
+            <stop offset="25%" stop-color="#fef08a"/>
+            <stop offset="60%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#b45309"/>
+          </linearGradient>
+          <linearGradient id="eidEmeraldGrad" x1="0" y1="0" x2="100" y2="100" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#34d399"/>
+            <stop offset="50%" stop-color="#059669"/>
+            <stop offset="100%" stop-color="#064e3b"/>
+          </linearGradient>
+          <filter id="eidGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3.5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+        <!-- Luminous Crescent Moon -->
+        <path d="M125 90 C125 130 92 160 52 160 C38 160 25 156 14 148 C36 156 64 146 80 125 C96 104 96 74 80 53 C64 32 36 22 14 30 C25 22 38 18 52 18 C92 18 125 48 125 90 Z" fill="url(#eidGoldGrad)" filter="url(#eidGlowFilter)"/>
+        
+        <!-- Hanging Traditional Lantern (Fanous) -->
+        <g class="animate-lantern-swing" style="transform-origin: 75px 48px;">
+          <!-- Chain string -->
+          <line x1="75" y1="48" x2="75" y2="82" stroke="#fbbf24" stroke-width="1.8" stroke-dasharray="2 2"/>
+          <!-- Lantern Top Ring -->
+          <circle cx="75" cy="80" r="3" stroke="#f59e0b" stroke-width="1.2" fill="none"/>
+          <!-- Lantern Cap -->
+          <polygon points="75,82 87,92 63,92" fill="#f59e0b"/>
+          <rect x="67" y="80" width="16" height="3" rx="1.5" fill="#fef08a"/>
+          <!-- Glass Body with Glow -->
+          <polygon points="63,92 87,92 83,118 67,118" fill="url(#eidEmeraldGrad)" stroke="#f59e0b" stroke-width="1.2"/>
+          <!-- Inner Candle Glow -->
+          <circle cx="75" cy="105" r="5" fill="#fef08a" opacity="0.95" filter="drop-shadow(0 0 6px #fbbf24)"/>
+          <circle cx="75" cy="105" r="2" fill="#ffffff"/>
+          <!-- Lantern Base -->
+          <polygon points="67,118 83,118 88,126 62,126" fill="#b45309"/>
+          <circle cx="75" cy="128" r="2" fill="#fbbf24"/>
+        </g>
+
+        <!-- Decorative Sparkle Stars -->
+        <polygon points="125,40 127,47 134,47 128,51 130,58 125,54 120,58 122,51 116,47 123,47" fill="#fef08a" opacity="0.9"/>
+        <polygon points="135,115 136.5,120 141.5,120 137.5,123 139,128 135,125 131,128 132.5,123 128.5,120 133.5,120" fill="#fde047" opacity="0.85"/>
+      </svg>
+    </div>
+  </div>
+
 
 
   <!-- Toast Notification -->
@@ -2450,6 +2628,47 @@
             </div>
           </div>
 
+          <!-- Eid al-Fitr Festive Theme Toggle Card -->
+          <div class="bg-gradient-to-r from-emerald-50 via-amber-50 to-teal-50 p-5 rounded-2xl border-2 border-emerald-300/80 shadow-sm space-y-3">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-600 via-teal-700 to-amber-600 text-white flex items-center justify-center text-xl shadow-md">
+                  🌙
+                </div>
+                <div>
+                  <h4 class="text-sm font-extrabold text-gray-900 flex items-center gap-2 flex-wrap">
+                    <span>✨</span> وضع أجواء عيد الفطر المبارك (Eid al-Fitr Festive Mode)
+                    <span id="admin-eid-badge" class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700">معطل حالياً</span>
+                    <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">اختصار سريع: Alt + V</span>
+                  </h4>
+                  <p class="text-xs text-gray-600 mt-0.5 max-w-xl">
+                    عند التفعيل في أيام العيد، يكتسي الموقع برونق احتفالي إسلامي فاخر: شريط نيون مشع بعبارة "عيد فطر مبارك" بألوان ذهبية وزمردية متوهجة، هلال وفانوس العيد التفاعلي الطافي، تساقط ذرات النور والنجوم الذهبية، وهلال ذهبي مشع يزين شعار WADG TECH.
+                  </p>
+                </div>
+              </div>
+              
+              <!-- Toggle Switch -->
+              <label class="relative inline-flex items-center cursor-pointer select-none">
+                <input type="checkbox" id="admin-eid-mode-toggle" class="sr-only peer">
+                <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-emerald-600 peer-checked:via-teal-600 peer-checked:to-amber-500 shadow-inner"></div>
+                <span id="admin-eid-toggle-text" class="ms-3 text-xs font-bold text-gray-800">تفعيل الأجواء</span>
+              </label>
+            </div>
+
+            <div class="pt-2 border-t border-emerald-100 flex items-center justify-between text-[11px] text-gray-500 flex-wrap gap-2">
+              <div class="flex items-center gap-2">
+                <span>✨ المؤثرات المتضمنة:</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-200 font-semibold text-amber-700">⚡ عبارة نيون مشعة "عيد فطر مبارك"</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-emerald-200 font-semibold text-emerald-700">🌙 هلال وفانوس طافي تفاعلي</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-teal-200 font-semibold text-teal-700">✨ ذرات ونجوم ذهبية متساقطة</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-300 font-semibold text-amber-800">👑 هلال ذهبي على اللوجو</span>
+              </div>
+              <div id="admin-eid-live-indicator" class="font-bold text-emerald-700 hidden flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                <span>أجواء عيد الفطر المبارك معروضة الآن على الموقع!</span>
+              </div>
+            </div>
+          </div>
 
           <!-- GitHub Cloud Auto-Sync Feature -->
           <div class="bg-gradient-to-br from-purple-50 via-indigo-50 to-purple-100 p-5 rounded-2xl border border-purple-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
@@ -3164,7 +3383,11 @@
         eda_lbl: 'رقم التسجيل بهيئة الدواء',
         added_toast: 'تمت الإضافة إلى السلة',
         bundle_toast: 'تمت إضافة المجموعة الكاملة (4 منتجات) للسلة',
-        order_toast: 'تم تسجيل طلبك بنجاح! شكراً لاختيارك WADG TECH.'
+        order_toast: 'تم تسجيل طلبك بنجاح! شكراً لاختيارك WADG TECH.',
+        eid_neon_title: 'عيد فطر مبارك',
+        eid_neon_subtitle: 'تقبل الله منا ومنكم صالح الأعمال • كل عام وأنتم بخير من أسرة WADG TECH 🌙✨',
+        eid_crescent_greeting: '🌙 عيد فطر مبارك وسعيد من WADG TECH! ✨',
+        eid_banner_close: 'إغلاق الشريط'
       },
       en: {
         top_bar_1: 'Advanced Liposomal & Peptide Technology',
@@ -3321,7 +3544,11 @@
         eda_lbl: 'EDA Registration',
         added_toast: 'Added to bag',
         bundle_toast: 'Complete 4-product range added to bag',
-        order_toast: 'Order confirmed! Thank you for choosing WADG TECH.'
+        order_toast: 'Order confirmed! Thank you for choosing WADG TECH.',
+        eid_neon_title: 'Eid Mubarak • Blessed Eid al-Fitr',
+        eid_neon_subtitle: 'May your days be blessed with joy, radiant health & glowing skin • WADG TECH 🌙✨',
+        eid_crescent_greeting: '🌙 Blessed & Joyful Eid al-Fitr from WADG TECH! ✨',
+        eid_banner_close: 'Dismiss'
       }
     };
 
@@ -6224,6 +6451,19 @@
       const isKeyA = e.code === 'KeyA' || e.key === 'A' || e.key === 'a' || e.key === 'ش';
       const isKeyM = e.code === 'KeyM' || e.key === 'M' || e.key === 'm' || e.key === 'ة';
       const isKeyC = e.code === 'KeyC' || e.key === 'C' || e.key === 'c' || e.key === 'ؤ';
+      const isKeyV = e.code === 'KeyV' || e.key === 'V' || e.key === 'v' || e.key === 'ر';
+
+      // Alt + V: Toggle Eid al-Fitr Festive Mode (تفعيل / إيقاف وضع عيد الفطر المبارك)
+      if (e.altKey && !e.ctrlKey && !e.metaKey && isKeyV) {
+        e.preventDefault();
+        if (typeof toggleEidMode === 'function') {
+          toggleEidMode();
+        } else if (typeof setEidMode === 'function') {
+          const active = document.body.classList.contains('eid-active');
+          setEidMode(!active, true);
+        }
+        return;
+      }
 
       // Alt + C: Toggle Christmas Festive Mode (تفعيل / إيقاف وضع الكريسماس)
       if (e.altKey && !e.ctrlKey && !e.metaKey && isKeyC) {
@@ -6974,6 +7214,331 @@
       // Initial state on load
       const initialChristmas = isChristmasModeEnabled();
       setChristmasMode(initialChristmas, false);
+    })();
+
+    // ══════════════════════════════════════════════════════════════
+    // 🌙 EID AL-FITR FESTIVE THEME MODULE (وضع عيد الفطر المبارك)
+    // ══════════════════════════════════════════════════════════════
+    const DEFAULT_EID_MODE = false;
+    let eidSparklesAnimationId = null;
+    let eidAudioCtx = null;
+
+    function initEidAudio() {
+      if (!eidAudioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          eidAudioCtx = new AudioContextClass();
+        }
+      }
+      if (eidAudioCtx && eidAudioCtx.state === 'suspended') {
+        eidAudioCtx.resume();
+      }
+    }
+
+    function playEidCelebrationMelody() {
+      initEidAudio();
+      if (!eidAudioCtx || eidAudioCtx.state !== 'running') return;
+      try {
+        const now = eidAudioCtx.currentTime;
+        // Festive uplifting Oriental pentatonic arpeggio (C5, D5, E5, G5, A5, C6)
+        const notes = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc1 = eidAudioCtx.createOscillator();
+          const osc2 = eidAudioCtx.createOscillator();
+          const gain = eidAudioCtx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(freq * 2, now + idx * 0.08);
+
+          gain.gain.setValueAtTime(0.0001, now + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0.12, now + idx * 0.08 + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.85);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(eidAudioCtx.destination);
+
+          osc1.start(now + idx * 0.08);
+          osc2.start(now + idx * 0.08);
+          osc1.stop(now + idx * 0.08 + 0.9);
+          osc2.stop(now + idx * 0.08 + 0.9);
+        });
+      } catch (e) {}
+    }
+
+    function isEidModeEnabled() {
+      const saved = localStorage.getItem('wadg_eid_mode');
+      if (saved !== null) return saved === 'true';
+      return DEFAULT_EID_MODE;
+    }
+
+    // Golden Sparkles & Crescent Particles Canvas Engine
+    function initEidSparkles() {
+      const canvas = document.getElementById('eid-sparkles-canvas');
+      if (!canvas) return;
+      canvas.classList.remove('hidden');
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const handleResize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      };
+      window.removeEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
+
+      const particleCount = window.innerWidth < 768 ? 45 : 75;
+      const particles = [];
+      const colors = ['#FBBF24', '#F59E0B', '#FEF08A', '#34D399', '#FFFFFF'];
+
+      for (let i = 0; i < particleCount; i++) {
+        const typeRand = Math.random();
+        const type = typeRand > 0.85 ? 'crescent' : (typeRand > 0.45 ? 'star' : 'sparkle');
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: type === 'crescent' ? (Math.random() * 4 + 4) : (Math.random() * 2.5 + 1.5),
+          speedY: Math.random() * 1.8 + 1.0,
+          speedX: Math.random() * 0.8 - 0.4,
+          type: type,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.04,
+          opacity: Math.random() * 0.6 + 0.4,
+          twinkleSpeed: Math.random() * 0.05 + 0.02,
+          twinklePhase: Math.random() * Math.PI * 2,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+
+      function drawMiniStar(cx, cy, spikes, outerRadius, innerRadius, rot, alpha, fill) {
+        let rotAngle = Math.PI / 2 * 3 + rot;
+        let x = cx;
+        let y = cy;
+        const step = Math.PI / spikes;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = cx + Math.cos(rotAngle) * outerRadius;
+          y = cy + Math.sin(rotAngle) * outerRadius;
+          ctx.lineTo(x, y);
+          rotAngle += step;
+          x = cx + Math.cos(rotAngle) * innerRadius;
+          y = cy + Math.sin(rotAngle) * innerRadius;
+          ctx.lineTo(x, y);
+          rotAngle += step;
+        }
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fillStyle = fill;
+        ctx.globalAlpha = alpha;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = '#F59E0B';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawMiniCrescent(cx, cy, r, rot, alpha, fill) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(rot);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = fill;
+        ctx.shadowBlur = 7;
+        ctx.shadowColor = '#FBBF24';
+        ctx.beginPath();
+        ctx.arc(0, 0, r, Math.PI * 0.5, Math.PI * 1.5, true);
+        ctx.bezierCurveTo(r * 0.6, -r * 0.8, r * 0.6, r * 0.8, 0, r);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        for (let p of particles) {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += p.rotSpeed;
+          p.twinklePhase += p.twinkleSpeed;
+
+          const currentOpacity = Math.max(0.2, Math.min(1, p.opacity + Math.sin(p.twinklePhase) * 0.35));
+
+          if (p.y > height + 20) {
+            p.y = -20;
+            p.x = Math.random() * width;
+          }
+          if (p.x > width + 20) p.x = -20;
+          if (p.x < -20) p.x = width + 20;
+
+          if (p.type === 'crescent') {
+            drawMiniCrescent(p.x, p.y, p.radius, p.rotation, currentOpacity, '#FDE047');
+          } else if (p.type === 'star') {
+            drawMiniStar(p.x, p.y, 4, p.radius * 2.2, p.radius * 0.7, p.rotation, currentOpacity, p.color);
+          } else {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = currentOpacity * 0.9;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = 'rgba(251, 191, 36, 0.8)';
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+        eidSparklesAnimationId = requestAnimationFrame(render);
+      }
+
+      if (eidSparklesAnimationId) cancelAnimationFrame(eidSparklesAnimationId);
+      render();
+    }
+
+    function stopEidSparkles() {
+      if (eidSparklesAnimationId) {
+        cancelAnimationFrame(eidSparklesAnimationId);
+        eidSparklesAnimationId = null;
+      }
+      const canvas = document.getElementById('eid-sparkles-canvas');
+      if (canvas) {
+        canvas.classList.add('hidden');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function setEidMode(enabled, notify = false) {
+      localStorage.setItem('wadg_eid_mode', enabled ? 'true' : 'false');
+      const banner = document.getElementById('eid-neon-banner');
+      const widget = document.getElementById('eid-crescent-widget');
+      const toggle = document.getElementById('admin-eid-mode-toggle');
+      const badge = document.getElementById('admin-eid-badge');
+      const indicator = document.getElementById('admin-eid-live-indicator');
+      const toggleText = document.getElementById('admin-eid-toggle-text');
+
+      if (enabled) {
+        document.body.classList.add('eid-active');
+        document.documentElement.classList.add('eid-active');
+        if (banner) banner.classList.remove('hidden');
+        if (widget) widget.classList.remove('hidden');
+        initEidSparkles();
+
+        if (toggle) toggle.checked = true;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+          badge.textContent = 'مفعل ويظهر للزوار 🌙';
+        }
+        if (indicator) indicator.classList.remove('hidden');
+        if (toggleText) toggleText.textContent = 'إيقاف الأجواء';
+
+        if (notify) {
+          playEidCelebrationMelody();
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? '🌙 Eid al-Fitr Festive Mode activated! ✨ (Alt+V)' : '🌙 تم تفعيل وضع عيد الفطر المبارك وأجواء العيد بنجاح! ✨ (Alt+V)', 5000);
+        }
+      } else {
+        document.body.classList.remove('eid-active');
+        document.documentElement.classList.remove('eid-active');
+        if (banner) banner.classList.add('hidden');
+        if (widget) widget.classList.add('hidden');
+        stopEidSparkles();
+
+        if (toggle) toggle.checked = false;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700';
+          badge.textContent = 'معطل حالياً';
+        }
+        if (indicator) indicator.classList.add('hidden');
+        if (toggleText) toggleText.textContent = 'تفعيل الأجواء';
+
+        if (notify) {
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? 'Eid al-Fitr Mode turned off. (Alt+V)' : 'تم إيقاف وضع عيد الفطر المبارك. (Alt+V)', 3500);
+        }
+      }
+    }
+
+    let _lastEidToggleTime = 0;
+    function toggleEidMode() {
+      const now = Date.now();
+      if (now - _lastEidToggleTime < 350) return; // Debounce guard against double execution
+      _lastEidToggleTime = now;
+
+      const currentlyActive = document.body.classList.contains('eid-active');
+      setEidMode(!currentlyActive, true);
+    }
+    window.toggleEidMode = toggleEidMode;
+    window.setEidMode = setEidMode;
+
+    function burstEidConfetti(originX, originY) {
+      const items = ['🌙', '✨', '⭐', '🏮', '💛', '🌟', '🎉'];
+      for (let i = 0; i < 18; i++) {
+        const el = document.createElement('div');
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.className = 'fixed pointer-events-none z-50 text-base select-none';
+        el.style.left = originX + 'px';
+        el.style.top = originY + 'px';
+        el.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
+        document.body.appendChild(el);
+
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 100 + 40;
+        const destX = originX + Math.cos(angle) * dist;
+        const destY = originY + Math.sin(angle) * dist - 30;
+
+        requestAnimationFrame(() => {
+          el.style.transform = `translate(${destX - originX}px, ${destY - originY}px) scale(${Math.random() * 0.8 + 0.8})`;
+          el.style.opacity = '0';
+        });
+
+        setTimeout(() => el.remove(), 1050);
+      }
+      const isEn = (typeof lang !== 'undefined' && lang === 'en');
+      showToast(isEn ? '🌙 Blessed Eid al-Fitr from WADG TECH! ✨' : '🌙 عيد فطر مبارك وسعيد! كل عام وأنتم بخير من أسرة WADG TECH ✨', 4500);
+    }
+
+    // Bind Eid Mode events
+    (function initEidBindings() {
+      // Admin dashboard toggle
+      const toggle = document.getElementById('admin-eid-mode-toggle');
+      if (toggle) {
+        toggle.addEventListener('change', function() {
+          setEidMode(this.checked, true);
+        });
+      }
+
+      // Neon banner close button
+      const bannerCloseBtn = document.getElementById('eid-banner-close-btn');
+      if (bannerCloseBtn) {
+        bannerCloseBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          setEidMode(false, true);
+        });
+      }
+
+      // Crescent widget interactions
+      const widget = document.getElementById('eid-crescent-widget');
+      if (widget) {
+        widget.addEventListener('click', (e) => {
+          if (e.target.closest('#eid-widget-hide-btn')) {
+            e.stopPropagation();
+            setEidMode(false, true);
+            return;
+          }
+          playEidCelebrationMelody();
+          const rect = widget.getBoundingClientRect();
+          burstEidConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        });
+      }
+
+      // Initial state on load
+      const initialEid = isEidModeEnabled();
+      setEidMode(initialEid, false);
     })();
 
     // ── Dynamic Live Products & Prices Resolver ──
