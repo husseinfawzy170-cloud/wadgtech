@@ -7048,777 +7048,6 @@
         handleUserMessage(text);
       });
 
-      
-    // ══════════════════════════════════════════════════════════════
-        // ══════════════════════════════════════════════════════════════
-        // ══════════════════════════════════════════════════════════════
-    // 🎅 CHRISTMAS FESTIVE THEME MODULE (FAST & LIVELY EDITION)
-    // ══════════════════════════════════════════════════════════════
-    const DEFAULT_CHRISTMAS_MODE = false;
-    let snowAnimationId = null;
-
-    // Web Audio High-Precision Fast Music Box Engine
-    let christmasAudioCtx = null;
-    let isChristmasMusicPlaying = false;
-    let christmasSchedulerTimer = null;
-    let christmasNextNoteTime = 0;
-    let christmasNoteIndex = 0;
-    const CHRISTMAS_BEAT_SEC = 0.20; // 200ms per beat = Fast, lively, energetic 150 BPM!
-
-    const CHRISTMAS_NOTES = {
-      'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'F#4': 369.99,
-      'G4': 392.00, 'A4': 440.00, 'B4': 493.88, 'C5': 523.25, 'D5': 587.33,
-      'E5': 659.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00
-    };
-
-    // Fast, Cheerful Holiday Medley (Jingle Bells Chorus + We Wish You A Merry Christmas)
-    const CHRISTMAS_SCORE = [
-      // Jingle Bells - Phrase 1
-      ['E4', 1], ['E4', 1], ['E4', 2],
-      ['E4', 1], ['E4', 1], ['E4', 2],
-      ['E4', 1], ['G4', 1], ['C4', 1.2], ['D4', 0.8], ['E4', 3], ['rest', 0.5],
-      // Jingle Bells - Phrase 2
-      ['F4', 1], ['F4', 1], ['F4', 1.5], ['F4', 0.5], ['F4', 1], ['E4', 1], ['E4', 1], ['E4', 0.5], ['E4', 0.5],
-      ['E4', 1], ['D4', 1], ['D4', 1], ['E4', 1], ['D4', 2], ['G4', 2],
-      // Jingle Bells - Phrase 3
-      ['E4', 1], ['E4', 1], ['E4', 2],
-      ['E4', 1], ['E4', 1], ['E4', 2],
-      ['E4', 1], ['G4', 1], ['C4', 1.2], ['D4', 0.8], ['E4', 3], ['rest', 0.5],
-      // Jingle Bells - Phrase 4
-      ['F4', 1], ['F4', 1], ['F4', 1.5], ['F4', 0.5], ['F4', 1], ['E4', 1], ['E4', 1], ['E4', 0.5], ['E4', 0.5],
-      ['G4', 1], ['G4', 1], ['F4', 1], ['D4', 1], ['C4', 3], ['rest', 1],
-
-      // We Wish You A Merry Christmas (Fast & joyful!)
-      ['D4', 1], ['G4', 1], ['G4', 0.5], ['A4', 0.5], ['G4', 0.5], ['F#4', 0.5], ['E4', 1], ['C4', 1],
-      ['E4', 1], ['A4', 1], ['A4', 0.5], ['B4', 0.5], ['A4', 0.5], ['G4', 0.5], ['F#4', 1], ['D4', 1],
-      ['D4', 1], ['B4', 1], ['B4', 0.5], ['C5', 0.5], ['B4', 0.5], ['A4', 0.5], ['G4', 1], ['E4', 1],
-      ['D4', 0.5], ['D4', 0.5], ['E4', 1], ['A4', 1], ['F#4', 1], ['G4', 2.5], ['rest', 1.5]
-    ];
-
-    function initChristmasAudio() {
-      if (!christmasAudioCtx) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (AudioContextClass) {
-          christmasAudioCtx = new AudioContextClass();
-        }
-      }
-      if (christmasAudioCtx && christmasAudioCtx.state === 'suspended') {
-        christmasAudioCtx.resume();
-      }
-    }
-
-    // Smooth overlapping celesta bell chime without gaps
-    function playMusicBoxChimeAt(freq, startTime, durSec) {
-      if (!christmasAudioCtx || !freq) return;
-      try {
-        const now = startTime;
-        const osc1 = christmasAudioCtx.createOscillator();
-        const osc2 = christmasAudioCtx.createOscillator();
-        const osc3 = christmasAudioCtx.createOscillator();
-        const gain1 = christmasAudioCtx.createGain();
-        const gain2 = christmasAudioCtx.createGain();
-        const gain3 = christmasAudioCtx.createGain();
-        const master = christmasAudioCtx.createGain();
-
-        osc1.type = 'sine';
-        osc1.frequency.setValueAtTime(freq, now);
-
-        osc2.type = 'sine';
-        osc2.frequency.setValueAtTime(freq * 2.002, now); // Sweet bell chime octave
-
-        osc3.type = 'triangle';
-        osc3.frequency.setValueAtTime(freq * 3.003, now); // Sparkling harmonic overtone
-
-        gain1.gain.setValueAtTime(0.65, now);
-        gain2.gain.setValueAtTime(0.25, now);
-        gain3.gain.setValueAtTime(0.10, now);
-
-        master.gain.setValueAtTime(0.0001, now);
-        master.gain.linearRampToValueAtTime(0.14, now + 0.008); // Instant crisp bell strike
-        const decayDuration = Math.max(0.6, durSec * 2.0);
-        master.gain.exponentialRampToValueAtTime(0.0001, now + decayDuration); // Seamless bell decay
-
-        osc1.connect(gain1);
-        osc2.connect(gain2);
-        osc3.connect(gain3);
-        gain1.connect(master);
-        gain2.connect(master);
-        gain3.connect(master);
-        master.connect(christmasAudioCtx.destination);
-
-        osc1.start(now);
-        osc2.start(now);
-        osc3.start(now);
-        osc1.stop(now + decayDuration + 0.05);
-        osc2.stop(now + decayDuration + 0.05);
-        osc3.stop(now + decayDuration + 0.05);
-      } catch (e) {}
-    }
-
-    // High-precision lookahead audio scheduler (eliminates all jitter/lag/choppiness)
-    function scheduleChristmasNotes() {
-      if (!isChristmasMusicPlaying || !christmasAudioCtx) return;
-      const lookaheadSec = 0.25;
-      while (christmasNextNoteTime < christmasAudioCtx.currentTime + lookaheadSec) {
-        if (christmasNoteIndex >= CHRISTMAS_SCORE.length) {
-          christmasNoteIndex = 0;
-        }
-        const [note, beats] = CHRISTMAS_SCORE[christmasNoteIndex];
-        const durSec = beats * CHRISTMAS_BEAT_SEC;
-
-        if (note !== 'rest' && CHRISTMAS_NOTES[note]) {
-          playMusicBoxChimeAt(CHRISTMAS_NOTES[note], Math.max(christmasAudioCtx.currentTime, christmasNextNoteTime), durSec);
-        }
-        christmasNextNoteTime += durSec;
-        christmasNoteIndex++;
-      }
-    }
-
-    function startChristmasMusic() {
-      initChristmasAudio();
-      if (!christmasAudioCtx) return;
-      isChristmasMusicPlaying = true;
-      updateChristmasMusicUI(true);
-      christmasNoteIndex = 0;
-      christmasNextNoteTime = christmasAudioCtx.currentTime + 0.05;
-      if (christmasSchedulerTimer) clearInterval(christmasSchedulerTimer);
-      scheduleChristmasNotes();
-      christmasSchedulerTimer = setInterval(scheduleChristmasNotes, 50);
-    }
-
-    function stopChristmasMusic() {
-      isChristmasMusicPlaying = false;
-      updateChristmasMusicUI(false);
-      if (christmasSchedulerTimer) {
-        clearInterval(christmasSchedulerTimer);
-        christmasSchedulerTimer = null;
-      }
-    }
-
-    function toggleChristmasMusic() {
-      if (isChristmasMusicPlaying) {
-        stopChristmasMusic();
-        showToast(typeof lang !== 'undefined' && lang === 'en' ? '🔇 Christmas music paused' : '🔇 تم كتم موسيقى الكريسماس', 2500);
-      } else {
-        startChristmasMusic();
-        showToast(typeof lang !== 'undefined' && lang === 'en' ? '🎵 Christmas music playing' : '🎵 تشغيل موسيقى الكريسماس السريعة والمبهجة ✨', 2500);
-      }
-    }
-
-    function updateChristmasMusicUI(playing) {
-      const btn = document.getElementById('christmas-music-btn');
-      const icon = document.getElementById('christmas-music-icon');
-      const text = document.getElementById('christmas-music-text');
-      const isEn = typeof lang !== 'undefined' && lang === 'en';
-
-      if (!btn || !icon) return;
-      if (playing) {
-        icon.textContent = '🎵';
-        icon.className = 'text-xs inline-block animate-music-playing';
-        if (text) text.textContent = isEn ? 'Mute' : 'كتم';
-        btn.title = isEn ? 'Mute holiday music' : 'كتم موسيقى الكريسماس';
-        btn.classList.add('border-emerald-500', 'bg-emerald-50/90');
-      } else {
-        icon.textContent = '🔇';
-        icon.className = 'text-xs inline-block';
-        if (text) text.textContent = isEn ? 'Play Music' : 'تشغيل الموسيقى';
-        btn.title = isEn ? 'Play holiday music' : 'تشغيل موسيقى الكريسماس السريعة';
-        btn.classList.remove('border-emerald-500', 'bg-emerald-50/90');
-      }
-    }
-
-    function playCelebrationChime() {
-      initChristmasAudio();
-      if (!christmasAudioCtx || christmasAudioCtx.state !== 'running') return;
-      try {
-        const now = christmasAudioCtx.currentTime;
-        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
-          playMusicBoxChimeAt(freq, now + idx * 0.06, 0.8);
-        });
-      } catch (e) {}
-    }
-
-    function isChristmasModeEnabled() {
-      const saved = localStorage.getItem('wadg_christmas_mode_override');
-      if (saved !== null) return saved === 'true';
-      return DEFAULT_CHRISTMAS_MODE;
-    }
-
-    // Fast Snowfall & Twinkling Stars Canvas Engine (No gifts, pure crisp snow & stars)
-    function initChristmasSnow() {
-      const canvas = document.getElementById('christmas-snow-canvas');
-      if (!canvas) return;
-      canvas.classList.remove('hidden');
-      const ctx = canvas.getContext('2d');
-      let width = canvas.width = window.innerWidth;
-      let height = canvas.height = window.innerHeight;
-
-      const handleResize = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      };
-      window.removeEventListener('resize', handleResize);
-      window.addEventListener('resize', handleResize);
-
-      const particleCount = window.innerWidth < 768 ? 55 : 90;
-      const particles = [];
-
-      for (let i = 0; i < particleCount; i++) {
-        const isStar = Math.random() > 0.65; // 35% stars, 65% crisp snow
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: isStar ? (Math.random() * 2.5 + 2.0) : (Math.random() * 2.2 + 1.4),
-          // Fast falling speed as requested! (2.2px to 5.0px per frame)
-          speedY: Math.random() * 2.8 + 2.2,
-          speedX: Math.random() * 1.2 - 0.6,
-          isStar: isStar,
-          starPoints: 4,
-          rotation: Math.random() * Math.PI,
-          rotSpeed: (Math.random() - 0.5) * 0.05,
-          opacity: Math.random() * 0.6 + 0.4,
-          twinkleSpeed: Math.random() * 0.06 + 0.03,
-          twinklePhase: Math.random() * Math.PI * 2,
-          color: Math.random() > 0.45 ? '#FDE047' : '#FFFFFF'
-        });
-      }
-
-      function drawStar(cx, cy, spikes, outerRadius, innerRadius, rot, alpha, fill) {
-        let rotAngle = Math.PI / 2 * 3 + rot;
-        let x = cx;
-        let y = cy;
-        const step = Math.PI / spikes;
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - outerRadius);
-        for (let i = 0; i < spikes; i++) {
-          x = cx + Math.cos(rotAngle) * outerRadius;
-          y = cy + Math.sin(rotAngle) * outerRadius;
-          ctx.lineTo(x, y);
-          rotAngle += step;
-          x = cx + Math.cos(rotAngle) * innerRadius;
-          y = cy + Math.sin(rotAngle) * innerRadius;
-          ctx.lineTo(x, y);
-          rotAngle += step;
-        }
-        ctx.lineTo(cx, cy - outerRadius);
-        ctx.closePath();
-        ctx.fillStyle = fill;
-        ctx.globalAlpha = alpha;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = '#FBBF24';
-        ctx.fill();
-        ctx.restore();
-      }
-
-      function render() {
-        ctx.clearRect(0, 0, width, height);
-        for (let p of particles) {
-          p.y += p.speedY; // Fast downward movement!
-          p.x += p.speedX;
-          p.rotation += p.rotSpeed;
-          p.twinklePhase += p.twinkleSpeed;
-
-          const currentOpacity = Math.max(0.25, Math.min(1, p.opacity + Math.sin(p.twinklePhase) * 0.35));
-
-          if (p.y > height + 15) {
-            p.y = -15;
-            p.x = Math.random() * width;
-          }
-          if (p.x > width + 15) p.x = -15;
-          if (p.x < -15) p.x = width + 15;
-
-          if (p.isStar) {
-            drawStar(p.x, p.y, p.starPoints, p.radius * 2.4, p.radius * 0.7, p.rotation, currentOpacity, p.color);
-          } else {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#FFFFFF';
-            ctx.globalAlpha = currentOpacity * 0.85;
-            ctx.shadowBlur = 5;
-            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-            ctx.fill();
-            ctx.restore();
-          }
-        }
-        snowAnimationId = requestAnimationFrame(render);
-      }
-
-      if (snowAnimationId) cancelAnimationFrame(snowAnimationId);
-      render();
-    }
-
-    function stopChristmasSnow() {
-      if (snowAnimationId) {
-        cancelAnimationFrame(snowAnimationId);
-        snowAnimationId = null;
-      }
-      const canvas = document.getElementById('christmas-snow-canvas');
-      if (canvas) {
-        canvas.classList.add('hidden');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-
-    function setChristmasMode(enabled, notify = false, persist = true) {
-      if (persist) {
-        localStorage.setItem('wadg_christmas_mode_override', enabled ? 'true' : 'false');
-      }
-      const tree = document.getElementById('christmas-tree-widget');
-      const toggle = document.getElementById('admin-christmas-mode-toggle');
-      const badge = document.getElementById('admin-christmas-badge');
-      const indicator = document.getElementById('admin-christmas-live-indicator');
-      const toggleText = document.getElementById('admin-christmas-toggle-text');
-
-      if (enabled) {
-        document.body.classList.add('christmas-active');
-        document.documentElement.classList.add('christmas-active');
-        if (tree) tree.classList.remove('hidden');
-        initChristmasSnow();
-
-        if (notify) {
-          startChristmasMusic();
-        }
-
-        if (toggle) toggle.checked = true;
-        if (badge) {
-          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
-          badge.textContent = 'مفعل ويظهر للزوار 🎄';
-        }
-        if (indicator) indicator.classList.remove('hidden');
-        if (toggleText) toggleText.textContent = 'إيقاف الأجواء';
-        if (notify) {
-          const isEn = (typeof lang !== 'undefined' && lang === 'en');
-          showToast(isEn ? '🎅 Christmas Festive Mode activated! 🎄✨ (Alt+C)' : '🎅 تم تفعيل وضع الكريسماس وأجواء الاحتفالات بنجاح! 🎄✨ (Alt+C)', 5000);
-        }
-      } else {
-        document.body.classList.remove('christmas-active');
-        document.documentElement.classList.remove('christmas-active');
-        if (tree) tree.classList.add('hidden');
-        stopChristmasSnow();
-        stopChristmasMusic();
-
-        if (toggle) toggle.checked = false;
-        if (badge) {
-          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700';
-          badge.textContent = 'معطل حالياً';
-        }
-        if (indicator) indicator.classList.add('hidden');
-        if (toggleText) toggleText.textContent = 'تفعيل الأجواء';
-        if (notify) {
-          const isEn = (typeof lang !== 'undefined' && lang === 'en');
-          showToast(isEn ? 'Christmas Festive Mode turned off. (Alt+C)' : 'تم إيقاف وضع الكريسماس. (Alt+C)', 3500);
-        }
-      }
-    }
-
-    let _lastChristmasToggleTime = 0;
-    function toggleChristmasMode() {
-      const now = Date.now();
-      if (now - _lastChristmasToggleTime < 350) return; // Prevent duplicate rapid toggles
-      _lastChristmasToggleTime = now;
-
-      const currentlyActive = document.body.classList.contains('christmas-active');
-      setChristmasMode(!currentlyActive, true);
-    }
-    window.toggleChristmasMode = toggleChristmasMode;
-    window.setChristmasMode = setChristmasMode;
-
-    function burstChristmasConfetti(originX, originY) {
-      const items = ['✨', '⭐', '❄️', '🎁', '🔔', '❤️', '🌟'];
-      for (let i = 0; i < 16; i++) {
-        const el = document.createElement('div');
-        el.textContent = items[Math.floor(Math.random() * items.length)];
-        el.className = 'fixed pointer-events-none z-50 text-base select-none';
-        el.style.left = originX + 'px';
-        el.style.top = originY + 'px';
-        el.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
-        document.body.appendChild(el);
-
-        const angle = Math.random() * Math.PI * 2;
-        const dist = Math.random() * 95 + 40;
-        const destX = originX + Math.cos(angle) * dist;
-        const destY = originY + Math.sin(angle) * dist - 30;
-
-        requestAnimationFrame(() => {
-          el.style.transform = `translate(${destX - originX}px, ${destY - originY}px) scale(${Math.random() * 0.8 + 0.8})`;
-          el.style.opacity = '0';
-        });
-
-        setTimeout(() => el.remove(), 1050);
-      }
-      const isEn = (typeof lang !== 'undefined' && lang === 'en');
-      showToast(isEn ? '🎄 Merry Christmas & Happy New Year from WADG TECH! ✨🎅' : '🎄 كل عام وأنتم بخير بمناسبة الكريسماس من WADG TECH! ✨🎅', 4000);
-    }
-
-    // Bind Christmas Mode events
-    (function initChristmasBindings() {
-      const toggle = document.getElementById('admin-christmas-mode-toggle');
-      if (toggle) {
-        toggle.addEventListener('change', function() {
-          setChristmasMode(this.checked, true);
-          if (typeof setAdminSyncBanner === 'function') {
-            setAdminSyncBanner('info', this.checked
-              ? '🎅 تم تفعيل وضع الكريسماس محلياً! اضغط على (🚀 نشر وضع الكريسماس لجميع الزوار) لتفعيله أونلاين عند كل الناس.'
-              : 'ℹ️ تم إيقاف وضع الكريسماس محلياً. اضغط على (🚀 نشر التحديثات إلى GitHub الآن) لإيقافه عند كل الناس.');
-          }
-        });
-      }
-
-      // Music toggle button
-      const musicBtn = document.getElementById('christmas-music-btn');
-      if (musicBtn) {
-        musicBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          toggleChristmasMusic();
-        });
-      }
-
-      // Christmas tree widget interactions
-      const tree = document.getElementById('christmas-tree-widget');
-      if (tree) {
-        tree.addEventListener('click', (e) => {
-          if (e.target.closest('#christmas-tree-hide-btn')) {
-            e.stopPropagation();
-            setChristmasMode(false, true);
-            return;
-          }
-          if (e.target.closest('#christmas-music-btn')) {
-            return;
-          }
-          playCelebrationChime();
-          const rect = tree.getBoundingClientRect();
-          burstChristmasConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
-        });
-      }
-
-
-
-      // Initial state on load
-      const initialChristmas = isChristmasModeEnabled();
-      setChristmasMode(initialChristmas, false, false);
-    })();
-
-    // ══════════════════════════════════════════════════════════════
-    // 🌙 EID AL-FITR FESTIVE THEME MODULE (وضع عيد الفطر المبارك)
-    // ══════════════════════════════════════════════════════════════
-    const DEFAULT_EID_MODE = false;
-    let eidSparklesAnimationId = null;
-    let eidAudioCtx = null;
-
-    function initEidAudio() {
-      if (!eidAudioCtx) {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-        if (AudioContextClass) {
-          eidAudioCtx = new AudioContextClass();
-        }
-      }
-      if (eidAudioCtx && eidAudioCtx.state === 'suspended') {
-        eidAudioCtx.resume();
-      }
-    }
-
-    function playEidCelebrationMelody() {
-      initEidAudio();
-      if (!eidAudioCtx || eidAudioCtx.state !== 'running') return;
-      try {
-        const now = eidAudioCtx.currentTime;
-        // Festive uplifting Oriental pentatonic arpeggio (C5, D5, E5, G5, A5, C6)
-        const notes = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
-        notes.forEach((freq, idx) => {
-          const osc1 = eidAudioCtx.createOscillator();
-          const osc2 = eidAudioCtx.createOscillator();
-          const gain = eidAudioCtx.createGain();
-
-          osc1.type = 'sine';
-          osc1.frequency.setValueAtTime(freq, now + idx * 0.08);
-
-          osc2.type = 'triangle';
-          osc2.frequency.setValueAtTime(freq * 2, now + idx * 0.08);
-
-          gain.gain.setValueAtTime(0.0001, now + idx * 0.08);
-          gain.gain.linearRampToValueAtTime(0.12, now + idx * 0.08 + 0.015);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.85);
-
-          osc1.connect(gain);
-          osc2.connect(gain);
-          gain.connect(eidAudioCtx.destination);
-
-          osc1.start(now + idx * 0.08);
-          osc2.start(now + idx * 0.08);
-          osc1.stop(now + idx * 0.08 + 0.9);
-          osc2.stop(now + idx * 0.08 + 0.9);
-        });
-      } catch (e) {}
-    }
-
-    function isEidModeEnabled() {
-      const saved = localStorage.getItem('wadg_eid_mode_override');
-      if (saved !== null) return saved === 'true';
-      return DEFAULT_EID_MODE;
-    }
-
-    // Golden Sparkles & Crescent Particles Canvas Engine
-    function initEidSparkles() {
-      const canvas = document.getElementById('eid-sparkles-canvas');
-      if (!canvas) return;
-      canvas.classList.remove('hidden');
-      const ctx = canvas.getContext('2d');
-      let width = canvas.width = window.innerWidth;
-      let height = canvas.height = window.innerHeight;
-
-      const handleResize = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-      };
-      window.removeEventListener('resize', handleResize);
-      window.addEventListener('resize', handleResize);
-
-      const particleCount = window.innerWidth < 768 ? 45 : 75;
-      const particles = [];
-      const colors = ['#FBBF24', '#F59E0B', '#FEF08A', '#34D399', '#FFFFFF'];
-
-      for (let i = 0; i < particleCount; i++) {
-        const typeRand = Math.random();
-        const type = typeRand > 0.85 ? 'crescent' : (typeRand > 0.45 ? 'star' : 'sparkle');
-        particles.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: type === 'crescent' ? (Math.random() * 4 + 4) : (Math.random() * 2.5 + 1.5),
-          speedY: Math.random() * 1.8 + 1.0,
-          speedX: Math.random() * 0.8 - 0.4,
-          type: type,
-          rotation: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - 0.5) * 0.04,
-          opacity: Math.random() * 0.6 + 0.4,
-          twinkleSpeed: Math.random() * 0.05 + 0.02,
-          twinklePhase: Math.random() * Math.PI * 2,
-          color: colors[Math.floor(Math.random() * colors.length)]
-        });
-      }
-
-      function drawMiniStar(cx, cy, spikes, outerRadius, innerRadius, rot, alpha, fill) {
-        let rotAngle = Math.PI / 2 * 3 + rot;
-        let x = cx;
-        let y = cy;
-        const step = Math.PI / spikes;
-
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(cx, cy - outerRadius);
-        for (let i = 0; i < spikes; i++) {
-          x = cx + Math.cos(rotAngle) * outerRadius;
-          y = cy + Math.sin(rotAngle) * outerRadius;
-          ctx.lineTo(x, y);
-          rotAngle += step;
-          x = cx + Math.cos(rotAngle) * innerRadius;
-          y = cy + Math.sin(rotAngle) * innerRadius;
-          ctx.lineTo(x, y);
-          rotAngle += step;
-        }
-        ctx.lineTo(cx, cy - outerRadius);
-        ctx.closePath();
-        ctx.fillStyle = fill;
-        ctx.globalAlpha = alpha;
-        ctx.shadowBlur = 6;
-        ctx.shadowColor = '#F59E0B';
-        ctx.fill();
-        ctx.restore();
-      }
-
-      function drawMiniCrescent(cx, cy, r, rot, alpha, fill) {
-        ctx.save();
-        ctx.translate(cx, cy);
-        ctx.rotate(rot);
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = fill;
-        ctx.shadowBlur = 7;
-        ctx.shadowColor = '#FBBF24';
-        ctx.beginPath();
-        ctx.arc(0, 0, r, Math.PI * 0.5, Math.PI * 1.5, true);
-        ctx.bezierCurveTo(r * 0.6, -r * 0.8, r * 0.6, r * 0.8, 0, r);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
-      }
-
-      function render() {
-        ctx.clearRect(0, 0, width, height);
-        for (let p of particles) {
-          p.y += p.speedY;
-          p.x += p.speedX;
-          p.rotation += p.rotSpeed;
-          p.twinklePhase += p.twinkleSpeed;
-
-          const currentOpacity = Math.max(0.2, Math.min(1, p.opacity + Math.sin(p.twinklePhase) * 0.35));
-
-          if (p.y > height + 20) {
-            p.y = -20;
-            p.x = Math.random() * width;
-          }
-          if (p.x > width + 20) p.x = -20;
-          if (p.x < -20) p.x = width + 20;
-
-          if (p.type === 'crescent') {
-            drawMiniCrescent(p.x, p.y, p.radius, p.rotation, currentOpacity, '#FDE047');
-          } else if (p.type === 'star') {
-            drawMiniStar(p.x, p.y, 4, p.radius * 2.2, p.radius * 0.7, p.rotation, currentOpacity, p.color);
-          } else {
-            ctx.save();
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = currentOpacity * 0.9;
-            ctx.shadowBlur = 6;
-            ctx.shadowColor = 'rgba(251, 191, 36, 0.8)';
-            ctx.fill();
-            ctx.restore();
-          }
-        }
-        eidSparklesAnimationId = requestAnimationFrame(render);
-      }
-
-      if (eidSparklesAnimationId) cancelAnimationFrame(eidSparklesAnimationId);
-      render();
-    }
-
-    function stopEidSparkles() {
-      if (eidSparklesAnimationId) {
-        cancelAnimationFrame(eidSparklesAnimationId);
-        eidSparklesAnimationId = null;
-      }
-      const canvas = document.getElementById('eid-sparkles-canvas');
-      if (canvas) {
-        canvas.classList.add('hidden');
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
-    }
-
-    function setEidMode(enabled, notify = false, persist = true) {
-      if (persist) {
-        localStorage.setItem('wadg_eid_mode_override', enabled ? 'true' : 'false');
-      }
-      const banner = document.getElementById('eid-neon-banner');
-      const widget = document.getElementById('eid-crescent-widget');
-      const toggle = document.getElementById('admin-eid-mode-toggle');
-      const badge = document.getElementById('admin-eid-badge');
-      const indicator = document.getElementById('admin-eid-live-indicator');
-      const toggleText = document.getElementById('admin-eid-toggle-text');
-
-      if (enabled) {
-        document.body.classList.add('eid-active');
-        document.documentElement.classList.add('eid-active');
-        if (banner) banner.classList.remove('hidden');
-        if (widget) widget.classList.remove('hidden');
-        initEidSparkles();
-
-        if (toggle) toggle.checked = true;
-        if (badge) {
-          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
-          badge.textContent = 'مفعل ويظهر للزوار 🌙';
-        }
-        if (indicator) indicator.classList.remove('hidden');
-        if (toggleText) toggleText.textContent = 'إيقاف الأجواء';
-
-        if (notify) {
-          playEidCelebrationMelody();
-          const isEn = (typeof lang !== 'undefined' && lang === 'en');
-          showToast(isEn ? '🌙 Eid al-Fitr Festive Mode activated! ✨ (Alt+V)' : '🌙 تم تفعيل وضع عيد الفطر المبارك وأجواء العيد بنجاح! ✨ (Alt+V)', 5000);
-        }
-      } else {
-        document.body.classList.remove('eid-active');
-        document.documentElement.classList.remove('eid-active');
-        if (banner) banner.classList.add('hidden');
-        if (widget) widget.classList.add('hidden');
-        stopEidSparkles();
-
-        if (toggle) toggle.checked = false;
-        if (badge) {
-          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700';
-          badge.textContent = 'معطل حالياً';
-        }
-        if (indicator) indicator.classList.add('hidden');
-        if (toggleText) toggleText.textContent = 'تفعيل الأجواء';
-
-        if (notify) {
-          const isEn = (typeof lang !== 'undefined' && lang === 'en');
-          showToast(isEn ? 'Eid al-Fitr Mode turned off. (Alt+V)' : 'تم إيقاف وضع عيد الفطر المبارك. (Alt+V)', 3500);
-        }
-      }
-    }
-
-    let _lastEidToggleTime = 0;
-    function toggleEidMode() {
-      const now = Date.now();
-      if (now - _lastEidToggleTime < 350) return; // Debounce guard against double execution
-      _lastEidToggleTime = now;
-
-      const currentlyActive = document.body.classList.contains('eid-active');
-      setEidMode(!currentlyActive, true);
-    }
-    window.toggleEidMode = toggleEidMode;
-    window.setEidMode = setEidMode;
-
-    function burstEidConfetti(originX, originY) {
-      const items = ['🌙', '✨', '⭐', '🏮', '💛', '🌟', '🎉'];
-      for (let i = 0; i < 18; i++) {
-        const el = document.createElement('div');
-        el.textContent = items[Math.floor(Math.random() * items.length)];
-        el.className = 'fixed pointer-events-none z-50 text-base select-none';
-        el.style.left = originX + 'px';
-        el.style.top = originY + 'px';
-        el.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
-        document.body.appendChild(el);
-
-        const angle = Math.random() * Math.PI * 2;
-        const dist = Math.random() * 100 + 40;
-        const destX = originX + Math.cos(angle) * dist;
-        const destY = originY + Math.sin(angle) * dist - 30;
-
-        requestAnimationFrame(() => {
-          el.style.transform = `translate(${destX - originX}px, ${destY - originY}px) scale(${Math.random() * 0.8 + 0.8})`;
-          el.style.opacity = '0';
-        });
-
-        setTimeout(() => el.remove(), 1050);
-      }
-      const isEn = (typeof lang !== 'undefined' && lang === 'en');
-      showToast(isEn ? '🌙 Blessed Eid al-Fitr from WADG TECH! ✨' : '🌙 عيد فطر مبارك وسعيد! كل عام وأنتم بخير من أسرة WADG TECH ✨', 4500);
-    }
-
-    // Bind Eid Mode events
-    (function initEidBindings() {
-      // Admin dashboard toggle
-      const toggle = document.getElementById('admin-eid-mode-toggle');
-      if (toggle) {
-        toggle.addEventListener('change', function() {
-          setEidMode(this.checked, true);
-          if (typeof setAdminSyncBanner === 'function') {
-            setAdminSyncBanner('info', this.checked
-              ? '🌙 تم تفعيل وضع العيد محلياً! اضغط على (🚀 نشر وضع العيد لجميع الزوار) لتفعيله أونلاين عند كل الناس.'
-              : 'ℹ️ تم إيقاف وضع العيد محلياً. اضغط على (🚀 نشر التحديثات إلى GitHub الآن) لإيقافه عند كل الناس.');
-          }
-        });
-      }
-
-      // Crescent widget celebration interaction
-      const widget = document.getElementById('eid-crescent-widget');
-      if (widget) {
-        widget.addEventListener('click', () => {
-          playEidCelebrationMelody();
-          const rect = widget.getBoundingClientRect();
-          burstEidConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
-        });
-      }
-
-      // Initial state on load
-      const initialEid = isEidModeEnabled();
-      setEidMode(initialEid, false, false);
-    })();
 
     // ── Dynamic Live Products & Prices Resolver ──
       function getLiveProductInfo() {
@@ -8234,6 +7463,777 @@ CRITICAL RULES:
           }
         });
       }
+    })();
+
+    // ══════════════════════════════════════════════════════════════
+    // 🎅 CHRISTMAS FESTIVE THEME MODULE (FAST & LIVELY EDITION)
+    // ══════════════════════════════════════════════════════════════
+    const DEFAULT_CHRISTMAS_MODE = false;
+    let snowAnimationId = null;
+
+    // Web Audio High-Precision Fast Music Box Engine
+    let christmasAudioCtx = null;
+    let isChristmasMusicPlaying = false;
+    let christmasSchedulerTimer = null;
+    let christmasNextNoteTime = 0;
+    let christmasNoteIndex = 0;
+    const CHRISTMAS_BEAT_SEC = 0.20; // 200ms per beat = Fast, lively, energetic 150 BPM!
+
+    const CHRISTMAS_NOTES = {
+      'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23, 'F#4': 369.99,
+      'G4': 392.00, 'A4': 440.00, 'B4': 493.88, 'C5': 523.25, 'D5': 587.33,
+      'E5': 659.25, 'F5': 698.46, 'G5': 783.99, 'A5': 880.00
+    };
+
+    // Fast, Cheerful Holiday Medley (Jingle Bells Chorus + We Wish You A Merry Christmas)
+    const CHRISTMAS_SCORE = [
+      // Jingle Bells - Phrase 1
+      ['E4', 1], ['E4', 1], ['E4', 2],
+      ['E4', 1], ['E4', 1], ['E4', 2],
+      ['E4', 1], ['G4', 1], ['C4', 1.2], ['D4', 0.8], ['E4', 3], ['rest', 0.5],
+      // Jingle Bells - Phrase 2
+      ['F4', 1], ['F4', 1], ['F4', 1.5], ['F4', 0.5], ['F4', 1], ['E4', 1], ['E4', 1], ['E4', 0.5], ['E4', 0.5],
+      ['E4', 1], ['D4', 1], ['D4', 1], ['E4', 1], ['D4', 2], ['G4', 2],
+      // Jingle Bells - Phrase 3
+      ['E4', 1], ['E4', 1], ['E4', 2],
+      ['E4', 1], ['E4', 1], ['E4', 2],
+      ['E4', 1], ['G4', 1], ['C4', 1.2], ['D4', 0.8], ['E4', 3], ['rest', 0.5],
+      // Jingle Bells - Phrase 4
+      ['F4', 1], ['F4', 1], ['F4', 1.5], ['F4', 0.5], ['F4', 1], ['E4', 1], ['E4', 1], ['E4', 0.5], ['E4', 0.5],
+      ['G4', 1], ['G4', 1], ['F4', 1], ['D4', 1], ['C4', 3], ['rest', 1],
+
+      // We Wish You A Merry Christmas (Fast & joyful!)
+      ['D4', 1], ['G4', 1], ['G4', 0.5], ['A4', 0.5], ['G4', 0.5], ['F#4', 0.5], ['E4', 1], ['C4', 1],
+      ['E4', 1], ['A4', 1], ['A4', 0.5], ['B4', 0.5], ['A4', 0.5], ['G4', 0.5], ['F#4', 1], ['D4', 1],
+      ['D4', 1], ['B4', 1], ['B4', 0.5], ['C5', 0.5], ['B4', 0.5], ['A4', 0.5], ['G4', 1], ['E4', 1],
+      ['D4', 0.5], ['D4', 0.5], ['E4', 1], ['A4', 1], ['F#4', 1], ['G4', 2.5], ['rest', 1.5]
+    ];
+
+    function initChristmasAudio() {
+      if (!christmasAudioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          christmasAudioCtx = new AudioContextClass();
+        }
+      }
+      if (christmasAudioCtx && christmasAudioCtx.state === 'suspended') {
+        christmasAudioCtx.resume();
+      }
+    }
+
+    // Smooth overlapping celesta bell chime without gaps
+    function playMusicBoxChimeAt(freq, startTime, durSec) {
+      if (!christmasAudioCtx || !freq) return;
+      try {
+        const now = startTime;
+        const osc1 = christmasAudioCtx.createOscillator();
+        const osc2 = christmasAudioCtx.createOscillator();
+        const osc3 = christmasAudioCtx.createOscillator();
+        const gain1 = christmasAudioCtx.createGain();
+        const gain2 = christmasAudioCtx.createGain();
+        const gain3 = christmasAudioCtx.createGain();
+        const master = christmasAudioCtx.createGain();
+
+        osc1.type = 'sine';
+        osc1.frequency.setValueAtTime(freq, now);
+
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(freq * 2.002, now); // Sweet bell chime octave
+
+        osc3.type = 'triangle';
+        osc3.frequency.setValueAtTime(freq * 3.003, now); // Sparkling harmonic overtone
+
+        gain1.gain.setValueAtTime(0.65, now);
+        gain2.gain.setValueAtTime(0.25, now);
+        gain3.gain.setValueAtTime(0.10, now);
+
+        master.gain.setValueAtTime(0.0001, now);
+        master.gain.linearRampToValueAtTime(0.14, now + 0.008); // Instant crisp bell strike
+        const decayDuration = Math.max(0.6, durSec * 2.0);
+        master.gain.exponentialRampToValueAtTime(0.0001, now + decayDuration); // Seamless bell decay
+
+        osc1.connect(gain1);
+        osc2.connect(gain2);
+        osc3.connect(gain3);
+        gain1.connect(master);
+        gain2.connect(master);
+        gain3.connect(master);
+        master.connect(christmasAudioCtx.destination);
+
+        osc1.start(now);
+        osc2.start(now);
+        osc3.start(now);
+        osc1.stop(now + decayDuration + 0.05);
+        osc2.stop(now + decayDuration + 0.05);
+        osc3.stop(now + decayDuration + 0.05);
+      } catch (e) {}
+    }
+
+    // High-precision lookahead audio scheduler (eliminates all jitter/lag/choppiness)
+    function scheduleChristmasNotes() {
+      if (!isChristmasMusicPlaying || !christmasAudioCtx) return;
+      const lookaheadSec = 0.25;
+      while (christmasNextNoteTime < christmasAudioCtx.currentTime + lookaheadSec) {
+        if (christmasNoteIndex >= CHRISTMAS_SCORE.length) {
+          christmasNoteIndex = 0;
+        }
+        const [note, beats] = CHRISTMAS_SCORE[christmasNoteIndex];
+        const durSec = beats * CHRISTMAS_BEAT_SEC;
+
+        if (note !== 'rest' && CHRISTMAS_NOTES[note]) {
+          playMusicBoxChimeAt(CHRISTMAS_NOTES[note], Math.max(christmasAudioCtx.currentTime, christmasNextNoteTime), durSec);
+        }
+        christmasNextNoteTime += durSec;
+        christmasNoteIndex++;
+      }
+    }
+
+    function startChristmasMusic() {
+      initChristmasAudio();
+      if (!christmasAudioCtx) return;
+      isChristmasMusicPlaying = true;
+      updateChristmasMusicUI(true);
+      christmasNoteIndex = 0;
+      christmasNextNoteTime = christmasAudioCtx.currentTime + 0.05;
+      if (christmasSchedulerTimer) clearInterval(christmasSchedulerTimer);
+      scheduleChristmasNotes();
+      christmasSchedulerTimer = setInterval(scheduleChristmasNotes, 50);
+    }
+
+    function stopChristmasMusic() {
+      isChristmasMusicPlaying = false;
+      updateChristmasMusicUI(false);
+      if (christmasSchedulerTimer) {
+        clearInterval(christmasSchedulerTimer);
+        christmasSchedulerTimer = null;
+      }
+    }
+
+    function toggleChristmasMusic() {
+      if (isChristmasMusicPlaying) {
+        stopChristmasMusic();
+        showToast(typeof lang !== 'undefined' && lang === 'en' ? '🔇 Christmas music paused' : '🔇 تم كتم موسيقى الكريسماس', 2500);
+      } else {
+        startChristmasMusic();
+        showToast(typeof lang !== 'undefined' && lang === 'en' ? '🎵 Christmas music playing' : '🎵 تشغيل موسيقى الكريسماس السريعة والمبهجة ✨', 2500);
+      }
+    }
+
+    function updateChristmasMusicUI(playing) {
+      const btn = document.getElementById('christmas-music-btn');
+      const icon = document.getElementById('christmas-music-icon');
+      const text = document.getElementById('christmas-music-text');
+      const isEn = typeof lang !== 'undefined' && lang === 'en';
+
+      if (!btn || !icon) return;
+      if (playing) {
+        icon.textContent = '🎵';
+        icon.className = 'text-xs inline-block animate-music-playing';
+        if (text) text.textContent = isEn ? 'Mute' : 'كتم';
+        btn.title = isEn ? 'Mute holiday music' : 'كتم موسيقى الكريسماس';
+        btn.classList.add('border-emerald-500', 'bg-emerald-50/90');
+      } else {
+        icon.textContent = '🔇';
+        icon.className = 'text-xs inline-block';
+        if (text) text.textContent = isEn ? 'Play Music' : 'تشغيل الموسيقى';
+        btn.title = isEn ? 'Play holiday music' : 'تشغيل موسيقى الكريسماس السريعة';
+        btn.classList.remove('border-emerald-500', 'bg-emerald-50/90');
+      }
+    }
+
+    function playCelebrationChime() {
+      initChristmasAudio();
+      if (!christmasAudioCtx || christmasAudioCtx.state !== 'running') return;
+      try {
+        const now = christmasAudioCtx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          playMusicBoxChimeAt(freq, now + idx * 0.06, 0.8);
+        });
+      } catch (e) {}
+    }
+
+    function isChristmasModeEnabled() {
+      const saved = localStorage.getItem('wadg_christmas_mode_override');
+      if (saved !== null) return saved === 'true';
+      return DEFAULT_CHRISTMAS_MODE;
+    }
+
+    // Fast Snowfall & Twinkling Stars Canvas Engine (No gifts, pure crisp snow & stars)
+    function initChristmasSnow() {
+      const canvas = document.getElementById('christmas-snow-canvas');
+      if (!canvas) return;
+      canvas.classList.remove('hidden');
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const handleResize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      };
+      window.removeEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
+
+      const particleCount = window.innerWidth < 768 ? 55 : 90;
+      const particles = [];
+
+      for (let i = 0; i < particleCount; i++) {
+        const isStar = Math.random() > 0.65; // 35% stars, 65% crisp snow
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: isStar ? (Math.random() * 2.5 + 2.0) : (Math.random() * 2.2 + 1.4),
+          // Fast falling speed as requested! (2.2px to 5.0px per frame)
+          speedY: Math.random() * 2.8 + 2.2,
+          speedX: Math.random() * 1.2 - 0.6,
+          isStar: isStar,
+          starPoints: 4,
+          rotation: Math.random() * Math.PI,
+          rotSpeed: (Math.random() - 0.5) * 0.05,
+          opacity: Math.random() * 0.6 + 0.4,
+          twinkleSpeed: Math.random() * 0.06 + 0.03,
+          twinklePhase: Math.random() * Math.PI * 2,
+          color: Math.random() > 0.45 ? '#FDE047' : '#FFFFFF'
+        });
+      }
+
+      function drawStar(cx, cy, spikes, outerRadius, innerRadius, rot, alpha, fill) {
+        let rotAngle = Math.PI / 2 * 3 + rot;
+        let x = cx;
+        let y = cy;
+        const step = Math.PI / spikes;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = cx + Math.cos(rotAngle) * outerRadius;
+          y = cy + Math.sin(rotAngle) * outerRadius;
+          ctx.lineTo(x, y);
+          rotAngle += step;
+          x = cx + Math.cos(rotAngle) * innerRadius;
+          y = cy + Math.sin(rotAngle) * innerRadius;
+          ctx.lineTo(x, y);
+          rotAngle += step;
+        }
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fillStyle = fill;
+        ctx.globalAlpha = alpha;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = '#FBBF24';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        for (let p of particles) {
+          p.y += p.speedY; // Fast downward movement!
+          p.x += p.speedX;
+          p.rotation += p.rotSpeed;
+          p.twinklePhase += p.twinkleSpeed;
+
+          const currentOpacity = Math.max(0.25, Math.min(1, p.opacity + Math.sin(p.twinklePhase) * 0.35));
+
+          if (p.y > height + 15) {
+            p.y = -15;
+            p.x = Math.random() * width;
+          }
+          if (p.x > width + 15) p.x = -15;
+          if (p.x < -15) p.x = width + 15;
+
+          if (p.isStar) {
+            drawStar(p.x, p.y, p.starPoints, p.radius * 2.4, p.radius * 0.7, p.rotation, currentOpacity, p.color);
+          } else {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#FFFFFF';
+            ctx.globalAlpha = currentOpacity * 0.85;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+        snowAnimationId = requestAnimationFrame(render);
+      }
+
+      if (snowAnimationId) cancelAnimationFrame(snowAnimationId);
+      render();
+    }
+
+    function stopChristmasSnow() {
+      if (snowAnimationId) {
+        cancelAnimationFrame(snowAnimationId);
+        snowAnimationId = null;
+      }
+      const canvas = document.getElementById('christmas-snow-canvas');
+      if (canvas) {
+        canvas.classList.add('hidden');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function setChristmasMode(enabled, notify = false, persist = true) {
+      if (persist) {
+        localStorage.setItem('wadg_christmas_mode_override', enabled ? 'true' : 'false');
+      }
+      const tree = document.getElementById('christmas-tree-widget');
+      const toggle = document.getElementById('admin-christmas-mode-toggle');
+      const badge = document.getElementById('admin-christmas-badge');
+      const indicator = document.getElementById('admin-christmas-live-indicator');
+      const toggleText = document.getElementById('admin-christmas-toggle-text');
+
+      if (enabled) {
+        document.body.classList.add('christmas-active');
+        document.documentElement.classList.add('christmas-active');
+        if (tree) tree.classList.remove('hidden');
+        initChristmasSnow();
+
+        if (notify) {
+          startChristmasMusic();
+        }
+
+        if (toggle) toggle.checked = true;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+          badge.textContent = 'مفعل ويظهر للزوار 🎄';
+        }
+        if (indicator) indicator.classList.remove('hidden');
+        if (toggleText) toggleText.textContent = 'إيقاف الأجواء';
+        if (notify) {
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? '🎅 Christmas Festive Mode activated! 🎄✨ (Alt+C)' : '🎅 تم تفعيل وضع الكريسماس وأجواء الاحتفالات بنجاح! 🎄✨ (Alt+C)', 5000);
+        }
+      } else {
+        document.body.classList.remove('christmas-active');
+        document.documentElement.classList.remove('christmas-active');
+        if (tree) tree.classList.add('hidden');
+        stopChristmasSnow();
+        stopChristmasMusic();
+
+        if (toggle) toggle.checked = false;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700';
+          badge.textContent = 'معطل حالياً';
+        }
+        if (indicator) indicator.classList.add('hidden');
+        if (toggleText) toggleText.textContent = 'تفعيل الأجواء';
+        if (notify) {
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? 'Christmas Festive Mode turned off. (Alt+C)' : 'تم إيقاف وضع الكريسماس. (Alt+C)', 3500);
+        }
+      }
+    }
+
+    let _lastChristmasToggleTime = 0;
+    function toggleChristmasMode() {
+      const now = Date.now();
+      if (now - _lastChristmasToggleTime < 350) return; // Prevent duplicate rapid toggles
+      _lastChristmasToggleTime = now;
+
+      const currentlyActive = document.body.classList.contains('christmas-active');
+      setChristmasMode(!currentlyActive, true);
+    }
+    window.toggleChristmasMode = toggleChristmasMode;
+    window.isChristmasModeEnabled = isChristmasModeEnabled;
+    window.setChristmasMode = setChristmasMode;
+
+    function burstChristmasConfetti(originX, originY) {
+      const items = ['✨', '⭐', '❄️', '🎁', '🔔', '❤️', '🌟'];
+      for (let i = 0; i < 16; i++) {
+        const el = document.createElement('div');
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.className = 'fixed pointer-events-none z-50 text-base select-none';
+        el.style.left = originX + 'px';
+        el.style.top = originY + 'px';
+        el.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
+        document.body.appendChild(el);
+
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 95 + 40;
+        const destX = originX + Math.cos(angle) * dist;
+        const destY = originY + Math.sin(angle) * dist - 30;
+
+        requestAnimationFrame(() => {
+          el.style.transform = `translate(${destX - originX}px, ${destY - originY}px) scale(${Math.random() * 0.8 + 0.8})`;
+          el.style.opacity = '0';
+        });
+
+        setTimeout(() => el.remove(), 1050);
+      }
+      const isEn = (typeof lang !== 'undefined' && lang === 'en');
+      showToast(isEn ? '🎄 Merry Christmas & Happy New Year from WADG TECH! ✨🎅' : '🎄 كل عام وأنتم بخير بمناسبة الكريسماس من WADG TECH! ✨🎅', 4000);
+    }
+
+    // Bind Christmas Mode events
+    (function initChristmasBindings() {
+      const toggle = document.getElementById('admin-christmas-mode-toggle');
+      if (toggle) {
+        toggle.addEventListener('change', function() {
+          setChristmasMode(this.checked, true);
+          if (typeof setAdminSyncBanner === 'function') {
+            setAdminSyncBanner('info', this.checked
+              ? '🎅 تم تفعيل وضع الكريسماس محلياً! اضغط على (🚀 نشر وضع الكريسماس لجميع الزوار) لتفعيله أونلاين عند كل الناس.'
+              : 'ℹ️ تم إيقاف وضع الكريسماس محلياً. اضغط على (🚀 نشر التحديثات إلى GitHub الآن) لإيقافه عند كل الناس.');
+          }
+        });
+      }
+
+      // Music toggle button
+      const musicBtn = document.getElementById('christmas-music-btn');
+      if (musicBtn) {
+        musicBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleChristmasMusic();
+        });
+      }
+
+      // Christmas tree widget interactions
+      const tree = document.getElementById('christmas-tree-widget');
+      if (tree) {
+        tree.addEventListener('click', (e) => {
+          if (e.target.closest('#christmas-tree-hide-btn')) {
+            e.stopPropagation();
+            setChristmasMode(false, true);
+            return;
+          }
+          if (e.target.closest('#christmas-music-btn')) {
+            return;
+          }
+          playCelebrationChime();
+          const rect = tree.getBoundingClientRect();
+          burstChristmasConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        });
+      }
+
+
+
+      // Initial state on load
+      const initialChristmas = isChristmasModeEnabled();
+      setChristmasMode(initialChristmas, false, false);
+    })();
+
+    // ══════════════════════════════════════════════════════════════
+    // 🌙 EID AL-FITR FESTIVE THEME MODULE (وضع عيد الفطر المبارك)
+    // ══════════════════════════════════════════════════════════════
+    const DEFAULT_EID_MODE = false;
+    let eidSparklesAnimationId = null;
+    let eidAudioCtx = null;
+
+    function initEidAudio() {
+      if (!eidAudioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          eidAudioCtx = new AudioContextClass();
+        }
+      }
+      if (eidAudioCtx && eidAudioCtx.state === 'suspended') {
+        eidAudioCtx.resume();
+      }
+    }
+
+    function playEidCelebrationMelody() {
+      initEidAudio();
+      if (!eidAudioCtx || eidAudioCtx.state !== 'running') return;
+      try {
+        const now = eidAudioCtx.currentTime;
+        // Festive uplifting Oriental pentatonic arpeggio (C5, D5, E5, G5, A5, C6)
+        const notes = [523.25, 587.33, 659.25, 783.99, 880.00, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc1 = eidAudioCtx.createOscillator();
+          const osc2 = eidAudioCtx.createOscillator();
+          const gain = eidAudioCtx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, now + idx * 0.08);
+
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(freq * 2, now + idx * 0.08);
+
+          gain.gain.setValueAtTime(0.0001, now + idx * 0.08);
+          gain.gain.linearRampToValueAtTime(0.12, now + idx * 0.08 + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.08 + 0.85);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(eidAudioCtx.destination);
+
+          osc1.start(now + idx * 0.08);
+          osc2.start(now + idx * 0.08);
+          osc1.stop(now + idx * 0.08 + 0.9);
+          osc2.stop(now + idx * 0.08 + 0.9);
+        });
+      } catch (e) {}
+    }
+
+    function isEidModeEnabled() {
+      const saved = localStorage.getItem('wadg_eid_mode_override');
+      if (saved !== null) return saved === 'true';
+      return DEFAULT_EID_MODE;
+    }
+
+    // Golden Sparkles & Crescent Particles Canvas Engine
+    function initEidSparkles() {
+      const canvas = document.getElementById('eid-sparkles-canvas');
+      if (!canvas) return;
+      canvas.classList.remove('hidden');
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const handleResize = () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      };
+      window.removeEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
+
+      const particleCount = window.innerWidth < 768 ? 45 : 75;
+      const particles = [];
+      const colors = ['#FBBF24', '#F59E0B', '#FEF08A', '#34D399', '#FFFFFF'];
+
+      for (let i = 0; i < particleCount; i++) {
+        const typeRand = Math.random();
+        const type = typeRand > 0.85 ? 'crescent' : (typeRand > 0.45 ? 'star' : 'sparkle');
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: type === 'crescent' ? (Math.random() * 4 + 4) : (Math.random() * 2.5 + 1.5),
+          speedY: Math.random() * 1.8 + 1.0,
+          speedX: Math.random() * 0.8 - 0.4,
+          type: type,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.04,
+          opacity: Math.random() * 0.6 + 0.4,
+          twinkleSpeed: Math.random() * 0.05 + 0.02,
+          twinklePhase: Math.random() * Math.PI * 2,
+          color: colors[Math.floor(Math.random() * colors.length)]
+        });
+      }
+
+      function drawMiniStar(cx, cy, spikes, outerRadius, innerRadius, rot, alpha, fill) {
+        let rotAngle = Math.PI / 2 * 3 + rot;
+        let x = cx;
+        let y = cy;
+        const step = Math.PI / spikes;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = cx + Math.cos(rotAngle) * outerRadius;
+          y = cy + Math.sin(rotAngle) * outerRadius;
+          ctx.lineTo(x, y);
+          rotAngle += step;
+          x = cx + Math.cos(rotAngle) * innerRadius;
+          y = cy + Math.sin(rotAngle) * innerRadius;
+          ctx.lineTo(x, y);
+          rotAngle += step;
+        }
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fillStyle = fill;
+        ctx.globalAlpha = alpha;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = '#F59E0B';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function drawMiniCrescent(cx, cy, r, rot, alpha, fill) {
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(rot);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = fill;
+        ctx.shadowBlur = 7;
+        ctx.shadowColor = '#FBBF24';
+        ctx.beginPath();
+        ctx.arc(0, 0, r, Math.PI * 0.5, Math.PI * 1.5, true);
+        ctx.bezierCurveTo(r * 0.6, -r * 0.8, r * 0.6, r * 0.8, 0, r);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        for (let p of particles) {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.rotation += p.rotSpeed;
+          p.twinklePhase += p.twinkleSpeed;
+
+          const currentOpacity = Math.max(0.2, Math.min(1, p.opacity + Math.sin(p.twinklePhase) * 0.35));
+
+          if (p.y > height + 20) {
+            p.y = -20;
+            p.x = Math.random() * width;
+          }
+          if (p.x > width + 20) p.x = -20;
+          if (p.x < -20) p.x = width + 20;
+
+          if (p.type === 'crescent') {
+            drawMiniCrescent(p.x, p.y, p.radius, p.rotation, currentOpacity, '#FDE047');
+          } else if (p.type === 'star') {
+            drawMiniStar(p.x, p.y, 4, p.radius * 2.2, p.radius * 0.7, p.rotation, currentOpacity, p.color);
+          } else {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = currentOpacity * 0.9;
+            ctx.shadowBlur = 6;
+            ctx.shadowColor = 'rgba(251, 191, 36, 0.8)';
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+        eidSparklesAnimationId = requestAnimationFrame(render);
+      }
+
+      if (eidSparklesAnimationId) cancelAnimationFrame(eidSparklesAnimationId);
+      render();
+    }
+
+    function stopEidSparkles() {
+      if (eidSparklesAnimationId) {
+        cancelAnimationFrame(eidSparklesAnimationId);
+        eidSparklesAnimationId = null;
+      }
+      const canvas = document.getElementById('eid-sparkles-canvas');
+      if (canvas) {
+        canvas.classList.add('hidden');
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function setEidMode(enabled, notify = false, persist = true) {
+      if (persist) {
+        localStorage.setItem('wadg_eid_mode_override', enabled ? 'true' : 'false');
+      }
+      const banner = document.getElementById('eid-neon-banner');
+      const widget = document.getElementById('eid-crescent-widget');
+      const toggle = document.getElementById('admin-eid-mode-toggle');
+      const badge = document.getElementById('admin-eid-badge');
+      const indicator = document.getElementById('admin-eid-live-indicator');
+      const toggleText = document.getElementById('admin-eid-toggle-text');
+
+      if (enabled) {
+        document.body.classList.add('eid-active');
+        document.documentElement.classList.add('eid-active');
+        if (banner) banner.classList.remove('hidden');
+        if (widget) widget.classList.remove('hidden');
+        initEidSparkles();
+
+        if (toggle) toggle.checked = true;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-300';
+          badge.textContent = 'مفعل ويظهر للزوار 🌙';
+        }
+        if (indicator) indicator.classList.remove('hidden');
+        if (toggleText) toggleText.textContent = 'إيقاف الأجواء';
+
+        if (notify) {
+          playEidCelebrationMelody();
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? '🌙 Eid al-Fitr Festive Mode activated! ✨ (Alt+V)' : '🌙 تم تفعيل وضع عيد الفطر المبارك وأجواء العيد بنجاح! ✨ (Alt+V)', 5000);
+        }
+      } else {
+        document.body.classList.remove('eid-active');
+        document.documentElement.classList.remove('eid-active');
+        if (banner) banner.classList.add('hidden');
+        if (widget) widget.classList.add('hidden');
+        stopEidSparkles();
+
+        if (toggle) toggle.checked = false;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700';
+          badge.textContent = 'معطل حالياً';
+        }
+        if (indicator) indicator.classList.add('hidden');
+        if (toggleText) toggleText.textContent = 'تفعيل الأجواء';
+
+        if (notify) {
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? 'Eid al-Fitr Mode turned off. (Alt+V)' : 'تم إيقاف وضع عيد الفطر المبارك. (Alt+V)', 3500);
+        }
+      }
+    }
+
+    let _lastEidToggleTime = 0;
+    function toggleEidMode() {
+      const now = Date.now();
+      if (now - _lastEidToggleTime < 350) return; // Debounce guard against double execution
+      _lastEidToggleTime = now;
+
+      const currentlyActive = document.body.classList.contains('eid-active');
+      setEidMode(!currentlyActive, true);
+    }
+    window.toggleEidMode = toggleEidMode;
+    window.isEidModeEnabled = isEidModeEnabled;
+    window.setEidMode = setEidMode;
+
+    function burstEidConfetti(originX, originY) {
+      const items = ['🌙', '✨', '⭐', '🏮', '💛', '🌟', '🎉'];
+      for (let i = 0; i < 18; i++) {
+        const el = document.createElement('div');
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.className = 'fixed pointer-events-none z-50 text-base select-none';
+        el.style.left = originX + 'px';
+        el.style.top = originY + 'px';
+        el.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
+        document.body.appendChild(el);
+
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 100 + 40;
+        const destX = originX + Math.cos(angle) * dist;
+        const destY = originY + Math.sin(angle) * dist - 30;
+
+        requestAnimationFrame(() => {
+          el.style.transform = `translate(${destX - originX}px, ${destY - originY}px) scale(${Math.random() * 0.8 + 0.8})`;
+          el.style.opacity = '0';
+        });
+
+        setTimeout(() => el.remove(), 1050);
+      }
+      const isEn = (typeof lang !== 'undefined' && lang === 'en');
+      showToast(isEn ? '🌙 Blessed Eid al-Fitr from WADG TECH! ✨' : '🌙 عيد فطر مبارك وسعيد! كل عام وأنتم بخير من أسرة WADG TECH ✨', 4500);
+    }
+
+    // Bind Eid Mode events
+    (function initEidBindings() {
+      // Admin dashboard toggle
+      const toggle = document.getElementById('admin-eid-mode-toggle');
+      if (toggle) {
+        toggle.addEventListener('change', function() {
+          setEidMode(this.checked, true);
+          if (typeof setAdminSyncBanner === 'function') {
+            setAdminSyncBanner('info', this.checked
+              ? '🌙 تم تفعيل وضع العيد محلياً! اضغط على (🚀 نشر وضع العيد لجميع الزوار) لتفعيله أونلاين عند كل الناس.'
+              : 'ℹ️ تم إيقاف وضع العيد محلياً. اضغط على (🚀 نشر التحديثات إلى GitHub الآن) لإيقافه عند كل الناس.');
+          }
+        });
+      }
+
+      // Crescent widget celebration interaction
+      const widget = document.getElementById('eid-crescent-widget');
+      if (widget) {
+        widget.addEventListener('click', () => {
+          playEidCelebrationMelody();
+          const rect = widget.getBoundingClientRect();
+          burstEidConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        });
+      }
+
+      // Initial state on load
+      const initialEid = isEidModeEnabled();
+      setEidMode(initialEid, false, false);
     })();
 
     // Check URL params for admin auto-open (e.g. ?admin=1)
