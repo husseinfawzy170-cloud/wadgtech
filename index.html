@@ -1819,11 +1819,7 @@
     </div>
   </div>
 
-    <!-- Close/Hide mini button -->
-    <button id="christmas-tree-hide-btn" type="button" title="إخفاء الشجرة" class="mt-1 p-0.5 rounded-full bg-white/80 hover:bg-white text-gray-400 hover:text-gray-700 shadow-xs text-[10px] opacity-0 group-hover:opacity-100 transition-opacity">
-      <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-  </div>
+
 
   <!-- Toast Notification -->
   <div id="toast" class="fixed bottom-5 start-1/2 -translate-x-1/2 z-50 hidden px-5 py-3 rounded-xl bg-[#111827] text-white text-sm font-semibold shadow-lg"></div>
@@ -2421,9 +2417,10 @@
                   🎄
                 </div>
                 <div>
-                  <h4 class="text-sm font-extrabold text-gray-900 flex items-center gap-2">
+                  <h4 class="text-sm font-extrabold text-gray-900 flex items-center gap-2 flex-wrap">
                     <span>🎅</span> وضع أجواء الكريسماس والاحتفالات (Christmas Festive Mode)
                     <span id="admin-christmas-badge" class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700">معطل حالياً</span>
+                    <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800 border border-amber-300">اختصار سريع: Alt + C</span>
                   </h4>
                   <p class="text-xs text-gray-600 mt-0.5 max-w-xl">
                     عند التفعيل، يتحول الموقع فوراً إلى أجواء احتفالية ساحرة: تتساقط النجوم والثلج الناعم على الشاشة، وتظهر شجرة كريسماس متحركة تفاعلية على جانب الصفحة، مع لمسات احتفالية راقية تناسب براند WADG TECH.
@@ -6222,10 +6219,23 @@
       });
     }
 
-    // 2. Keyboard shortcuts (Alt+A, F2, Alt+M, Ctrl+Shift+A)
+    // 2. Keyboard shortcuts (Alt+A, F2, Alt+M, Ctrl+Shift+A, Alt+C)
     document.addEventListener('keydown', (e) => {
       const isKeyA = e.code === 'KeyA' || e.key === 'A' || e.key === 'a' || e.key === 'ش';
       const isKeyM = e.code === 'KeyM' || e.key === 'M' || e.key === 'm' || e.key === 'ة';
+      const isKeyC = e.code === 'KeyC' || e.key === 'C' || e.key === 'c' || e.key === 'ؤ';
+
+      // Alt + C: Toggle Christmas Festive Mode (تفعيل / إيقاف وضع الكريسماس)
+      if (e.altKey && !e.ctrlKey && !e.metaKey && isKeyC) {
+        e.preventDefault();
+        if (typeof toggleChristmasMode === 'function') {
+          toggleChristmasMode();
+        } else if (typeof setChristmasMode === 'function') {
+          const active = document.body.classList.contains('christmas-active');
+          setChristmasMode(!active, true);
+        }
+        return;
+      }
 
       // Alt + A (Direct, fast, no browser conflict)
       if (e.altKey && isKeyA) {
@@ -6859,7 +6869,10 @@
         }
         if (indicator) indicator.classList.remove('hidden');
         if (toggleText) toggleText.textContent = 'إيقاف الأجواء';
-        if (notify) showToast('🎅 تم تفعيل وضع الكريسماس وأجواء الاحتفالات بنجاح! 🎄✨', 5000);
+        if (notify) {
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? '🎅 Christmas Festive Mode activated! 🎄✨ (Alt+C)' : '🎅 تم تفعيل وضع الكريسماس وأجواء الاحتفالات بنجاح! 🎄✨ (Alt+C)', 5000);
+        }
       } else {
         document.body.classList.remove('christmas-active');
         document.documentElement.classList.remove('christmas-active');
@@ -6874,9 +6887,24 @@
         }
         if (indicator) indicator.classList.add('hidden');
         if (toggleText) toggleText.textContent = 'تفعيل الأجواء';
-        if (notify) showToast('تم إيقاف وضع الكريسماس.', 3500);
+        if (notify) {
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? 'Christmas Festive Mode turned off. (Alt+C)' : 'تم إيقاف وضع الكريسماس. (Alt+C)', 3500);
+        }
       }
     }
+
+    let _lastChristmasToggleTime = 0;
+    function toggleChristmasMode() {
+      const now = Date.now();
+      if (now - _lastChristmasToggleTime < 350) return; // Prevent duplicate rapid toggles
+      _lastChristmasToggleTime = now;
+
+      const currentlyActive = document.body.classList.contains('christmas-active');
+      setChristmasMode(!currentlyActive, true);
+    }
+    window.toggleChristmasMode = toggleChristmasMode;
+    window.setChristmasMode = setChristmasMode;
 
     function burstChristmasConfetti(originX, originY) {
       const items = ['✨', '⭐', '❄️', '🎁', '🔔', '❤️', '🌟'];
@@ -6940,6 +6968,8 @@
           burstChristmasConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
         });
       }
+
+
 
       // Initial state on load
       const initialChristmas = isChristmasModeEnabled();
