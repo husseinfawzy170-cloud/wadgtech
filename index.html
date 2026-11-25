@@ -1010,11 +1010,11 @@
 
   <!-- Eid al-Fitr Glowing Neon Announcement Banner -->
   <div id="eid-neon-banner" class="eid-neon-banner relative z-30 hidden overflow-hidden bg-gradient-to-r from-[#032e22] via-[#0b4d37] to-[#042f23] border-y border-amber-400/50 py-2.5 px-3 sm:px-6 transition-all duration-300">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3 text-center sm:text-start">
-      <div class="flex items-center gap-2.5 sm:gap-3.5 mx-auto sm:mx-0 flex-wrap justify-center">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 text-center">
+      <div class="flex items-center gap-2.5 sm:gap-3.5 mx-auto flex-wrap justify-center">
         <span class="text-xl sm:text-2xl animate-crescent-float select-none">🌙</span>
         <div>
-          <div class="flex items-center gap-2 justify-center sm:justify-start">
+          <div class="flex items-center gap-2 justify-center">
             <span class="eid-neon-text text-base sm:text-lg font-black tracking-wide" data-i18n="eid_neon_title">عيد فطر مبارك</span>
             <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-400/20 text-amber-300 border border-amber-400/40 select-none">WADG TECH ✨</span>
           </div>
@@ -1022,14 +1022,6 @@
             تقبل الله منا ومنكم صالح الأعمال • كل عام وأنتم بخير من أسرة WADG TECH 🌙✨
           </p>
         </div>
-      </div>
-      <div class="hidden sm:flex items-center gap-2 shrink-0">
-        <span class="text-xs px-2.5 py-1 rounded-full bg-emerald-950/60 text-amber-300 border border-amber-400/30 font-semibold select-none">
-          Alt + V
-        </span>
-        <button id="eid-banner-close-btn" type="button" aria-label="إغلاق الشريط" class="p-1 rounded-full text-emerald-300 hover:text-white hover:bg-emerald-800/60 transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
       </div>
     </div>
   </div>
@@ -1935,13 +1927,6 @@
   <!-- Animated Interactive Eid al-Fitr Crescent & Lantern Widget -->
   <div id="eid-crescent-widget" class="fixed bottom-4 end-4 sm:bottom-6 sm:end-6 z-40 hidden flex-col items-center select-none cursor-pointer group transition-transform duration-300 hover:scale-105 print:hidden" aria-label="أجواء عيد الفطر المبارك" title="🌙 عيد فطر مبارك من WADG TECH!">
     
-    <!-- Top Action Bar (Close Button) -->
-    <div class="flex items-center gap-2 mb-1 opacity-90 group-hover:opacity-100 transition-opacity">
-      <button id="eid-widget-hide-btn" type="button" title="إخفاء الهلال" class="p-1 rounded-full bg-white/90 hover:bg-white text-gray-500 hover:text-gray-800 shadow-md text-xs border border-amber-200 transition-all hover:scale-110 active:scale-95">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-      </button>
-    </div>
-
     <!-- Festive Tooltip Greeting Bubble -->
     <div id="eid-widget-tooltip" class="absolute -top-10 end-0 bg-gradient-to-r from-[#032e22] to-[#064e3b] text-amber-200 border border-amber-400/50 text-[11px] font-bold px-3 py-1.5 rounded-2xl shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex items-center gap-1.5 backdrop-blur-sm">
       <span class="text-sm">✨</span>
@@ -7512,24 +7497,10 @@
         });
       }
 
-      // Neon banner close button
-      const bannerCloseBtn = document.getElementById('eid-banner-close-btn');
-      if (bannerCloseBtn) {
-        bannerCloseBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          setEidMode(false, true);
-        });
-      }
-
-      // Crescent widget interactions
+      // Crescent widget celebration interaction
       const widget = document.getElementById('eid-crescent-widget');
       if (widget) {
-        widget.addEventListener('click', (e) => {
-          if (e.target.closest('#eid-widget-hide-btn')) {
-            e.stopPropagation();
-            setEidMode(false, true);
-            return;
-          }
+        widget.addEventListener('click', () => {
           playEidCelebrationMelody();
           const rect = widget.getBoundingClientRect();
           burstEidConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
