@@ -2600,15 +2600,20 @@
             </div>
 
             <div class="pt-2 border-t border-red-100 flex items-center justify-between text-[11px] text-gray-500 flex-wrap gap-2">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <span>✨ المؤثرات المتضمنة:</span>
-                <span class="px-2 py-0.5 bg-white rounded-lg border border-red-200 font-semibold text-red-700">⭐ نجوم وثلج متساقط (Snow & Stars)</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-red-200 font-semibold text-red-700">⭐ نجوم وثلج متساقط</span>
                 <span class="px-2 py-0.5 bg-white rounded-lg border border-emerald-200 font-semibold text-emerald-700">🎄 شجرة كريسماس متحركة</span>
-                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-200 font-semibold text-amber-700">🎅 قبعة سانتا على اللوجو</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-200 font-semibold text-amber-700">🎅 قبعة سانتا</span>
               </div>
-              <div id="admin-christmas-live-indicator" class="font-bold text-emerald-700 hidden flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                <span>الأجواء الاحتفالية معروضة الآن على الموقع!</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <div id="admin-christmas-live-indicator" class="font-bold text-emerald-700 hidden flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                  <span>معروض حالياً!</span>
+                </div>
+                <button id="admin-publish-christmas-btn" type="button" class="px-3 py-1.5 bg-red-700 hover:bg-red-800 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow inline-flex items-center gap-1.5 transition-all">
+                  <span>🚀 نشر وضع الكريسماس لجميع الزوار على GitHub</span>
+                </button>
               </div>
             </div>
           </div>
@@ -2641,16 +2646,21 @@
             </div>
 
             <div class="pt-2 border-t border-emerald-100 flex items-center justify-between text-[11px] text-gray-500 flex-wrap gap-2">
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <span>✨ المؤثرات المتضمنة:</span>
-                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-200 font-semibold text-amber-700">⚡ عبارة نيون مشعة "عيد فطر مبارك"</span>
-                <span class="px-2 py-0.5 bg-white rounded-lg border border-emerald-200 font-semibold text-emerald-700">🌙 هلال وفانوس طافي تفاعلي</span>
-                <span class="px-2 py-0.5 bg-white rounded-lg border border-teal-200 font-semibold text-teal-700">✨ ذرات ونجوم ذهبية متساقطة</span>
-                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-300 font-semibold text-amber-800">👑 هلال ذهبي على اللوجو</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-200 font-semibold text-amber-700">⚡ نيون مشع</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-emerald-200 font-semibold text-emerald-700">🌙 هلال وفانوس تفاعلي</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-teal-200 font-semibold text-teal-700">✨ نجوم ذهبية</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-300 font-semibold text-amber-800">👑 هلال على اللوجو</span>
               </div>
-              <div id="admin-eid-live-indicator" class="font-bold text-emerald-700 hidden flex items-center gap-1.5">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                <span>أجواء عيد الفطر المبارك معروضة الآن على الموقع!</span>
+              <div class="flex items-center gap-2 flex-wrap">
+                <div id="admin-eid-live-indicator" class="font-bold text-emerald-700 hidden flex items-center gap-1.5">
+                  <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                  <span>معروض حالياً!</span>
+                </div>
+                <button id="admin-publish-eid-btn" type="button" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow inline-flex items-center gap-1.5 transition-all">
+                  <span>🚀 نشر وضع العيد لجميع الزوار على GitHub</span>
+                </button>
               </div>
             </div>
           </div>
@@ -2666,15 +2676,26 @@
                   تقوم هذه الميزة بنشر جميع تعديلاتك (الأسعار، صور المنتجات، الإعدادات) تلقائياً ومباشرة إلى مستودع GitHub السحابي، لتقوم خوادم GitHub بتحديث الموقع أونلاين لجميع الزوار في جميع أنحاء العالم فوراً خلال 30 ثانية دون الحاجة لأي برامج!
                 </p>
               </div>
-              <div class="bg-white/80 p-3 rounded-xl border border-purple-200 space-y-1.5 max-w-md">
-                <label class="block text-[11px] font-bold text-purple-900">رمز GitHub Personal Access Token الخاص بك:</label>
+              <div class="bg-white/90 p-3.5 rounded-xl border border-purple-200 space-y-2 max-w-md shadow-sm">
+                <div class="flex items-center justify-between">
+                  <label class="block text-[11px] font-bold text-purple-900">رمز GitHub Personal Access Token الخاص بك:</label>
+                  <span id="admin-github-token-status" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">غير مربوط ⚠️</span>
+                </div>
                 <div class="flex items-center gap-2">
                   <input id="admin-github-token-input" type="password" dir="ltr" placeholder="ghp_... أو gho_..." class="flex-1 px-3 py-1.5 text-xs rounded-lg border border-purple-200 bg-white focus:outline-none focus:border-purple-600 font-mono text-[12px]" />
-                  <button type="button" id="admin-save-github-token-btn" class="px-3 py-1.5 bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold rounded-lg transition-colors shrink-0 shadow-sm">
+                  <button type="button" id="admin-save-github-token-btn" class="px-3.5 py-1.5 bg-purple-700 hover:bg-purple-800 text-white text-xs font-bold rounded-lg transition-colors shrink-0 shadow-sm">
                     حفظ الرمز
                   </button>
                 </div>
-                <p class="text-[10px] text-purple-600">يُحفظ الرمز بأمان وسرية على جهازك فقط لاستخدامه في تحديث المتجر مباشرة.</p>
+                <div class="pt-1">
+                  <a href="https://github.com/settings/tokens/new?scopes=repo&description=WADG_Tech_Admin_Sync" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-[11px] font-extrabold text-purple-700 hover:text-purple-900 underline hover:no-underline bg-purple-100/70 hover:bg-purple-200/80 px-2.5 py-1.5 rounded-lg transition-colors w-full justify-center">
+                    <span>🔑 اضغط هنا لفتح صفحة إنشاء الرمز في GitHub مباشرة</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                  </a>
+                </div>
+                <p class="text-[10px] text-purple-600 leading-normal">
+                  يُحفظ الرمز بأمان وسرية على هذا المتصفح فقط لنشر التعديلات وأوضاع العيد/الكريسماس فوراً لجميع الزوار.
+                </p>
               </div>
             </div>
             <button id="admin-sync-github-tab3-btn" type="button" class="shrink-0 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-extrabold transition-all shadow-md hover:shadow-lg inline-flex items-center gap-2">
@@ -5783,6 +5804,20 @@
 
       const gasInput = document.getElementById('admin-gas-url');
       if (gasInput) gasInput.value = localStorage.getItem('wadg_gas_url') || 'https://script.google.com/macros/s/AKfycbzjwq3WAq0_hYerlmeZpm9imFQViYlFwzoUPxX_4EDNrRRjQ4mMKwW0ff_apAVtMOad/exec';
+
+      const ghTokenInput = document.getElementById('admin-github-token-input');
+      const ghStatus = document.getElementById('admin-github-token-status');
+      const savedGhToken = localStorage.getItem('wadg_github_token') || '';
+      if (ghTokenInput) ghTokenInput.value = savedGhToken;
+      if (ghStatus) {
+        if (savedGhToken) {
+          ghStatus.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300';
+          ghStatus.textContent = 'مربوط ومحفوظ ✅';
+        } else {
+          ghStatus.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 border border-amber-300';
+          ghStatus.textContent = 'غير مربوط ⚠️';
+        }
+      }
     }
 
     function renderAdminProductsList() {
@@ -6202,6 +6237,12 @@
           fullHtml = fullHtml.replace(prodRegex, newProdJson);
         }
 
+        // Update global festive themes (Christmas & Eid) so they activate for ALL visitors online
+        const christmasState = isChristmasModeEnabled();
+        const eidState = isEidModeEnabled();
+        fullHtml = fullHtml.replace(/const DEFAULT_CHRISTMAS_MODE = (true|false);/, `const DEFAULT_CHRISTMAS_MODE = ${christmasState};`);
+        fullHtml = fullHtml.replace(/const DEFAULT_EID_MODE = (true|false);/, `const DEFAULT_EID_MODE = ${eidState};`);
+
         // Convert UTF-8 to Base64 safely
         function toB64(str) {
           const bytes = new TextEncoder().encode(str);
@@ -6272,6 +6313,33 @@
     document.getElementById('admin-sync-github-tab1-btn')?.addEventListener('click', () => syncToGitHub());
     document.getElementById('admin-sync-github-tab3-btn')?.addEventListener('click', () => syncToGitHub());
 
+    // Bind GitHub Token Save button
+    document.getElementById('admin-save-github-token-btn')?.addEventListener('click', () => {
+      const val = document.getElementById('admin-github-token-input')?.value.trim();
+      if (!val) {
+        showToast('⚠️ يرجى إدخال رمز GitHub Token أولاً');
+        return;
+      }
+      localStorage.setItem('wadg_github_token', val);
+      const ghStatus = document.getElementById('admin-github-token-status');
+      if (ghStatus) {
+        ghStatus.className = 'text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300';
+        ghStatus.textContent = 'مربوط ومحفوظ ✅';
+      }
+      showToast('✅ تم حفظ رمز GitHub Token بنجاح! يمكنك الآن النشر السحابي لجميع الزوار');
+    });
+
+    // Bind Direct Seasonal Theme Publish buttons
+    document.getElementById('admin-publish-eid-btn')?.addEventListener('click', async () => {
+      setEidMode(true, true, true);
+      await syncToGitHub();
+    });
+
+    document.getElementById('admin-publish-christmas-btn')?.addEventListener('click', async () => {
+      setChristmasMode(true, true, true);
+      await syncToGitHub();
+    });
+
     document.getElementById('admin-export-html-btn')?.addEventListener('click', async () => {
       showToast('⏳ جاري تجميع كل البيانات وحفظ الفيديوهات...');
       await new Promise(r => setTimeout(r, 300));
@@ -6291,6 +6359,12 @@
       if (prodRegex.test(fullHtml)) {
         fullHtml = fullHtml.replace(prodRegex, newProdJson);
       }
+
+      // ── تحديث الأوضاع الاحتفالية لجميع الزوار ──
+      const christmasState = isChristmasModeEnabled();
+      const eidState = isEidModeEnabled();
+      fullHtml = fullHtml.replace(/const DEFAULT_CHRISTMAS_MODE = (true|false);/, `const DEFAULT_CHRISTMAS_MODE = ${christmasState};`);
+      fullHtml = fullHtml.replace(/const DEFAULT_EID_MODE = (true|false);/, `const DEFAULT_EID_MODE = ${eidState};`);
 
       // ── تحديث رقم الواتساب ──
       const currentWa = localStorage.getItem('wadg_whatsapp_number');
@@ -6945,7 +7019,7 @@
     }
 
     function isChristmasModeEnabled() {
-      const saved = localStorage.getItem('wadg_christmas_mode');
+      const saved = localStorage.getItem('wadg_christmas_mode_override');
       if (saved !== null) return saved === 'true';
       return DEFAULT_CHRISTMAS_MODE;
     }
@@ -7069,8 +7143,10 @@
       }
     }
 
-    function setChristmasMode(enabled, notify = false) {
-      localStorage.setItem('wadg_christmas_mode', enabled ? 'true' : 'false');
+    function setChristmasMode(enabled, notify = false, persist = true) {
+      if (persist) {
+        localStorage.setItem('wadg_christmas_mode_override', enabled ? 'true' : 'false');
+      }
       const tree = document.getElementById('christmas-tree-widget');
       const toggle = document.getElementById('admin-christmas-mode-toggle');
       const badge = document.getElementById('admin-christmas-badge');
@@ -7198,7 +7274,7 @@
 
       // Initial state on load
       const initialChristmas = isChristmasModeEnabled();
-      setChristmasMode(initialChristmas, false);
+      setChristmasMode(initialChristmas, false, false);
     })();
 
     // ══════════════════════════════════════════════════════════════
@@ -7255,7 +7331,7 @@
     }
 
     function isEidModeEnabled() {
-      const saved = localStorage.getItem('wadg_eid_mode');
+      const saved = localStorage.getItem('wadg_eid_mode_override');
       if (saved !== null) return saved === 'true';
       return DEFAULT_EID_MODE;
     }
@@ -7397,8 +7473,10 @@
       }
     }
 
-    function setEidMode(enabled, notify = false) {
-      localStorage.setItem('wadg_eid_mode', enabled ? 'true' : 'false');
+    function setEidMode(enabled, notify = false, persist = true) {
+      if (persist) {
+        localStorage.setItem('wadg_eid_mode_override', enabled ? 'true' : 'false');
+      }
       const banner = document.getElementById('eid-neon-banner');
       const widget = document.getElementById('eid-crescent-widget');
       const toggle = document.getElementById('admin-eid-mode-toggle');
@@ -7509,7 +7587,7 @@
 
       // Initial state on load
       const initialEid = isEidModeEnabled();
-      setEidMode(initialEid, false);
+      setEidMode(initialEid, false, false);
     })();
 
     // ── Dynamic Live Products & Prices Resolver ──
