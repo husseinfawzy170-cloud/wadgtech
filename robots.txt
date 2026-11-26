@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://husseinfawzy170-cloud.github.io/wadgtech/sitemap.xml
