@@ -828,47 +828,37 @@
       transform: rotate(10deg);
     }
 
-    /* ── Eid al-Adha Festive Theme Styles (وضع عيد الأضحى المبارك) ── */
-    @keyframes eidAdhaNeonPulse {
+    /* ── Eid al-Adha Festive Theme Styles (وضع عيد الأضحى المبارك - Zero-Repaint 60FPS) ── */
+    @keyframes eidAdhaPulse {
       0%, 100% {
-        opacity: 0.92;
-        text-shadow:
-          0 0 7px #ffffff,
-          0 0 16px #fde047,
-          0 0 32px #f59e0b,
-          0 0 48px #d97706,
-          0 0 65px #10b981;
+        opacity: 0.93;
+        transform: translateZ(0);
       }
       50% {
         opacity: 1;
-        text-shadow:
-          0 0 10px #ffffff,
-          0 0 22px #fef08a,
-          0 0 42px #fbbf24,
-          0 0 62px #f59e0b,
-          0 0 85px #059669;
+        transform: translateZ(0);
       }
     }
     .eid-adha-neon-text {
       color: #ffffff;
-      animation: eidAdhaNeonPulse 2.2s ease-in-out infinite alternate;
+      text-shadow:
+        0 0 5px #ffffff,
+        0 0 12px #fde047,
+        0 0 22px #f59e0b,
+        0 0 38px #d97706;
+      animation: eidAdhaPulse 2.8s ease-in-out infinite alternate;
       letter-spacing: 0.8px;
-      will-change: text-shadow, opacity;
+      will-change: opacity;
     }
 
-    @keyframes eidAdhaBorderPulse {
-      0%, 100% { border-color: rgba(245, 158, 11, 0.45); }
-      50% { border-color: rgba(16, 185, 129, 0.85); }
-    }
     .eid-adha-neon-banner {
-      box-shadow: 0 4px 25px -2px rgba(245, 158, 11, 0.28), inset 0 0 18px rgba(251, 191, 36, 0.18);
-      animation: eidAdhaBorderPulse 2.8s ease-in-out infinite alternate;
+      box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.22);
     }
 
     @keyframes sheep-bobble {
-      0% { transform: translateY(0) rotate(-1.5deg); }
-      50% { transform: translateY(-7px) rotate(1.5deg) scale(1.02); }
-      100% { transform: translateY(0) rotate(-1.5deg); }
+      0% { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
+      50% { transform: translate3d(0, -6px, 0) rotate(1.5deg) scale(1.02); }
+      100% { transform: translate3d(0, 0, 0) rotate(-1.5deg); }
     }
     .animate-sheep-bobble {
       animation: sheep-bobble 2.6s ease-in-out infinite alternate;
@@ -885,7 +875,7 @@
       transform-origin: top center;
     }
 
-    /* Sheep Mascot on Brand Logo in Eid al-Adha Mode */
+    /* Sheep Mascot on Brand Logo in Eid al-Adha Mode (Static on sticky header to prevent scroll repaints) */
     .eid-adha-active .brand-logo-container {
       position: relative;
     }
@@ -898,12 +888,21 @@
       z-index: 30;
       transform: rotate(-10deg);
       pointer-events: none;
-      animation: sheep-bobble 2.4s ease-in-out infinite alternate;
     }
     html[dir="rtl"] .eid-adha-active .brand-logo-container::before {
       left: auto;
       right: -8px;
       transform: rotate(10deg);
+    }
+
+    /* ── Mobile 60FPS Video Hardware Acceleration Promotion ── */
+    .top-slide,
+    .top-slide-video,
+    #brand-intro-video,
+    #top-slides {
+      transform: translateZ(0);
+      will-change: transform, opacity;
+      contain: paint;
     }
 
         /* ── Top News Ticker Marquee (Universal Seamless Infinite Flow) ── */
@@ -1105,7 +1104,7 @@
         <span class="text-2xl sm:text-3xl animate-sheep-bobble select-none" aria-hidden="true">🐑</span>
         <div>
           <div class="flex items-center gap-2.5 sm:gap-3 justify-center flex-wrap">
-            <span class="eid-adha-neon-text text-lg sm:text-2xl font-black tracking-wide drop-shadow-md" data-i18n="eid_adha_neon_title">عيد أضحى مبارك</span>
+            <span class="eid-adha-neon-text text-lg sm:text-2xl font-black tracking-wide" data-i18n="eid_adha_neon_title">عيد أضحى مبارك</span>
             <span class="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black bg-amber-400/25 text-amber-300 border border-amber-400/50 shadow-sm select-none">WADG TECH 🐑✨</span>
           </div>
           <p class="text-xs sm:text-sm text-emerald-100/95 font-semibold mt-1" data-i18n="eid_adha_neon_subtitle">
@@ -2085,8 +2084,8 @@
       <span id="eid-adha-widget-tooltip-text" data-i18n="eid_adha_sheep_greeting">🐑 عيد أضحى مبارك وسعيد من WADG TECH! ✨ كل عام وأنتم بخير!</span>
     </div>
 
-    <!-- Adorable Glowing Sheep Mascot -->
-    <div class="relative w-28 h-32 sm:w-36 sm:h-40 flex items-center justify-center will-change-transform animate-sheep-bobble" style="filter: drop-shadow(0 6px 18px rgba(245,158,11,0.38));">
+    <!-- Adorable Glowing Sheep Mascot (Hardware Composited, Zero Gaussian Filter) -->
+    <div class="relative w-20 h-24 sm:w-32 sm:h-36 flex items-center justify-center will-change-transform animate-sheep-bobble">
       <svg class="w-full h-full" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="sheepWoolGrad" x1="40" y1="40" x2="120" y2="150" gradientUnits="userSpaceOnUse">
@@ -2104,14 +2103,10 @@
             <stop offset="50%" stop-color="#fbbf24"/>
             <stop offset="100%" stop-color="#d97706"/>
           </linearGradient>
-          <filter id="sheepGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="3" result="blur"/>
-            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-          </filter>
         </defs>
 
-        <!-- Subtle Ambient Glow -->
-        <circle cx="80" cy="100" r="58" fill="#fef3c7" opacity="0.22" filter="url(#sheepGlowFilter)"/>
+        <!-- Subtle Crisp Ambient Aura (Vector Shape, 0% CPU Gaussian blur) -->
+        <circle cx="80" cy="100" r="56" fill="#fef3c7" opacity="0.25"/>
 
         <!-- Little Hooves / Legs -->
         <rect x="52" y="142" width="11" height="18" rx="5.5" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.2"/>
@@ -2193,9 +2188,9 @@
         <!-- Sparkles around the sheep -->
         <g fill="#fbbf24">
           <!-- Sparkle 1 -->
-          <path d="M28 36 Q32 36 32 32 Q32 36 36 36 Q32 36 32 40 Q32 36 28 36 Z" filter="url(#sheepGlowFilter)"/>
+          <path d="M28 36 Q32 36 32 32 Q32 36 36 36 Q32 36 32 40 Q32 36 28 36 Z"/>
           <!-- Sparkle 2 -->
-          <path d="M128 32 Q132 32 132 28 Q132 32 136 32 Q132 32 132 36 Q132 32 128 32 Z" filter="url(#sheepGlowFilter)"/>
+          <path d="M128 32 Q132 32 132 28 Q132 32 136 32 Q132 32 132 36 Q132 32 128 32 Z"/>
           <!-- Tiny crescent -->
           <path d="M138 52 A 6 6 0 1 0 144 58 A 4.8 4.8 0 0 1 138 52 Z" fill="#f59e0b"/>
         </g>
@@ -3189,6 +3184,23 @@
 
 
   <script>
+    // Global festive mode detection stubs (prevents any early ReferenceError across modules)
+    window.isChristmasModeEnabled = window.isChristmasModeEnabled || function() {
+      const saved = localStorage.getItem('wadg_christmas_mode_override');
+      if (saved !== null) return saved === 'true';
+      return typeof DEFAULT_CHRISTMAS_MODE !== 'undefined' ? DEFAULT_CHRISTMAS_MODE : false;
+    };
+    window.isEidModeEnabled = window.isEidModeEnabled || function() {
+      const saved = localStorage.getItem('wadg_eid_mode_override');
+      if (saved !== null) return saved === 'true';
+      return typeof DEFAULT_EID_MODE !== 'undefined' ? DEFAULT_EID_MODE : false;
+    };
+    window.isEidAdhaModeEnabled = window.isEidAdhaModeEnabled || function() {
+      const saved = localStorage.getItem('wadg_eid_adha_mode_override');
+      if (saved !== null) return saved === 'true';
+      return typeof DEFAULT_EID_ADHA_MODE !== 'undefined' ? DEFAULT_EID_ADHA_MODE : false;
+    };
+
     const DEFAULT_PRODUCTS = [
       {
         id: 'serum',
@@ -6573,15 +6585,43 @@
     }
 
     function getEffectiveFestiveStates() {
-      const christmas = (typeof isChristmasModeEnabled === 'function')
-        ? isChristmasModeEnabled()
-        : document.body.classList.contains('christmas-active');
-      const eid = (typeof isEidModeEnabled === 'function')
-        ? isEidModeEnabled()
-        : document.body.classList.contains('eid-active');
-      const eidAdha = (typeof isEidAdhaModeEnabled === 'function')
-        ? isEidAdhaModeEnabled()
-        : document.body.classList.contains('eid-adha-active');
+      let christmas = false;
+      let eid = false;
+      let eidAdha = false;
+
+      try {
+        if (typeof window !== 'undefined' && typeof window.isChristmasModeEnabled === 'function') {
+          christmas = window.isChristmasModeEnabled();
+        } else if (typeof isChristmasModeEnabled === 'function') {
+          christmas = isChristmasModeEnabled();
+        }
+      } catch (e) {}
+      if (!christmas && document.body) {
+        christmas = document.body.classList.contains('christmas-active');
+      }
+
+      try {
+        if (typeof window !== 'undefined' && typeof window.isEidModeEnabled === 'function') {
+          eid = window.isEidModeEnabled();
+        } else if (typeof isEidModeEnabled === 'function') {
+          eid = isEidModeEnabled();
+        }
+      } catch (e) {}
+      if (!eid && document.body) {
+        eid = document.body.classList.contains('eid-active');
+      }
+
+      try {
+        if (typeof window !== 'undefined' && typeof window.isEidAdhaModeEnabled === 'function') {
+          eidAdha = window.isEidAdhaModeEnabled();
+        } else if (typeof isEidAdhaModeEnabled === 'function') {
+          eidAdha = isEidAdhaModeEnabled();
+        }
+      } catch (e) {}
+      if (!eidAdha && document.body) {
+        eidAdha = document.body.classList.contains('eid-adha-active');
+      }
+
       return { christmas: !!christmas, eid: !!eid, eidAdha: !!eidAdha };
     }
 
@@ -8587,10 +8627,10 @@ CRITICAL RULES:
       const toggleText = document.getElementById('admin-eid-toggle-text');
 
       if (enabled) {
-        if (typeof isEidAdhaModeEnabled === 'function' && isEidAdhaModeEnabled()) {
+        if ((typeof window !== 'undefined' && typeof window.isEidAdhaModeEnabled === 'function' && window.isEidAdhaModeEnabled()) || (typeof isEidAdhaModeEnabled === 'function' && isEidAdhaModeEnabled())) {
           setEidAdhaMode(false, false, true);
         }
-        if (typeof isChristmasModeEnabled === 'function' && isChristmasModeEnabled()) {
+        if ((typeof window !== 'undefined' && typeof window.isChristmasModeEnabled === 'function' && window.isChristmasModeEnabled()) || (typeof isChristmasModeEnabled === 'function' && isChristmasModeEnabled())) {
           setChristmasMode(false, false, true);
         }
         document.body.classList.add('eid-active');
@@ -8771,8 +8811,12 @@ CRITICAL RULES:
       return DEFAULT_EID_ADHA_MODE;
     }
 
-    // Ultra-Light Pre-Baked Sprite Golden Sparkles Engine (Zero shadowBlur on mobile)
+    // Ultra-Light Pre-Baked Sprite Golden Sparkles Engine (Zero shadowBlur, mobile gated)
     function initEidAdhaSparkles() {
+      if (window.innerWidth < 768) {
+        stopEidAdhaSparkles();
+        return;
+      }
       const canvas = document.getElementById('eid-adha-sparkles-canvas');
       if (!canvas) return;
       canvas.classList.remove('hidden');
@@ -8818,8 +8862,7 @@ CRITICAL RULES:
         s2Ctx.fill();
       }
 
-      const isMobile = width < 768;
-      const count = isMobile ? 12 : 20;
+      const count = 12;
       const particles = [];
 
       for (let i = 0; i < count; i++) {
@@ -8897,10 +8940,10 @@ CRITICAL RULES:
 
       if (enabled) {
         // Auto-disable other holiday themes if active to avoid stacking banners
-        if (typeof isChristmasModeEnabled === 'function' && isChristmasModeEnabled()) {
+        if ((typeof window !== 'undefined' && typeof window.isChristmasModeEnabled === 'function' && window.isChristmasModeEnabled()) || (typeof isChristmasModeEnabled === 'function' && isChristmasModeEnabled())) {
           setChristmasMode(false, false, true);
         }
-        if (typeof isEidModeEnabled === 'function' && isEidModeEnabled()) {
+        if ((typeof window !== 'undefined' && typeof window.isEidModeEnabled === 'function' && window.isEidModeEnabled()) || (typeof isEidModeEnabled === 'function' && isEidModeEnabled())) {
           setEidMode(false, false, true);
         }
 
