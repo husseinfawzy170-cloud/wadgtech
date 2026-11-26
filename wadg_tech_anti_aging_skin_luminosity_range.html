@@ -828,6 +828,84 @@
       transform: rotate(10deg);
     }
 
+    /* ── Eid al-Adha Festive Theme Styles (وضع عيد الأضحى المبارك) ── */
+    @keyframes eidAdhaNeonPulse {
+      0%, 100% {
+        opacity: 0.92;
+        text-shadow:
+          0 0 7px #ffffff,
+          0 0 16px #fde047,
+          0 0 32px #f59e0b,
+          0 0 48px #d97706,
+          0 0 65px #10b981;
+      }
+      50% {
+        opacity: 1;
+        text-shadow:
+          0 0 10px #ffffff,
+          0 0 22px #fef08a,
+          0 0 42px #fbbf24,
+          0 0 62px #f59e0b,
+          0 0 85px #059669;
+      }
+    }
+    .eid-adha-neon-text {
+      color: #ffffff;
+      animation: eidAdhaNeonPulse 2.2s ease-in-out infinite alternate;
+      letter-spacing: 0.8px;
+      will-change: text-shadow, opacity;
+    }
+
+    @keyframes eidAdhaBorderPulse {
+      0%, 100% { border-color: rgba(245, 158, 11, 0.45); }
+      50% { border-color: rgba(16, 185, 129, 0.85); }
+    }
+    .eid-adha-neon-banner {
+      box-shadow: 0 4px 25px -2px rgba(245, 158, 11, 0.28), inset 0 0 18px rgba(251, 191, 36, 0.18);
+      animation: eidAdhaBorderPulse 2.8s ease-in-out infinite alternate;
+    }
+
+    @keyframes sheep-bobble {
+      0% { transform: translateY(0) rotate(-1.5deg); }
+      50% { transform: translateY(-7px) rotate(1.5deg) scale(1.02); }
+      100% { transform: translateY(0) rotate(-1.5deg); }
+    }
+    .animate-sheep-bobble {
+      animation: sheep-bobble 2.6s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+      will-change: transform;
+    }
+
+    @keyframes bell-ring {
+      0%, 100% { transform: rotate(-8deg); }
+      50% { transform: rotate(8deg); }
+    }
+    .animate-bell-ring {
+      animation: bell-ring 1.8s ease-in-out infinite alternate;
+      transform-origin: top center;
+    }
+
+    /* Sheep Mascot on Brand Logo in Eid al-Adha Mode */
+    .eid-adha-active .brand-logo-container {
+      position: relative;
+    }
+    .eid-adha-active .brand-logo-container::before {
+      content: '🐑';
+      position: absolute;
+      top: -12px;
+      left: -8px;
+      font-size: 20px;
+      z-index: 30;
+      transform: rotate(-10deg);
+      pointer-events: none;
+      animation: sheep-bobble 2.4s ease-in-out infinite alternate;
+    }
+    html[dir="rtl"] .eid-adha-active .brand-logo-container::before {
+      left: auto;
+      right: -8px;
+      transform: rotate(10deg);
+    }
+
         /* ── Top News Ticker Marquee (Universal Seamless Infinite Flow) ── */
     @keyframes marquee-scroll-right {
       0% {
@@ -1015,6 +1093,26 @@
             تقبل الله منا ومنكم صالح الأعمال • كل عام وأنتم بخير من أسرة WADG TECH 🌙✨
           </p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Eid al-Adha Glowing Neon Announcement Banner (وضع عيد الأضحى المبارك) -->
+  <div id="eid-adha-neon-banner" class="eid-adha-neon-banner relative z-30 hidden overflow-hidden bg-gradient-to-r from-[#0a2f26] via-[#114b38] to-[#0d3b2c] border-y-2 border-amber-400/60 py-3 sm:py-3.5 px-3 sm:px-6 transition-all duration-300">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3.5 text-center">
+      <div class="flex items-center gap-3 sm:gap-4 mx-auto flex-wrap justify-center">
+        <!-- Animated Bouncing Sheep & Stars -->
+        <span class="text-2xl sm:text-3xl animate-sheep-bobble select-none" aria-hidden="true">🐑</span>
+        <div>
+          <div class="flex items-center gap-2.5 sm:gap-3 justify-center flex-wrap">
+            <span class="eid-adha-neon-text text-lg sm:text-2xl font-black tracking-wide drop-shadow-md" data-i18n="eid_adha_neon_title">عيد أضحى مبارك</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black bg-amber-400/25 text-amber-300 border border-amber-400/50 shadow-sm select-none">WADG TECH 🐑✨</span>
+          </div>
+          <p class="text-xs sm:text-sm text-emerald-100/95 font-semibold mt-1" data-i18n="eid_adha_neon_subtitle">
+            أعاده الله عليكم باليمن والبركات • كل عام وأنتم بخير وبشرتكم في أبهى إشراقة من أسرة WADG TECH 🐑✨
+          </p>
+        </div>
+        <span class="text-xl sm:text-2xl animate-crescent-float select-none hidden sm:inline" aria-hidden="true">✨</span>
       </div>
     </div>
   </div>
@@ -1975,6 +2073,136 @@
     </div>
   </div>
 
+  <!-- Eid al-Adha Mode Golden Sparkles Canvas -->
+  <canvas id="eid-adha-sparkles-canvas" class="fixed inset-0 pointer-events-none z-[45] hidden" style="width: 100vw; height: 100vh; transform: translateZ(0); will-change: transform;"></canvas>
+
+  <!-- Animated Interactive Eid al-Adha Sheep Widget (خروف العيد التفاعلي) -->
+  <div id="eid-adha-sheep-widget" class="fixed bottom-4 end-4 sm:bottom-6 sm:end-6 z-40 hidden flex-col items-center select-none cursor-pointer group transition-transform duration-300 hover:scale-105 print:hidden" aria-label="أجواء عيد الأضحى المبارك" title="🐑 عيد أضحى مبارك من WADG TECH!">
+    
+    <!-- Festive Tooltip Greeting Bubble -->
+    <div id="eid-adha-widget-tooltip" class="absolute -top-11 end-0 bg-gradient-to-r from-[#0a2f26] to-[#14532d] text-amber-200 border border-amber-400/60 text-[11px] font-bold px-3.5 py-1.5 rounded-2xl shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none flex items-center gap-1.5 backdrop-blur-sm">
+      <span class="text-sm">✨</span>
+      <span id="eid-adha-widget-tooltip-text" data-i18n="eid_adha_sheep_greeting">🐑 عيد أضحى مبارك وسعيد من WADG TECH! ✨ كل عام وأنتم بخير!</span>
+    </div>
+
+    <!-- Adorable Glowing Sheep Mascot -->
+    <div class="relative w-28 h-32 sm:w-36 sm:h-40 flex items-center justify-center will-change-transform animate-sheep-bobble" style="filter: drop-shadow(0 6px 18px rgba(245,158,11,0.38));">
+      <svg class="w-full h-full" viewBox="0 0 160 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sheepWoolGrad" x1="40" y1="40" x2="120" y2="150" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="70%" stop-color="#f8fafc"/>
+            <stop offset="100%" stop-color="#e2e8f0"/>
+          </linearGradient>
+          <linearGradient id="sheepHornGrad" x1="20" y1="20" x2="60" y2="70" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fef08a"/>
+            <stop offset="40%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#b45309"/>
+          </linearGradient>
+          <linearGradient id="sheepBellGrad" x1="70" y1="110" x2="90" y2="130" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#fffbeb"/>
+            <stop offset="50%" stop-color="#fbbf24"/>
+            <stop offset="100%" stop-color="#d97706"/>
+          </linearGradient>
+          <filter id="sheepGlowFilter" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="3" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+
+        <!-- Subtle Ambient Glow -->
+        <circle cx="80" cy="100" r="58" fill="#fef3c7" opacity="0.22" filter="url(#sheepGlowFilter)"/>
+
+        <!-- Little Hooves / Legs -->
+        <rect x="52" y="142" width="11" height="18" rx="5.5" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.2"/>
+        <rect x="52" y="153" width="11" height="7" rx="2" fill="#78350f"/>
+        <rect x="68" y="145" width="11" height="17" rx="5.5" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2"/>
+        <rect x="68" y="155" width="11" height="7" rx="2" fill="#78350f"/>
+        <rect x="85" y="145" width="11" height="17" rx="5.5" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="1.2"/>
+        <rect x="85" y="155" width="11" height="7" rx="2" fill="#78350f"/>
+        <rect x="101" y="142" width="11" height="18" rx="5.5" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1.2"/>
+        <rect x="101" y="153" width="11" height="7" rx="2" fill="#78350f"/>
+
+        <!-- Fluffy Wool Body (Overlapping Cloud Curves) -->
+        <g fill="url(#sheepWoolGrad)" stroke="#cbd5e1" stroke-width="1.5">
+          <circle cx="50" cy="100" r="19"/>
+          <circle cx="68" cy="88" r="21"/>
+          <circle cx="95" cy="88" r="21"/>
+          <circle cx="114" cy="100" r="19"/>
+          <circle cx="115" cy="120" r="18"/>
+          <circle cx="98" cy="132" r="20"/>
+          <circle cx="66" cy="132" r="20"/>
+          <circle cx="48" cy="119" r="18"/>
+          <circle cx="82" cy="112" r="28" stroke="none"/>
+        </g>
+        <!-- Cute Little Tail -->
+        <circle cx="128" cy="112" r="9" fill="url(#sheepWoolGrad)" stroke="#cbd5e1" stroke-width="1.5"/>
+
+        <!-- Festive Green Ribbon Collar -->
+        <path d="M60 114 Q80 126 100 114" stroke="#059669" stroke-width="5" stroke-linecap="round" fill="none"/>
+        <path d="M60 114 Q80 126 100 114" stroke="#34d399" stroke-width="2" stroke-linecap="round" fill="none"/>
+        
+        <!-- Hanging Golden Bell -->
+        <g class="animate-bell-ring" style="transform-origin: 80px 121px;">
+          <circle cx="80" cy="128" r="6.5" fill="url(#sheepBellGrad)" stroke="#b45309" stroke-width="1"/>
+          <circle cx="80" cy="128" r="2" fill="#78350f"/>
+          <rect x="77.5" y="120.5" width="5" height="3" rx="1.5" fill="#f59e0b"/>
+        </g>
+
+        <!-- Horns (Curved Golden Ram Horns) -->
+        <!-- Left Horn -->
+        <path d="M58 60 C44 48 30 58 32 72 C33 80 40 85 47 82 C54 79 56 69 50 67 C44 65 39 71 42 76" fill="none" stroke="url(#sheepHornGrad)" stroke-width="6.5" stroke-linecap="round"/>
+        <!-- Right Horn -->
+        <path d="M102 60 C116 48 130 58 128 72 C127 80 120 85 113 82 C106 79 104 69 110 67 C116 65 121 71 118 76" fill="none" stroke="url(#sheepHornGrad)" stroke-width="6.5" stroke-linecap="round"/>
+
+        <!-- Ears -->
+        <g>
+          <!-- Left Ear -->
+          <ellipse cx="44" cy="68" rx="11" ry="6.5" transform="rotate(-25 44 68)" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+          <ellipse cx="44" cy="68" rx="7" ry="3.8" transform="rotate(-25 44 68)" fill="#fbcfe8"/>
+          <!-- Right Ear -->
+          <ellipse cx="116" cy="68" rx="11" ry="6.5" transform="rotate(25 116 68)" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2"/>
+          <ellipse cx="116" cy="68" rx="7" ry="3.8" transform="rotate(25 116 68)" fill="#fbcfe8"/>
+        </g>
+
+        <!-- Head Base -->
+        <ellipse cx="80" cy="74" rx="22" ry="20" fill="#fef2f2" stroke="#e2e8f0" stroke-width="1.4"/>
+        
+        <!-- Fluffy Wool Forehead Crown -->
+        <g fill="url(#sheepWoolGrad)" stroke="#cbd5e1" stroke-width="1.2">
+          <circle cx="68" cy="56" r="8"/>
+          <circle cx="80" cy="53" r="9"/>
+          <circle cx="92" cy="56" r="8"/>
+          <circle cx="74" cy="50" r="7"/>
+          <circle cx="86" cy="50" r="7"/>
+        </g>
+
+        <!-- Happy Facial Features -->
+        <!-- Eyes (Happy Arcs) -->
+        <path d="M70 73 Q74 69 78 73" stroke="#1e293b" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M82 73 Q86 69 90 73" stroke="#1e293b" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        
+        <!-- Blushing Cheeks -->
+        <ellipse cx="68" cy="79" rx="4" ry="2.5" fill="#f472b6" opacity="0.6"/>
+        <ellipse cx="92" cy="79" rx="4" ry="2.5" fill="#f472b6" opacity="0.6"/>
+
+        <!-- Cute Little Nose & Smiling Mouth -->
+        <path d="M78 78 L82 78 L80 81 Z" fill="#f43f5e"/>
+        <path d="M80 81 L80 84 Q76 87 73 85 M80 84 Q84 87 87 85" stroke="#1e293b" stroke-width="1.8" stroke-linecap="round" fill="none"/>
+
+        <!-- Sparkles around the sheep -->
+        <g fill="#fbbf24">
+          <!-- Sparkle 1 -->
+          <path d="M28 36 Q32 36 32 32 Q32 36 36 36 Q32 36 32 40 Q32 36 28 36 Z" filter="url(#sheepGlowFilter)"/>
+          <!-- Sparkle 2 -->
+          <path d="M128 32 Q132 32 132 28 Q132 32 136 32 Q132 32 132 36 Q132 32 128 32 Z" filter="url(#sheepGlowFilter)"/>
+          <!-- Tiny crescent -->
+          <path d="M138 52 A 6 6 0 1 0 144 58 A 4.8 4.8 0 0 1 138 52 Z" fill="#f59e0b"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+
 
 
   <!-- Toast Notification -->
@@ -2104,7 +2332,7 @@
           <div>
             <div class="flex items-center gap-2">
               <h3 class="text-base font-extrabold leading-none">لوحة تحكم المسؤول (WADG Admin)</h3>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#5A8D00]/30 text-lime-300 border border-[#5A8D00]/50">v2.8</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#5A8D00]/30 text-lime-300 border border-[#5A8D00]/50">v2.9</span>
             </div>
             <span class="text-[11px] text-gray-300 font-medium">التحكم في أسعار المنتجات، إشعارات تليجرام، وتصدير الصفحة</span>
           </div>
@@ -2667,6 +2895,52 @@
                 </div>
                 <button id="admin-publish-eid-btn" type="button" class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow inline-flex items-center gap-1.5 transition-all">
                   <span id="admin-publish-eid-btn-text">🚀 نشر حالة العيد الحالية لجميع الزوار</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Eid al-Adha Festive Theme Toggle Card (وضع عيد الأضحى المبارك) -->
+          <div class="bg-gradient-to-r from-amber-50 via-emerald-50 to-teal-50 p-5 rounded-2xl border-2 border-amber-300/80 shadow-sm space-y-3">
+            <div class="flex items-center justify-between flex-wrap gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 via-emerald-600 to-teal-700 text-white flex items-center justify-center text-xl shadow-md">
+                  🐑
+                </div>
+                <div>
+                  <h4 class="text-sm font-extrabold text-gray-900 flex items-center gap-2 flex-wrap">
+                    <span>✨</span> وضع أجواء عيد الأضحى المبارك (Eid al-Adha Festive Mode)
+                    <span id="admin-eid-adha-badge" class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700">معطل حالياً</span>
+                    <span class="text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800 border border-amber-300">اختصار سريع: Alt + B</span>
+                  </h4>
+                  <p class="text-xs text-gray-600 mt-0.5 max-w-xl">
+                    عند التفعيل في أيام عيد الأضحى، يكتسي الموقع بأجواء العيد المباركة: شريط نيون متوهج بحجم كبير بعبارة "عيد أضحى مبارك"، خروف العيد التفاعلي الطافي، تساقط ذرات النور والبريق الذهبي، وشارة الخروف الاحتفالية على شعار WADG TECH.
+                  </p>
+                </div>
+              </div>
+              
+              <!-- Toggle Switch -->
+              <label class="relative inline-flex items-center cursor-pointer select-none">
+                <input type="checkbox" id="admin-eid-adha-mode-toggle" class="sr-only peer">
+                <div class="w-14 h-7 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-gradient-to-r peer-checked:from-amber-500 peer-checked:via-emerald-600 peer-checked:to-teal-600 shadow-inner"></div>
+                <span id="admin-eid-adha-toggle-text" class="ms-3 text-xs font-bold text-gray-800">تفعيل الأجواء</span>
+              </label>
+            </div>
+
+            <div class="pt-2 border-t border-amber-100 flex items-center justify-between text-[11px] text-gray-500 flex-wrap gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span>✨ المؤثرات المتضمنة:</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-amber-200 font-semibold text-amber-700">⚡ نيون مشع بحجم كبير</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-emerald-200 font-semibold text-emerald-700">🐑 خروف العيد التفاعلي</span>
+                <span class="px-2 py-0.5 bg-white rounded-lg border border-teal-200 font-semibold text-teal-700">✨ أضواء ونجوم احتفالية</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <div id="admin-eid-adha-live-indicator" class="hidden items-center gap-1.5 text-amber-700 font-bold">
+                  <span class="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                  <span>معروض على الموقع الآن 🐑</span>
+                </div>
+                <button id="admin-publish-eid-adha-btn" type="button" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow inline-flex items-center gap-1.5 transition-all">
+                  <span id="admin-publish-eid-adha-btn-text">🚀 نشر حالة عيد الأضحى الحالية لجميع الزوار</span>
                 </button>
               </div>
             </div>
@@ -3403,7 +3677,10 @@
         eid_neon_title: 'عيد فطر مبارك',
         eid_neon_subtitle: 'تقبل الله منا ومنكم صالح الأعمال • كل عام وأنتم بخير من أسرة WADG TECH 🌙✨',
         eid_crescent_greeting: '🌙 عيد فطر مبارك وسعيد من WADG TECH! ✨',
-        eid_banner_close: 'إغلاق الشريط'
+        eid_banner_close: 'إغلاق الشريط',
+        eid_adha_neon_title: 'عيد أضحى مبارك',
+        eid_adha_neon_subtitle: 'أعاده الله عليكم باليمن والبركات • كل عام وأنتم بخير وبشرتكم في أبهى إشراقة من أسرة WADG TECH 🐑✨',
+        eid_adha_sheep_greeting: '🐑 عيد أضحى مبارك وسعيد من WADG TECH! ✨ كل عام وأنتم بخير!'
       },
       en: {
         top_bar_1: 'Advanced Liposomal & Peptide Technology',
@@ -3564,7 +3841,10 @@
         eid_neon_title: 'Eid Mubarak • Blessed Eid al-Fitr',
         eid_neon_subtitle: 'May your days be blessed with joy, radiant health & glowing skin • WADG TECH 🌙✨',
         eid_crescent_greeting: '🌙 Blessed & Joyful Eid al-Fitr from WADG TECH! ✨',
-        eid_banner_close: 'Dismiss'
+        eid_banner_close: 'Dismiss',
+        eid_adha_neon_title: 'Eid al-Adha Mubarak',
+        eid_adha_neon_subtitle: 'Wishing you abundant joy, blessed health & radiant glowing skin • WADG TECH 🐑✨',
+        eid_adha_sheep_greeting: '🐑 Blessed & Joyful Eid al-Adha from WADG TECH! ✨'
       }
     };
 
@@ -6299,7 +6579,10 @@
       const eid = (typeof isEidModeEnabled === 'function')
         ? isEidModeEnabled()
         : document.body.classList.contains('eid-active');
-      return { christmas: !!christmas, eid: !!eid };
+      const eidAdha = (typeof isEidAdhaModeEnabled === 'function')
+        ? isEidAdhaModeEnabled()
+        : document.body.classList.contains('eid-adha-active');
+      return { christmas: !!christmas, eid: !!eid, eidAdha: !!eidAdha };
     }
 
     // ══════════════════════════════════════════════════════════════
@@ -6450,12 +6733,13 @@
           fullHtml = fullHtml.replace(prodRegex, () => newProdJson);
         }
 
-        // Update global festive themes (Christmas & Eid) + new config version so ALL visitors & devices sync!
-        const { christmas: christmasState, eid: eidState } = getEffectiveFestiveStates();
+        // Update global festive themes (Christmas, Eid & Eid al-Adha) + new config version so ALL visitors & devices sync!
+        const { christmas: christmasState, eid: eidState, eidAdha: eidAdhaState } = getEffectiveFestiveStates();
         const newFestiveVer = String(Date.now());
         fullHtml = fullHtml.replace(/const FESTIVE_CONFIG_VERSION = '[^']*';/, `const FESTIVE_CONFIG_VERSION = '${newFestiveVer}';`);
         fullHtml = fullHtml.replace(/const DEFAULT_CHRISTMAS_MODE = (true|false);/, `const DEFAULT_CHRISTMAS_MODE = ${christmasState};`);
         fullHtml = fullHtml.replace(/const DEFAULT_EID_MODE = (true|false);/, `const DEFAULT_EID_MODE = ${eidState};`);
+        fullHtml = fullHtml.replace(/const DEFAULT_EID_ADHA_MODE = (true|false);/, `const DEFAULT_EID_ADHA_MODE = ${eidAdhaState};`);
 
         // Update WhatsApp number if customized
         const currentWa = localStorage.getItem('wadg_whatsapp_number');
@@ -6724,10 +7008,11 @@
       }
 
       // ── تحديث الأوضاع الاحتفالية لجميع الزوار ──
-      const { christmas: christmasState, eid: eidState } = getEffectiveFestiveStates();
+      const { christmas: christmasState, eid: eidState, eidAdha: eidAdhaState } = getEffectiveFestiveStates();
       fullHtml = fullHtml.replace(/const FESTIVE_CONFIG_VERSION = '[^']*';/, `const FESTIVE_CONFIG_VERSION = '${Date.now()}';`);
       fullHtml = fullHtml.replace(/const DEFAULT_CHRISTMAS_MODE = (true|false);/, `const DEFAULT_CHRISTMAS_MODE = ${christmasState};`);
       fullHtml = fullHtml.replace(/const DEFAULT_EID_MODE = (true|false);/, `const DEFAULT_EID_MODE = ${eidState};`);
+      fullHtml = fullHtml.replace(/const DEFAULT_EID_ADHA_MODE = (true|false);/, `const DEFAULT_EID_ADHA_MODE = ${eidAdhaState};`);
 
       // ── تحديث رقم الواتساب ──
       const currentWa = localStorage.getItem('wadg_whatsapp_number');
@@ -6874,6 +7159,19 @@
       const isKeyM = e.code === 'KeyM' || e.key === 'M' || e.key === 'm' || e.key === 'ة';
       const isKeyC = e.code === 'KeyC' || e.key === 'C' || e.key === 'c' || e.key === 'ؤ';
       const isKeyV = e.code === 'KeyV' || e.key === 'V' || e.key === 'v' || e.key === 'ر';
+      const isKeyB = e.code === 'KeyB' || e.key === 'B' || e.key === 'b' || e.key === 'لا';
+
+      // Alt + B: Toggle Eid al-Adha Festive Mode (تفعيل / إيقاف وضع عيد الأضحى المبارك)
+      if (e.altKey && !e.ctrlKey && !e.metaKey && isKeyB) {
+        e.preventDefault();
+        if (typeof toggleEidAdhaMode === 'function') {
+          toggleEidAdhaMode();
+        } else if (typeof setEidAdhaMode === 'function') {
+          const active = document.body.classList.contains('eid-adha-active');
+          setEidAdhaMode(!active, true);
+        }
+        return;
+      }
 
       // Alt + V: Toggle Eid al-Fitr Festive Mode (تفعيل / إيقاف وضع عيد الفطر المبارك)
       if (e.altKey && !e.ctrlKey && !e.metaKey && isKeyV) {
@@ -7611,7 +7909,7 @@ CRITICAL RULES:
     // ══════════════════════════════════════════════════════════════
     // 🎅 CHRISTMAS FESTIVE THEME MODULE (ULTRA-LIGHT 60FPS SPRITE ENGINE)
     // ══════════════════════════════════════════════════════════════
-    const FESTIVE_CONFIG_VERSION = '20261125_v28';
+    const FESTIVE_CONFIG_VERSION = '20261126_v29';
     const DEFAULT_CHRISTMAS_MODE = false;
     let snowAnimationId = null;
 
@@ -7622,6 +7920,7 @@ CRITICAL RULES:
         if (lastVer !== FESTIVE_CONFIG_VERSION) {
           localStorage.removeItem('wadg_christmas_mode_override');
           localStorage.removeItem('wadg_eid_mode_override');
+          localStorage.removeItem('wadg_eid_adha_mode_override');
           localStorage.setItem('wadg_festive_cfg_ver', FESTIVE_CONFIG_VERSION);
         }
       } catch (e) {}
@@ -7952,6 +8251,12 @@ CRITICAL RULES:
       const toggleText = document.getElementById('admin-christmas-toggle-text');
 
       if (enabled) {
+        if (typeof isEidAdhaModeEnabled === 'function' && isEidAdhaModeEnabled()) {
+          setEidAdhaMode(false, false, true);
+        }
+        if (typeof isEidModeEnabled === 'function' && isEidModeEnabled()) {
+          setEidMode(false, false, true);
+        }
         document.body.classList.add('christmas-active');
         document.documentElement.classList.add('christmas-active');
         if (tree) tree.classList.remove('hidden');
@@ -8282,6 +8587,12 @@ CRITICAL RULES:
       const toggleText = document.getElementById('admin-eid-toggle-text');
 
       if (enabled) {
+        if (typeof isEidAdhaModeEnabled === 'function' && isEidAdhaModeEnabled()) {
+          setEidAdhaMode(false, false, true);
+        }
+        if (typeof isChristmasModeEnabled === 'function' && isChristmasModeEnabled()) {
+          setChristmasMode(false, false, true);
+        }
         document.body.classList.add('eid-active');
         document.documentElement.classList.add('eid-active');
         if (banner) banner.classList.remove('hidden');
@@ -8399,6 +8710,325 @@ CRITICAL RULES:
       // Initial state on load
       const initialEid = isEidModeEnabled();
       setEidMode(initialEid, false, false);
+    })();
+
+    // ══════════════════════════════════════════════════════════════
+    // 🐑 EID AL-ADHA FESTIVE THEME MODULE (وضع عيد الأضحى المبارك)
+    // ══════════════════════════════════════════════════════════════
+    const DEFAULT_EID_ADHA_MODE = false;
+    let eidAdhaSparklesAnimationId = null;
+    let eidAdhaAudioCtx = null;
+
+    function initEidAdhaAudio() {
+      if (!eidAdhaAudioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          eidAdhaAudioCtx = new AudioContextClass();
+        }
+      }
+      if (eidAdhaAudioCtx && eidAdhaAudioCtx.state === 'suspended') {
+        eidAdhaAudioCtx.resume();
+      }
+    }
+
+    function playEidAdhaMelody() {
+      initEidAdhaAudio();
+      if (!eidAdhaAudioCtx || eidAdhaAudioCtx.state !== 'running') return;
+      try {
+        const now = eidAdhaAudioCtx.currentTime;
+        // Festive uplifting Takbeerat-inspired chime (F5, A5, C6, E6, F6)
+        const notes = [698.46, 880.00, 1046.50, 1318.51, 1396.91];
+        notes.forEach((freq, idx) => {
+          const osc1 = eidAdhaAudioCtx.createOscillator();
+          const osc2 = eidAdhaAudioCtx.createOscillator();
+          const gain = eidAdhaAudioCtx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(freq, now + idx * 0.09);
+
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(freq * 1.5, now + idx * 0.09);
+
+          gain.gain.setValueAtTime(0.0001, now + idx * 0.09);
+          gain.gain.linearRampToValueAtTime(0.12, now + idx * 0.09 + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.09 + 0.8);
+
+          osc1.connect(gain);
+          osc2.connect(gain);
+          gain.connect(eidAdhaAudioCtx.destination);
+
+          osc1.start(now + idx * 0.09);
+          osc2.start(now + idx * 0.09);
+          osc1.stop(now + idx * 0.09 + 0.85);
+          osc2.stop(now + idx * 0.09 + 0.85);
+        });
+      } catch (e) {}
+    }
+
+    function isEidAdhaModeEnabled() {
+      const saved = localStorage.getItem('wadg_eid_adha_mode_override');
+      if (saved !== null) return saved === 'true';
+      return DEFAULT_EID_ADHA_MODE;
+    }
+
+    // Ultra-Light Pre-Baked Sprite Golden Sparkles Engine (Zero shadowBlur on mobile)
+    function initEidAdhaSparkles() {
+      const canvas = document.getElementById('eid-adha-sparkles-canvas');
+      if (!canvas) return;
+      canvas.classList.remove('hidden');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      let width = window.innerWidth;
+      let height = window.innerHeight;
+      canvas.width = Math.floor(width * dpr);
+      canvas.height = Math.floor(height * dpr);
+      ctx.scale(dpr, dpr);
+
+      // Pre-bake 2 tiny sprite stamps offscreen to eliminate expensive runtime shadowBlur
+      const sprite1 = document.createElement('canvas');
+      sprite1.width = 32;
+      sprite1.height = 32;
+      const s1Ctx = sprite1.getContext('2d');
+      if (s1Ctx) {
+        const rad = s1Ctx.createRadialGradient(16, 16, 0, 16, 16, 15);
+        rad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        rad.addColorStop(0.35, 'rgba(251, 191, 36, 0.95)');
+        rad.addColorStop(0.7, 'rgba(245, 158, 11, 0.5)');
+        rad.addColorStop(1, 'rgba(245, 158, 11, 0)');
+        s1Ctx.fillStyle = rad;
+        s1Ctx.beginPath();
+        s1Ctx.arc(16, 16, 15, 0, Math.PI * 2);
+        s1Ctx.fill();
+      }
+
+      const sprite2 = document.createElement('canvas');
+      sprite2.width = 36;
+      sprite2.height = 36;
+      const s2Ctx = sprite2.getContext('2d');
+      if (s2Ctx) {
+        s2Ctx.fillStyle = '#fde047';
+        s2Ctx.beginPath();
+        s2Ctx.arc(18, 18, 10, 0, Math.PI * 2);
+        s2Ctx.fill();
+        s2Ctx.fillStyle = '#0a2f26';
+        s2Ctx.beginPath();
+        s2Ctx.arc(14, 15, 8.5, 0, Math.PI * 2);
+        s2Ctx.fill();
+      }
+
+      const isMobile = width < 768;
+      const count = isMobile ? 12 : 20;
+      const particles = [];
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          size: Math.random() * 10 + 10,
+          speedY: Math.random() * 0.45 + 0.15,
+          speedX: (Math.random() - 0.5) * 0.3,
+          opacity: Math.random() * 0.6 + 0.3,
+          pulseSpeed: Math.random() * 0.025 + 0.015,
+          pulseVal: Math.random() * Math.PI,
+          sprite: (i % 4 === 0) ? sprite2 : sprite1
+        });
+      }
+
+      let lastTime = performance.now();
+      function render(now) {
+        if (!document.body.classList.contains('eid-adha-active')) {
+          stopEidAdhaSparkles();
+          return;
+        }
+        const delta = Math.min((now - lastTime) / 1000, 0.1);
+        lastTime = now;
+
+        ctx.clearRect(0, 0, width, height);
+        for (let i = 0; i < count; i++) {
+          const p = particles[i];
+          p.y += p.speedY * 60 * delta;
+          p.x += p.speedX * 60 * delta;
+          p.pulseVal += p.pulseSpeed;
+
+          if (p.y > height + 20) {
+            p.y = -20;
+            p.x = Math.random() * width;
+          }
+          if (p.x > width + 20) p.x = -20;
+          if (p.x < -20) p.x = width + 20;
+
+          const currentAlpha = Math.max(0.15, Math.min(0.9, p.opacity + Math.sin(p.pulseVal) * 0.3));
+          ctx.globalAlpha = currentAlpha;
+          ctx.drawImage(p.sprite, p.x - p.size * 0.5, p.y - p.size * 0.5, p.size, p.size);
+        }
+        ctx.globalAlpha = 1;
+        eidAdhaSparklesAnimationId = requestAnimationFrame(render);
+      }
+
+      if (eidAdhaSparklesAnimationId) cancelAnimationFrame(eidAdhaSparklesAnimationId);
+      eidAdhaSparklesAnimationId = requestAnimationFrame(render);
+    }
+
+    function stopEidAdhaSparkles() {
+      if (eidAdhaSparklesAnimationId) {
+        cancelAnimationFrame(eidAdhaSparklesAnimationId);
+        eidAdhaSparklesAnimationId = null;
+      }
+      const canvas = document.getElementById('eid-adha-sparkles-canvas');
+      if (canvas) {
+        canvas.classList.add('hidden');
+        const ctx = canvas.getContext('2d');
+        if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function setEidAdhaMode(enabled, notify = false, persist = true) {
+      if (persist) {
+        localStorage.setItem('wadg_eid_adha_mode_override', enabled ? 'true' : 'false');
+      }
+      const banner = document.getElementById('eid-adha-neon-banner');
+      const widget = document.getElementById('eid-adha-sheep-widget');
+      const toggle = document.getElementById('admin-eid-adha-mode-toggle');
+      const badge = document.getElementById('admin-eid-adha-badge');
+      const indicator = document.getElementById('admin-eid-adha-live-indicator');
+      const toggleText = document.getElementById('admin-eid-adha-toggle-text');
+
+      if (enabled) {
+        // Auto-disable other holiday themes if active to avoid stacking banners
+        if (typeof isChristmasModeEnabled === 'function' && isChristmasModeEnabled()) {
+          setChristmasMode(false, false, true);
+        }
+        if (typeof isEidModeEnabled === 'function' && isEidModeEnabled()) {
+          setEidMode(false, false, true);
+        }
+
+        document.body.classList.add('eid-adha-active');
+        document.documentElement.classList.add('eid-adha-active');
+        if (banner) banner.classList.remove('hidden');
+        if (widget) widget.classList.remove('hidden');
+        initEidAdhaSparkles();
+
+        if (toggle) toggle.checked = true;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800 border border-amber-300';
+          badge.textContent = 'مفعل ويظهر للزوار 🐑';
+        }
+        const pubBtn = document.getElementById('admin-publish-eid-adha-btn');
+        const pubText = document.getElementById('admin-publish-eid-adha-btn-text');
+        if (pubBtn) pubBtn.className = 'px-3 py-1.5 bg-amber-700 hover:bg-amber-800 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow inline-flex items-center gap-1.5 transition-all';
+        if (pubText) pubText.textContent = '🚀 نشر تفعيل وضع عيد الأضحى للجميع أونلاين';
+        if (indicator) indicator.classList.remove('hidden');
+        if (toggleText) toggleText.textContent = 'إيقاف الأجواء';
+
+        if (notify) {
+          playEidAdhaMelody();
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? '🐑 Eid al-Adha Festive Mode activated! ✨ (Alt+B)' : '🐑 تم تفعيل وضع عيد الأضحى المبارك وأجواء العيد بنجاح! ✨ (Alt+B)', 5000);
+        }
+      } else {
+        document.body.classList.remove('eid-adha-active');
+        document.documentElement.classList.remove('eid-adha-active');
+        if (banner) banner.classList.add('hidden');
+        if (widget) widget.classList.add('hidden');
+        stopEidAdhaSparkles();
+
+        if (toggle) toggle.checked = false;
+        if (badge) {
+          badge.className = 'text-[10px] px-2.5 py-0.5 rounded-full font-bold bg-gray-200 text-gray-700';
+          badge.textContent = 'معطل حالياً';
+        }
+        const pubBtn = document.getElementById('admin-publish-eid-adha-btn');
+        const pubText = document.getElementById('admin-publish-eid-adha-btn-text');
+        if (pubBtn) pubBtn.className = 'px-3 py-1.5 bg-gray-800 hover:bg-gray-900 text-white rounded-xl font-bold text-xs shadow-sm hover:shadow inline-flex items-center gap-1.5 transition-all';
+        if (pubText) pubText.textContent = '🚀 نشر إيقاف وضع عيد الأضحى للجميع أونلاين';
+        if (indicator) indicator.classList.add('hidden');
+        if (toggleText) toggleText.textContent = 'تفعيل الأجواء';
+
+        if (notify) {
+          const isEn = (typeof lang !== 'undefined' && lang === 'en');
+          showToast(isEn ? 'Eid al-Adha Mode turned off. (Alt+B)' : 'تم إيقاف وضع عيد الأضحى المبارك. (Alt+B)', 3500);
+        }
+      }
+    }
+
+    let _lastEidAdhaToggleTime = 0;
+    function toggleEidAdhaMode() {
+      const now = Date.now();
+      if (now - _lastEidAdhaToggleTime < 350) return;
+      _lastEidAdhaToggleTime = now;
+
+      const currentlyActive = document.body.classList.contains('eid-adha-active');
+      setEidAdhaMode(!currentlyActive, true);
+    }
+    window.toggleEidAdhaMode = toggleEidAdhaMode;
+    window.isEidAdhaModeEnabled = isEidAdhaModeEnabled;
+    window.setEidAdhaMode = setEidAdhaMode;
+
+    function burstEidAdhaConfetti(originX, originY) {
+      const items = ['🐑', '🐏', '✨', '⭐', '💛', '🌸', '🎉', '🌟', '🤍'];
+      for (let i = 0; i < 20; i++) {
+        const el = document.createElement('div');
+        el.textContent = items[Math.floor(Math.random() * items.length)];
+        el.className = 'fixed pointer-events-none z-50 text-base select-none';
+        el.style.left = originX + 'px';
+        el.style.top = originY + 'px';
+        el.style.transition = 'all 1s cubic-bezier(0.25, 1, 0.5, 1)';
+        document.body.appendChild(el);
+
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 110 + 40;
+        const destX = originX + Math.cos(angle) * dist;
+        const destY = originY + Math.sin(angle) * dist - 35;
+
+        requestAnimationFrame(() => {
+          el.style.transform = `translate(${destX - originX}px, ${destY - originY}px) scale(${Math.random() * 0.8 + 0.8})`;
+          el.style.opacity = '0';
+        });
+
+        setTimeout(() => el.remove(), 1050);
+      }
+      const isEn = (typeof lang !== 'undefined' && lang === 'en');
+      showToast(isEn ? '🐑 Blessed Eid al-Adha from WADG TECH! ✨' : '🐑 عيد أضحى مبارك وسعيد! كل عام وأنتم بخير من أسرة WADG TECH ✨', 4500);
+    }
+
+    // Bind Eid al-Adha Mode events
+    (function initEidAdhaBindings() {
+      // Admin dashboard toggle
+      const toggle = document.getElementById('admin-eid-adha-mode-toggle');
+      if (toggle) {
+        toggle.addEventListener('change', function() {
+          setEidAdhaMode(this.checked, true);
+          if (typeof setAdminSyncBanner === 'function') {
+            setAdminSyncBanner('info', this.checked
+              ? '🐑 تم تفعيل وضع عيد الأضحى محلياً! اضغط على (🚀 نشر وضع عيد الأضحى لجميع الزوار) لتفعيله أونلاين عند كل الناس.'
+              : 'ℹ️ تم إيقاف وضع عيد الأضحى محلياً. اضغط على (🚀 نشر التحديثات إلى GitHub الآن) لإيقافه عند كل الناس.');
+          }
+        });
+      }
+
+      // Publish Eid Adha button in Admin Modal
+      document.getElementById('admin-publish-eid-adha-btn')?.addEventListener('click', async () => {
+        const toggleEl = document.getElementById('admin-eid-adha-mode-toggle');
+        const checked = toggleEl ? toggleEl.checked : document.body.classList.contains('eid-adha-active');
+        setEidAdhaMode(checked, false, true);
+        await syncToGitHub();
+      });
+
+      // Sheep widget celebration interaction
+      const widget = document.getElementById('eid-adha-sheep-widget');
+      if (widget) {
+        widget.addEventListener('click', () => {
+          playEidAdhaMelody();
+          const rect = widget.getBoundingClientRect();
+          burstEidAdhaConfetti(rect.left + rect.width / 2, rect.top + rect.height / 2);
+        });
+      }
+
+      // Initial state on load
+      const initialEidAdha = isEidAdhaModeEnabled();
+      setEidAdhaMode(initialEidAdha, false, false);
     })();
 
     // Check URL params for admin auto-open (e.g. ?admin=1)
